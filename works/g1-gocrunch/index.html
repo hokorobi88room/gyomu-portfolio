@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gocrunch — 大量ファイル高速処理CLI(Go) | 業務自動化×Web制作 ポートフォリオ</title>
+<meta name="description" content="gocrunch — 大量ファイル高速処理CLI(Go) — 作品詳細・ソースコード">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--navy:#12203c}
+  @media (prefers-color-scheme: dark){:root{--bg:#0d1420;--card:#161f2e;--ink:#e9eef6;--sub:#94a4ba;--line:#273349;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+  .top{background:var(--navy);color:#fff;padding:20px 0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  .top a{color:#5eead4;text-decoration:none;font-size:.85rem;font-weight:700}
+  .top h1{font-size:1.3rem;margin-top:6px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 8px}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:10px;padding:11px 24px;font-size:.9rem}
+  .btn-main{background:var(--teal);color:#fff}
+  .btn-main:hover{background:var(--teal2)}
+  .btn-sub{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+  .btn-sub:hover{border-color:var(--teal2);color:var(--teal2)}
+  article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 36px;margin:18px 0 60px}
+  article h1{font-size:1.45rem;margin-bottom:18px}
+  article h2{font-size:1.12rem;margin:30px 0 12px;padding-left:12px;border-left:4px solid var(--teal)}
+  article p{margin:10px 0;font-size:.93rem}
+  article ul,article ol{margin:10px 0 10px 1.5em;font-size:.93rem}
+  article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.87rem}
+  article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  article th{background:rgba(13,148,136,.1)}
+  article code{background:rgba(13,148,136,.12);border-radius:4px;padding:1px 6px;font-size:.85em}
+  article pre{background:#0b1220;color:#c9f0dd;border-radius:10px;padding:16px;overflow-x:auto;margin:14px 0}
+  article pre code{background:none;padding:0;color:inherit}
+  article a{color:var(--teal2)}
+  article hr{border:none;border-top:1px dashed var(--line);margin:24px 0}
+  article em{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a href="../../index.html">← ポートフォリオへ戻る</a><h1>gocrunch — 大量ファイル高速処理CLI(Go)</h1></div></div>
+<div class="wrap">
+  <div class="actions"><a class="btn btn-main" href="demo/index.html">▶ ブラウザで体験デモ</a><a class="btn btn-main" href="g1-gocrunch.zip" download>📥 ソース一式をダウンロード</a></div>
+  <article><h1>gocrunch — 大量ファイル高速処理CLI(Go)</h1>
+<h2>誰の・どんな困りごとを解決するか</h2>
+<p>システムが毎日吐き出すCSV/ログが数千〜数万ファイルに溜まり、<strong>Excelではもう開けない・VBAでは一晩かかる</strong>規模になった現場。レガシーシステムの移行(データの統合・形式変換・検証)でも同じ処理が必要になる。<strong>依存ゼロの単一バイナリ</strong>なので、サーバにも事務のPCにも「ファイル1個置くだけ」で導入できる。</p>
+<h2>実測(Apple M4・go test -bench による再現可能な計測)</h2>
+<table>
+<thead>
+<tr>
+<th>処理</th>
+<th>実測</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>2,000ファイル(計10万行)のCSV結合</strong></td>
+<td><strong>約0.024秒</strong></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>手作業なら「1ファイルずつ開いてコピペ」×2,000回。VBAのブックオープン方式なら数十分の規模。goroutineによる並行読み込みで、ファイル数が増えるほど差が開く。ベンチマークコードは <code>internal/crunch/crunch_test.go</code> にあり、<code>go test -bench=.</code> で誰でも再現できる。</p>
+</blockquote>
+<h2>機能</h2>
+<ul>
+<li><code>merge</code> — 複数ファイルを1つに結合。<strong>列名で自動整列</strong>(ファイルごとの列順の違い・片方にしかない列を吸収)、<code>-source</code>で由来列を追加、<code>-dry-run</code>で事前確認</li>
+<li><code>convert</code> — CSV/TSV/JSON の相互変換(拡張子で自動判定)</li>
+<li><code>stats</code> — グループ集計(合計・件数・降順)。<code>"1,234"</code> <code>"¥5,000"</code> のような現場のセル値も数値化</li>
+<li>壊れたファイルが混ざっても<strong>全体を止めず、失敗一覧を明示して終了コードで知らせる</strong>(黙って欠落させない)</li>
+<li>Windows/Mac/Linux用バイナリをクロスコンパイルで配布可能(実行環境に何もインストール不要)</li>
+</ul>
+<pre><code class="language-bash">gocrunch merge  -in &quot;reports/*.csv&quot; -out merged.csv -source
+gocrunch stats  -in &quot;reports/*.csv&quot; -group 支店 -sum 売上
+gocrunch convert -in master.csv -out master.json
+</code></pre>
+<h2>品質</h2>
+<ul>
+<li>テスト14ケース(テーブル駆動): 形式別読込・列数ゆらぎ・列整列・破損ファイル継続・通貨記号の数値化・異常系</li>
+<li><code>go vet</code> クリーン・依存ライブラリゼロ(標準ライブラリのみ)</li>
+</ul>
+<h2>実案件ではこう応用できます(移行・統合の文脈)</h2>
+<ol>
+<li><strong>レガシーシステム移行のデータ検証</strong>: 旧システムのエクスポート数万件を新形式へ変換し、件数・合計の突合レポートまで自動化</li>
+<li><strong>日次バッチの置き換え</strong>: 一晩かかっていたVBA/バッチ集計を数秒に(タスクスケジューラ登録まで対応)</li>
+<li><strong>API化</strong>: 同じロジックをHTTPサーバ(Go標準net/http)として常駐させ、社内システムから呼べるように</li>
+</ol>
+<hr />
+<p><em>※ ベンチマークデータは生成した架空データです。</em></p></article>
+</div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SalesLens — 売上データ分析ダッシュボード(Python / Streamlit) | 業務自動化×Web制作 ポートフォリオ</title>
+<meta name="description" content="SalesLens — 売上データ分析ダッシュボード(Python / Streamlit) — 作品詳細・ソースコード">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--navy:#12203c}
+  @media (prefers-color-scheme: dark){:root{--bg:#0d1420;--card:#161f2e;--ink:#e9eef6;--sub:#94a4ba;--line:#273349;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+  .top{background:var(--navy);color:#fff;padding:20px 0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  .top a{color:#5eead4;text-decoration:none;font-size:.85rem;font-weight:700}
+  .top h1{font-size:1.3rem;margin-top:6px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 8px}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:10px;padding:11px 24px;font-size:.9rem}
+  .btn-main{background:var(--teal);color:#fff}
+  .btn-main:hover{background:var(--teal2)}
+  .btn-sub{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+  .btn-sub:hover{border-color:var(--teal2);color:var(--teal2)}
+  article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 36px;margin:18px 0 60px}
+  article h1{font-size:1.45rem;margin-bottom:18px}
+  article h2{font-size:1.12rem;margin:30px 0 12px;padding-left:12px;border-left:4px solid var(--teal)}
+  article p{margin:10px 0;font-size:.93rem}
+  article ul,article ol{margin:10px 0 10px 1.5em;font-size:.93rem}
+  article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.87rem}
+  article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  article th{background:rgba(13,148,136,.1)}
+  article code{background:rgba(13,148,136,.12);border-radius:4px;padding:1px 6px;font-size:.85em}
+  article pre{background:#0b1220;color:#c9f0dd;border-radius:10px;padding:16px;overflow-x:auto;margin:14px 0}
+  article pre code{background:none;padding:0;color:inherit}
+  article a{color:var(--teal2)}
+  article hr{border:none;border-top:1px dashed var(--line);margin:24px 0}
+  article em{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a href="../../index.html">← ポートフォリオへ戻る</a><h1>SalesLens — 売上データ分析ダッシュボード(Python / Streamlit)</h1></div></div>
+<div class="wrap">
+  <div class="actions"><a class="btn btn-main" href="demo/index.html">▶ ブラウザで体験デモ</a><a class="btn btn-main" href="p1-sales-dashboard.zip" download>📥 ソース一式をダウンロード</a></div>
+  <article><h1>SalesLens — 売上データ分析ダッシュボード(Python / Streamlit)</h1>
+<h2>誰の・どんな困りごとを解決するか</h2>
+<p>売上データが<strong>Excelで開くのがつらいサイズ</strong>(数万〜数十万行)になってきた事業者。ピボットテーブルで毎月同じ集計を繰り返し、前年比の計算とグラフ作りに半日かけている。<strong>「Excel実務6年だからこそ、Excelでやるべきことと、Pythonに移すべきことの境目がわかる」</strong>を体現する作品。</p>
+<h2>Before / After</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Before(Excel手作業)</th>
+<th>After(SalesLens)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>月次レポート作成</td>
+<td>ピボット+グラフで半日</td>
+<td><strong>ファイルを放り込んで10秒</strong></td>
+</tr>
+<tr>
+<td>前年比</td>
+<td>都度数式を組む</td>
+<td>自動計算・グラフ表示</td>
+</tr>
+<tr>
+<td>異常な日の発見</td>
+<td>目視(見逃す)</td>
+<td>±3σの統計的検知(感度調整可)</td>
+</tr>
+<tr>
+<td>列名がバラバラのデータ</td>
+<td>手で直してから読み込み</td>
+<td>売上/金額/売上高 等を自動吸収</td>
+</tr>
+</tbody>
+</table>
+<h2>機能一覧</h2>
+<ul>
+<li>CSV(UTF-8/Shift_JIS自動判定)/Excel のドラッグ&amp;ドロップ読み込み</li>
+<li><strong>列名ゆらぎの自動吸収</strong>(日付/売上日/取引日、売上/金額/売上高、商品/品目 等)</li>
+<li>クレンジング: 不正行を<strong>理由別に計数して報告</strong>(黙って捨てない)</li>
+<li>KPIカード/月次推移+前年同月比の複合グラフ/商品別TOP10/地域別構成(plotlyでインタラクティブ)</li>
+<li>異常日検知(日次売上の±σ検知・スライダーで感度調整・標本不足時は誤検知防止で停止)</li>
+<li><strong>Excelレポート出力</strong>(月次・商品別・地域別・整形済みデータの4シート)— 分析結果をExcel文化の職場へ持ち帰れる</li>
+</ul>
+<h2>動かし方</h2>
+<p><strong>▶ かんたん起動(コマンド不要)</strong>: 解凍したフォルダの中の
+- <strong>Mac</strong>: <code>run_mac.command</code> をダブルクリック
+- <strong>Windows</strong>: <code>run_windows.bat</code> をダブルクリック</p>
+<p>初回のみ環境構築を自動で行い(1〜2分)、ブラウザでダッシュボードが開きます。Python未導入なら案内と入手先だけを表示します(macOS初回は右クリック→「開く」で警告を解除)。</p>
+<p><strong>実案件での納品は、これをさらに手間ゼロにします</strong>: Streamlit Community Cloud(無料)へホストし、<strong>URLを開くだけ</strong>の形でお渡しできます(<a href="../../../DeliveryStandards.md">DeliveryStandards.md</a> 参照)。</p>
+<p>開発者向け(手動):</p>
+<pre><code class="language-bash">pip install -r requirements.txt
+streamlit run app.py
+pytest tests/               # テスト11件(正常系・異常系・10万行3秒以内の性能)
+</code></pre>
+<h2>品質</h2>
+<ul>
+<li>UI(app.py)とロジック(core.py)を分離し、コアはpandas純関数として<strong>テスト11件</strong>で担保(型ヒント・ruff準拠)</li>
+<li>性能テスト: <strong>10万行の全分析パイプラインを3秒以内</strong>で完走することをテストで保証</li>
+<li>実バグをテストが検出→修正済み(商品名が空欄の行の除外漏れ)— テストを書く開発姿勢ごと見せる</li>
+</ul>
+<h2>実案件ではこう応用できます</h2>
+<ol>
+<li><strong>定期自動レポート</strong>: 毎朝データを取り込みSlack/メールへサマリ送信(ダッシュボードを見に行かなくていい)</li>
+<li><strong>複数店舗・複数事業の統合分析</strong>(A2のReportHubで集めたデータの出口)</li>
+<li><strong>在庫・勤怠・広告データ</strong>への横展開(コアの集計ロジックを差し替えるだけ)</li>
+</ol>
+<hr />
+<p><em>※ サンプルデータは架空の数値です。</em></p></article>
+</div>
+</body>
+</html>

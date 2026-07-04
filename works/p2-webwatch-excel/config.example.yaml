@@ -1,0 +1,25 @@
+# WebWatch 設定例
+# 対象は「robots.txt と利用規約で収集が許される公開情報」に限ること。
+# このサンプルは同梱のローカルテストページ(tests/fixtures)を指す形にしてある。
+
+interval_seconds: 5        # 同一ドメインへの最小アクセス間隔(1秒未満は設定エラー)
+timeout_seconds: 15
+user_agent: "WebWatchBot/1.0 (monitoring; contact: your-mail@example.com)"
+output_dir: output
+
+targets:
+  - name: 統計新着
+    url: https://example.com/stats/new        # ←実際の対象URLに差し替える
+    item_selector: "ul.release-list li"       # 1件分のブロック
+    fields:                                   # 列名: ブロック内の相対セレクタ
+      日付: ".date"
+      タイトル: "a.title"
+      区分: ".category"
+
+  - name: 価格表
+    url: https://example.com/pricing
+    item_selector: "table.price tbody tr"
+    fields:
+      商品名: "td.name"
+      価格: "td.price"
+      在庫: "td.stock"

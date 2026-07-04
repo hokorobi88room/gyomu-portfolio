@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>複数ブック自動集計ダッシュボード — 体験デモ</title>
+<style>
+  :root{--bg:#f4f7f9;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--gold:#d9a441;--navy:#12203c;--warn:#b45309;--red:#c0392b}
+  @media(prefers-color-scheme:dark){:root{--bg:#0e1520;--card:#18212f;--ink:#e9eef6;--sub:#93a3b8;--line:#283446;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Hiragino Sans","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  header{background:radial-gradient(ellipse at 80% -20%,rgba(13,148,136,.4),transparent 60%),var(--navy);color:#fff;padding:26px 20px}
+  header .wrap{max-width:980px;margin:0 auto}
+  header .badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 14px;font-size:.75rem;margin-bottom:10px}
+  header h1{font-size:clamp(1.3rem,3.4vw,1.8rem);font-weight:800}
+  header p{opacity:.9;margin-top:6px;font-size:.9rem}
+  main{max-width:980px;margin:0 auto;padding:22px 20px 70px}
+  .note{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:10px 14px;font-size:.85rem;margin-bottom:18px}
+  @media(prefers-color-scheme:dark){.note{background:#332711;border-color:#7c5806;color:#fcd34d}}
+  .files{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .file{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:.8rem;display:flex;align-items:center;gap:7px}
+  .file.bad{border-color:rgba(180,83,9,.5)}
+  .btn{background:linear-gradient(135deg,#14b8a6,#0f766e);color:#fff;border:none;border-radius:10px;padding:12px 30px;font-weight:700;cursor:pointer;font-size:1rem;transition:transform .12s,box-shadow .2s}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(13,148,136,.4)}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px;display:none}
+  .panel h2{font-size:1rem;margin-bottom:12px}
+  table{width:100%;border-collapse:collapse;font-size:.84rem}
+  th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+  th{color:var(--sub);font-size:.75rem}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  .bar{height:9px;border-radius:5px;background:var(--teal);display:inline-block;vertical-align:middle}
+  .report li{list-style:none;padding:4px 0;font-size:.84rem}
+  .ok{color:var(--teal2)} .wg{color:var(--warn)}
+  .thinking{color:var(--sub);text-align:center;padding:24px}
+  .fade{opacity:0;animation:f .5s forwards}@keyframes f{to{opacity:1}}
+  footer{background:#0a101e;color:#7688a3;font-size:.75rem;text-align:center;padding:24px;line-height:2}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <span class="badge">Excel VBA・体験デモ</span>
+  <h1>複数ブック自動集計ダッシュボード</h1>
+  <p>様式バラバラの月次報告20ファイルを、フォルダに入れて実行するだけで自動統合。月8時間→数分。</p>
+</div></header>
+<main>
+  <div class="note">これは体験デモです。実物はExcel(VBA)で動きます。ここでは「20支店のバラバラな報告ファイルを1つに統合する」様子を再現します。</div>
+  <div style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px">
+    <b style="font-size:.95rem">📁 フォルダ内の報告ファイル(20支店ぶん・様式バラバラ)</b>
+    <div class="files" id="files" style="margin-top:10px"></div>
+    <button class="btn" id="run">▶ フォルダを集計する</button>
+  </div>
+
+  <div class="panel" id="pReport"><h2>🧾 取込結果</h2><ul class="report" id="report"></ul></div>
+  <div class="panel" id="pDash">
+    <h2>📊 統合ダッシュボード(自動生成)</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px" id="dashCols"></div>
+  </div>
+  <div style="text-align:center;display:none" id="againWrap"><button class="btn" id="again">↺ もう一度</button></div>
+</main>
+<footer>※ ポートフォリオ用のデモです。支店名・数値はすべて架空です。</footer>
+<script>
+"use strict";
+const yen=n=>"¥"+Math.round(n).toLocaleString("ja-JP");
+const BR=["札幌","仙台","新潟","大宮","千葉","東京","横浜","静岡","名古屋","金沢","京都","大阪","神戸","岡山","広島","高松","福岡","熊本","鹿児島","那覇"];
+const $=id=>document.getElementById(id);
+// ファイル一覧描画(最後の1つは様式不備=警告)
+$("files").innerHTML=BR.map((b,i)=>`<span class="file${i===19?' bad':''}">📄 月次報告_${b}支店.xlsx${i===19?' ⚠':''}</span>`).join("");
+
+function rnd(seed){let x=Math.sin(seed)*10000;return x-Math.floor(x);}
+$("run").onclick=()=>{
+  $("run").disabled=true;
+  $("pReport").style.display="block";
+  $("report").innerHTML='<div class="thinking">20ファイルを読み込み・様式を判定して統合しています…</div>';
+  setTimeout(render,800);
+};
+function render(){
+  // 集計(架空)
+  const staff=["佐藤","鈴木","高橋","田中","伊藤","渡辺","山本","中村"];
+  const items=["スタンダード","プレミアム","保守サポート","初期構築","オプション"];
+  let rows=0, byStaff={}, byItem={}, byBranch={};
+  BR.slice(0,19).forEach((b,bi)=>{
+    const n=8+Math.floor(rnd(bi+1)*20); rows+=n;
+    for(let i=0;i<n;i++){
+      const v=(2+Math.floor(rnd(bi*30+i)*60))*5000;
+      const s=staff[Math.floor(rnd(bi+i*7)*staff.length)];
+      const it=items[Math.floor(rnd(bi*3+i)*items.length)];
+      byStaff[s]=(byStaff[s]||0)+v; byItem[it]=(byItem[it]||0)+v; byBranch[b]=(byBranch[b]||0)+v;
+    }
+  });
+  $("report").innerHTML=
+    `<li class="ok">✓ 成功: 19ファイル / ${rows}行を統合しました</li>`+
+    `<li class="ok">✓ 様式ゆらぎを自動吸収（列順の違い・「売上/金額/売上高」等の別名）</li>`+
+    `<li class="wg">⚠ 警告: 月次報告_那覇支店.xlsx … 売上列が特定できずスキップ（様式不備を検知）</li>`+
+    `<li style="color:var(--sub)">元ファイルは読み取り専用で開き、一切変更していません。</li>`;
+  // ダッシュボード
+  const top=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]);
+  const rankTable=(title,arr,n)=>{const mx=arr[0][1];return `<div class="fade"><h3 style="font-size:.85rem;color:var(--teal2);margin-bottom:8px">${title}</h3><table><tbody>${arr.slice(0,n).map(([k,v])=>`<tr><td>${k}</td><td class="n">${yen(v)}</td><td style="width:34%"><span class="bar" style="width:${Math.round(v/mx*100)}%"></span></td></tr>`).join("")}</tbody></table></div>`;};
+  $("dashCols").innerHTML=rankTable("担当者別 売上ランキング",top(byStaff),8)+rankTable("商品別 売上",top(byItem),5)+rankTable("支店別 売上 TOP10",top(byBranch),10)+
+    `<div class="fade"><h3 style="font-size:.85rem;color:var(--teal2);margin-bottom:8px">全体サマリ</h3><p style="font-size:1.4rem;color:var(--teal2);font-weight:800">${yen(top(byBranch).reduce((a,b)=>a+b[1],0))}</p><p style="font-size:.82rem;color:var(--sub)">19支店 合計 / ${rows}件（前年比・推移も自動化できます）</p></div>`;
+  $("pDash").style.display="block"; $("againWrap").style.display="block";
+  document.querySelectorAll(".fade").forEach((el,i)=>el.style.animationDelay=(i*0.08)+"s");
+}
+$("again").onclick=()=>location.reload();
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>売上分析ダッシュボード — ブラウザ体験デモ</title>
+<style>
+  :root{--bg:#f4f7f9;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--gold:#d9a441;--navy:#12203c;--red:#c0392b}
+  @media(prefers-color-scheme:dark){:root{--bg:#0e1520;--card:#18212f;--ink:#e9eef6;--sub:#93a3b8;--line:#283446;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Hiragino Sans","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  header{background:radial-gradient(ellipse at 80% -20%,rgba(13,148,136,.4),transparent 60%),var(--navy);color:#fff;padding:26px 20px}
+  header .wrap{max-width:1000px;margin:0 auto}
+  header .badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 14px;font-size:.75rem;margin-bottom:10px}
+  header h1{font-size:clamp(1.3rem,3.4vw,1.8rem);font-weight:800}
+  header p{opacity:.9;margin-top:6px;font-size:.9rem}
+  main{max-width:1000px;margin:0 auto;padding:22px 20px 70px}
+  .note{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:10px 14px;font-size:.85rem;margin-bottom:18px}
+  @media(prefers-color-scheme:dark){.note{background:#332711;border-color:#7c5806;color:#fcd34d}}
+  .drop{background:var(--card);border:2px dashed var(--line);border-radius:14px;padding:26px;text-align:center}
+  .drop b{font-size:1rem}
+  .drop p{color:var(--sub);font-size:.85rem;margin:6px 0 14px}
+  .btn{background:linear-gradient(135deg,#14b8a6,#0f766e);color:#fff;border:none;border-radius:10px;padding:12px 30px;font-weight:700;cursor:pointer;font-size:1rem;transition:transform .12s,box-shadow .2s}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(13,148,136,.4)}
+  .board{display:none;margin-top:6px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+  @media(max-width:700px){.kpis{grid-template-columns:1fr 1fr}}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi span{font-size:.75rem;color:var(--sub)}
+  .kpi b{display:block;font-size:1.5rem;color:var(--teal2);margin-top:2px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:18px}
+  .panel h2{font-size:1rem;margin-bottom:14px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+  table{width:100%;border-collapse:collapse;font-size:.86rem}
+  th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left}
+  th{color:var(--sub);font-size:.76rem}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  .bar{height:10px;border-radius:6px;background:var(--teal);display:inline-block;vertical-align:middle}
+  .anom{background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.3);border-radius:10px;padding:12px 14px;font-size:.86rem}
+  .anom b{color:var(--red)}
+  .fade{opacity:0;animation:f .5s forwards}@keyframes f{to{opacity:1}}
+  .thinking{color:var(--sub);text-align:center;padding:30px}
+  footer{background:#0a101e;color:#7688a3;font-size:.75rem;text-align:center;padding:24px;line-height:2}
+  svg text{font-family:inherit}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <span class="badge">Python / Streamlit・体験デモ</span>
+  <h1>売上分析ダッシュボード</h1>
+  <p>CSVを入れるだけで、前年比・商品別・異常な日まで自動分析。Excelのピボット地獄から卒業。</p>
+</div></header>
+<main>
+  <div class="note">これは体験用のデモです（架空データ・3年分）。実物はPython製で、あなたの実データを入れて動きます。「無料のクラウドに置いてURLで納品」も可能です。</div>
+
+  <div class="drop" id="drop">
+    <b>📄 売上データ(CSV / Excel)をここに</b>
+    <p>デモでは架空のサンプルデータを使います。ボタンを押すだけ。</p>
+    <button class="btn" id="run">▶ サンプルを分析する</button>
+  </div>
+
+  <div class="board" id="board">
+    <div class="kpis">
+      <div class="kpi fade"><span>総売上(3年)</span><b id="k1">—</b></div>
+      <div class="kpi fade"><span>月平均</span><b id="k2">—</b></div>
+      <div class="kpi fade"><span>最高月</span><b id="k3">—</b></div>
+      <div class="kpi fade"><span>商品数</span><b id="k4">—</b></div>
+    </div>
+    <div class="panel fade">
+      <h2>📈 月次売上と前年同月比</h2>
+      <div id="chart"></div>
+    </div>
+    <div class="cols">
+      <div class="panel fade"><h2>🏆 商品別 売上</h2><table id="prod"><tbody></tbody></table></div>
+      <div class="panel fade"><h2>⚠️ 異常な日(自動検知)</h2><div id="anom"></div></div>
+    </div>
+    <div style="text-align:center"><button class="btn" id="again">↺ もう一度</button></div>
+  </div>
+</main>
+<footer>※ ポートフォリオ用のデモです。数値はすべて架空です。</footer>
+<script>
+"use strict";
+const yen=n=>"¥"+Math.round(n).toLocaleString("ja-JP");
+// 架空の月次データ(直近12ヶ月と前年)
+const MONTHS=["7月","8月","9月","10月","11月","12月","1月","2月","3月","4月","5月","6月"];
+const cur=[420,455,610,520,540,700,480,505,980,560,590,640].map(x=>x*1000);
+const prev=[350,380,470,430,455,520,400,410,560,470,480,505].map(x=>x*1000);
+const products=[["プレミアムプラン",3120000],["スタンダードプラン",2480000],["初期構築パック",1650000],["保守サポート",980000],["ライトプラン",760000],["オプション追加",420000]];
+const $=id=>document.getElementById(id);
+
+function analyze(){
+  $("drop").style.display="none";
+  $("board").style.display="none";
+  const board=$("board"); board.style.display="block";
+  board.insertAdjacentHTML("afterbegin",'<div class="thinking" id="th">データを読み込み・分析しています…</div>');
+  setTimeout(render,700);
+}
+function render(){
+  const th=$("th"); if(th) th.remove();
+  const total=cur.reduce((a,b)=>a+b,0)+prev.reduce((a,b)=>a+b,0);
+  $("k1").textContent=yen(total);
+  $("k2").textContent=yen(cur.reduce((a,b)=>a+b,0)/12);
+  $("k3").textContent=yen(Math.max(...cur));
+  $("k4").textContent="6";
+  // チャート(SVG)
+  const W=900,H=260,pad=30,max=Math.max(...cur);
+  const bw=(W-pad*2)/12*0.55, gap=(W-pad*2)/12;
+  let bars="",line="",pts=[];
+  cur.forEach((v,i)=>{
+    const x=pad+gap*i+gap*0.2, h=(v/max)*(H-70), y=H-40-h;
+    bars+=`<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="4" fill="#0f766e"/>`;
+    bars+=`<text x="${x+bw/2}" y="${H-22}" font-size="12" fill="#8a99ad" text-anchor="middle">${MONTHS[i]}</text>`;
+    const yr=(prev[i]/max)*(H-70); pts.push([x+bw/2,H-40-yr]);
+  });
+  line=`<polyline fill="none" stroke="#d97706" stroke-width="2.5" points="${pts.map(p=>p.join(",")).join(" ")}"/>`+
+       pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3" fill="#d97706"/>`).join("");
+  $("chart").innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%"><rect x="0" y="0" width="${W}" height="${H}" fill="transparent"/>${bars}${line}<text x="${W-4}" y="16" font-size="12" fill="#d97706" text-anchor="end">— 折れ線＝前年</text></svg>`;
+  // 商品別
+  const pmax=products[0][1];
+  $("#prod tbody")&&0;
+  document.querySelector("#prod tbody").innerHTML=products.map(([n,v])=>
+    `<tr><td>${n}</td><td class="n">${yen(v)}</td><td style="width:36%"><span class="bar" style="width:${Math.round(v/pmax*100)}%"></span></td></tr>`).join("");
+  // 異常日
+  $("anom").innerHTML=`<div class="anom"><b>▲ 3月14日：急伸(+312%)</b><br>平均から大きく上振れ。キャンペーン効果の可能性 → 成功要因を確認。</div>
+    <div class="anom" style="margin-top:8px"><b>▼ 11月5日：急減(売上ゼロ)</b><br>この日だけ売上が消失。欠品・システム障害の確認を推奨。</div>
+    <p style="color:var(--sub);font-size:.8rem;margin-top:8px">日次売上を統計的に監視し、±3σを超えた日を自動抽出しています。</p>`;
+  document.querySelectorAll(".fade").forEach((el,i)=>{el.style.animationDelay=(i*0.06)+"s"});
+}
+$("run").onclick=analyze;
+$("again").onclick=()=>{$("board").style.display="none";$("drop").style.display="block";};
+</script>
+</body>
+</html>

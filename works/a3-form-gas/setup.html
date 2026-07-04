@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FormFlow 導入手順(所要 約20分) | 業務自動化×Web制作 ポートフォリオ</title>
+<meta name="description" content="FormFlow 導入手順(所要 約20分) — 作品詳細・ソースコード">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--navy:#12203c}
+  @media (prefers-color-scheme: dark){:root{--bg:#0d1420;--card:#161f2e;--ink:#e9eef6;--sub:#94a4ba;--line:#273349;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+  .top{background:var(--navy);color:#fff;padding:20px 0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  .top a{color:#5eead4;text-decoration:none;font-size:.85rem;font-weight:700}
+  .top h1{font-size:1.3rem;margin-top:6px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 8px}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:10px;padding:11px 24px;font-size:.9rem}
+  .btn-main{background:var(--teal);color:#fff}
+  .btn-main:hover{background:var(--teal2)}
+  .btn-sub{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+  .btn-sub:hover{border-color:var(--teal2);color:var(--teal2)}
+  article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 36px;margin:18px 0 60px}
+  article h1{font-size:1.45rem;margin-bottom:18px}
+  article h2{font-size:1.12rem;margin:30px 0 12px;padding-left:12px;border-left:4px solid var(--teal)}
+  article p{margin:10px 0;font-size:.93rem}
+  article ul,article ol{margin:10px 0 10px 1.5em;font-size:.93rem}
+  article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.87rem}
+  article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  article th{background:rgba(13,148,136,.1)}
+  article code{background:rgba(13,148,136,.12);border-radius:4px;padding:1px 6px;font-size:.85em}
+  article pre{background:#0b1220;color:#c9f0dd;border-radius:10px;padding:16px;overflow-x:auto;margin:14px 0}
+  article pre code{background:none;padding:0;color:inherit}
+  article a{color:var(--teal2)}
+  article hr{border:none;border-top:1px dashed var(--line);margin:24px 0}
+  article em{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a href="../../index.html">← ポートフォリオへ戻る</a><h1>FormFlow 導入手順(所要 約20分)</h1></div></div>
+<div class="wrap">
+  <div class="actions"><a class="btn btn-sub" href="index.html">← 作品詳細へ戻る</a></div>
+  <article><h1>FormFlow 導入手順(所要 約20分)</h1>
+<p>必要なもの: Googleアカウントのみ(追加費用ゼロ)</p>
+<h2>1. フォームとスプレッドシートの用意</h2>
+<ol>
+<li>Googleフォームを作成する。質問に<strong>「お名前」と「メールアドレス」を含める</strong>(名称は「氏名」「Email」等でも可)</li>
+<li>フォームの「回答」タブ → スプレッドシートにリンクする</li>
+</ol>
+<h2>2. 設定シート</h2>
+<p>リンクされたスプレッドシートに <code>設定</code> シートを作成し、A列にキー・B列に値:</p>
+<table>
+<thead>
+<tr>
+<th>A列</th>
+<th>B列(例)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>イベント名</td>
+<td>夏休みプログラミング体験会</td>
+</tr>
+<tr>
+<td>管理者メール</td>
+<td>you@example.com</td>
+</tr>
+<tr>
+<td>確認メール本文</td>
+<td>{{名前}} 様\n\n【{{イベント名}}】へのお申込みを受け付けました({{受付日時}})。\n当日の詳細は前日にご案内します。</td>
+</tr>
+<tr>
+<td>定員</td>
+<td>30(0 = 無制限)</td>
+</tr>
+<tr>
+<td>Webhook URL</td>
+<td>(任意。Slack等のIncoming Webhook)</td>
+</tr>
+</tbody>
+</table>
+<p>差し込みタグ: <code>{{名前}}</code> <code>{{イベント名}}</code> <code>{{受付日時}}</code></p>
+<h2>3. スクリプトの設置</h2>
+<ol>
+<li>スプレッドシートの 拡張機能 → Apps Script</li>
+<li><code>src/Code.gs</code> の内容をエディタへ貼り付けて保存</li>
+</ol>
+<h2>4. トリガーの設定(重要: インストーラブルトリガー)</h2>
+<p>Apps Script左メニューの「トリガー」→「トリガーを追加」:</p>
+<table>
+<thead>
+<tr>
+<th>関数</th>
+<th>イベントの種類</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onFormSubmitHandler</code></td>
+<td>スプレッドシートから / <strong>フォーム送信時</strong></td>
+</tr>
+<tr>
+<td><code>sendDailySummary</code></td>
+<td>時間主導型 / 日付ベース / <strong>18〜19時</strong>(任意)</td>
+</tr>
+</tbody>
+</table>
+<p>初回は権限承認ダイアログが出る(メール送信・フォーム操作の許可)。</p>
+<h2>5. 動作テスト</h2>
+<p>エディタで <code>testWithDummySubmission</code> を実行 → 自分宛てに確認メールが届き、台帳へ1行追加されればOK。その後、実フォームからも1件送信して確認する。</p>
+<h2>制限事項(正直に)</h2>
+<ul>
+<li>Gmailの送信上限: 無料アカウントは100通/日(Google Workspaceは1,500通/日)。大規模イベントは要相談</li>
+<li>確認メールの<code>noReply</code>は Workspace のみ有効(無料アカウントでは送信者のアドレスになる)</li>
+</ul></article>
+</div>
+</body>
+</html>

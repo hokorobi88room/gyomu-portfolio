@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReportHub — 複数ブック自動集計ダッシュボード(Excel VBA) | 業務自動化×Web制作 ポートフォリオ</title>
+<meta name="description" content="ReportHub — 複数ブック自動集計ダッシュボード(Excel VBA) — 作品詳細・ソースコード">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--navy:#12203c}
+  @media (prefers-color-scheme: dark){:root{--bg:#0d1420;--card:#161f2e;--ink:#e9eef6;--sub:#94a4ba;--line:#273349;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+  .top{background:var(--navy);color:#fff;padding:20px 0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  .top a{color:#5eead4;text-decoration:none;font-size:.85rem;font-weight:700}
+  .top h1{font-size:1.3rem;margin-top:6px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 8px}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:10px;padding:11px 24px;font-size:.9rem}
+  .btn-main{background:var(--teal);color:#fff}
+  .btn-main:hover{background:var(--teal2)}
+  .btn-sub{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+  .btn-sub:hover{border-color:var(--teal2);color:var(--teal2)}
+  article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 36px;margin:18px 0 60px}
+  article h1{font-size:1.45rem;margin-bottom:18px}
+  article h2{font-size:1.12rem;margin:30px 0 12px;padding-left:12px;border-left:4px solid var(--teal)}
+  article p{margin:10px 0;font-size:.93rem}
+  article ul,article ol{margin:10px 0 10px 1.5em;font-size:.93rem}
+  article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.87rem}
+  article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  article th{background:rgba(13,148,136,.1)}
+  article code{background:rgba(13,148,136,.12);border-radius:4px;padding:1px 6px;font-size:.85em}
+  article pre{background:#0b1220;color:#c9f0dd;border-radius:10px;padding:16px;overflow-x:auto;margin:14px 0}
+  article pre code{background:none;padding:0;color:inherit}
+  article a{color:var(--teal2)}
+  article hr{border:none;border-top:1px dashed var(--line);margin:24px 0}
+  article em{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a href="../../index.html">← ポートフォリオへ戻る</a><h1>ReportHub — 複数ブック自動集計ダッシュボード(Excel VBA)</h1></div></div>
+<div class="wrap">
+  <div class="actions"><a class="btn btn-main" href="demo/index.html">▶ ブラウザで体験デモ</a><a class="btn btn-main" href="a2-report-vba.zip" download>📥 ソース一式をダウンロード</a><a class="btn btn-sub" href="setup.html">📖 導入手順を見る</a></div>
+  <article><h1>ReportHub — 複数ブック自動集計ダッシュボード(Excel VBA)</h1>
+<h2>誰の・どんな困りごとを解決するか</h2>
+<p>支店・担当者ごとの月次報告Excelが毎月20ファイル届き、<strong>1つずつ開いてコピペで合算している</strong>管理部門・経営者。しかも各支店の様式は微妙にバラバラ(列の並びが違う・ヘッダーの行位置が違う・「売上」だったり「金額」だったり)で、合算のたびに神経を使う。</p>
+<h2>Before / After</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Before(手作業)</th>
+<th>After(ReportHub)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>20ファイルの合算</td>
+<td>約8時間/月</td>
+<td><strong>約5分(ボタン1回)</strong></td>
+</tr>
+<tr>
+<td>様式のばらつき</td>
+<td>目視で読み替え(ミス源)</td>
+<td>ヘッダー自動探索で吸収(列順・行位置・別名)</td>
+</tr>
+<tr>
+<td>経営レポート</td>
+<td>合算後にさらにグラフ作成</td>
+<td>月次推移・前年比・担当者ランキングを自動生成</td>
+</tr>
+<tr>
+<td>壊れたファイルの混入</td>
+<td>気づかず合算 → 数字が合わない</td>
+<td>「取込結果」シートに成功/警告/失敗を明示</td>
+</tr>
+</tbody>
+</table>
+<h2>機能一覧</h2>
+<ul>
+<li>指定フォルダ内の全報告ブック(.xlsx/.xls)を自動走査・統合(<strong>元ファイルは読み取り専用で開き一切変更しない</strong>)</li>
+<li><strong>様式ゆらぎの吸収</strong>: ヘッダー行を上から10行探索し、別名(売上/金額/売上高、商品/品目/商品名、日付/売上日/取引日 等)・列順の違い・前置行を自動で読み替え</li>
+<li>小計行・メモ行の自動除外(除外件数も報告)</li>
+<li>ダッシュボード自動構築: 月次推移(前年同月比・マイナスは赤字強調)/担当者別ランキング/商品別TOP5(データバーつき)</li>
+<li>取込結果レポート: ファイルごとに 成功(n行)/警告(ヘッダー不備)/失敗(破損等)を色分け一覧</li>
+<li>統合データは一括書き込みで高速(セル1個ずつ書かない)</li>
+</ul>
+<h2>動作を試す(サンプルデータ同梱)</h2>
+<p><code>sample-data/reports/</code> に<strong>様式をわざとバラつかせた20支店分の報告ブック</strong>を同梱(うち1冊はヘッダー不備で、警告検出の動作が確認できる)。SETUP後に「報告書フォルダ」をこのフォルダに向けて <code>RefreshDashboard</code> を実行するだけ。</p>
+<h2>構成・動作環境</h2>
+<pre><code>src/          VBAソース(UTF-8正本・4モジュール)
+dist/cp932/   日本語Windows向けインポート用
+sample-data/  ダミー報告ブック20冊(tools/のスクリプトで再生成可)
+docs/SETUP.md 導入手順
+</code></pre>
+<p>Windows版 Excel 2016以降。外部ライブラリ・参照設定不要。</p>
+<h2>実案件ではこう応用できます</h2>
+<ol>
+<li><strong>勤怠・経費・在庫報告</strong>の集約(ヘッダー探索のキーワードを差し替えるだけ)</li>
+<li><strong>メール添付で届く報告書</strong>を自動でフォルダへ保存→集計まで(Outlook連携)</li>
+<li>統合データを <strong>Power BI / スプレッドシート</strong>へ連携する出口の追加</li>
+</ol>
+<hr />
+<p><em>※ サンプルデータの支店名・担当者名・数値はすべて架空です。</em></p></article>
+</div>
+</body>
+</html>

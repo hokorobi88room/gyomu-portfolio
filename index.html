@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>業務がわかる。コードが書ける。AIを使いこなす。| 業務自動化×Web制作 ポートフォリオ</title>
+<meta name="description" content="Excel VBA実務6年×最新AI開発環境。業務自動化(VBA/GAS)・Web制作(LP/HP)・システム開発(Python/Go)のポートフォリオ。">
+<meta property="og:title" content="業務自動化×Web制作 ポートフォリオ">
+<meta property="og:description" content="業務がわかる。コードが書ける。AIを使いこなす。— VBA/GAS・LP/HP・Python/Go の実装サンプル8作品">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f8fb; --card:#ffffff; --ink:#16202e; --sub:#5a6a80; --line:#e2e8f1;
+    --teal:#0f766e; --teal2:#0d9488; --amber:#d97706; --navy:#12203c;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0d1420; --card:#161f2e; --ink:#e9eef6; --sub:#94a4ba; --line:#273349; --navy:#0a1226; }
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif; background:var(--bg); color:var(--ink); line-height:1.85}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 22px}
+  section{padding:72px 0}
+  h2{font-size:clamp(1.3rem,3.4vw,1.7rem); text-align:center; margin-bottom:10px}
+  .lead{text-align:center; color:var(--sub); font-size:.92rem; margin-bottom:40px}
+
+  /* ヒーロー */
+  .hero{background:
+      radial-gradient(ellipse at 80% -10%, rgba(13,148,136,.35), transparent 55%),
+      radial-gradient(ellipse at 10% 110%, rgba(217,119,6,.18), transparent 50%),
+      var(--navy);
+    color:#fff; padding:92px 0 84px; position:relative; overflow:hidden}
+  .hero h1{font-size:clamp(1.6rem,5vw,2.6rem); font-weight:900; line-height:1.55; letter-spacing:.01em}
+  .hero h1 span{color:#5eead4}
+  .hero p.sub{margin-top:18px; max-width:640px; opacity:.9; font-size:clamp(.9rem,2.4vw,1rem)}
+  .hero .tags{display:flex; gap:10px; flex-wrap:wrap; margin-top:26px; font-size:.78rem}
+  .hero .tags span{border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.08); border-radius:999px; padding:5px 16px}
+  .hero .cta-row{margin-top:34px; display:flex; gap:14px; flex-wrap:wrap}
+  .btn{display:inline-block; text-decoration:none; font-weight:700; border-radius:12px; padding:13px 30px; font-size:.95rem; transition:transform .12s, box-shadow .2s}
+  .btn-main{background:linear-gradient(135deg,#14b8a6,#0f766e); color:#fff; box-shadow:0 8px 22px rgba(13,148,136,.4)}
+  .btn-main:hover{transform:translateY(-2px)}
+  .btn-ghost{border:1px solid rgba(255,255,255,.5); color:#fff}
+  .btn-ghost:hover{background:rgba(255,255,255,.1)}
+
+  /* 選ばれる理由 */
+  .why .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+  @media(max-width:760px){ .why .grid{grid-template-columns:1fr} }
+  .why .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:28px 26px; box-shadow:0 1px 3px rgba(16,32,64,.05)}
+  .why .num{font-size:.72rem; font-weight:700; letter-spacing:.2em; color:var(--teal2)}
+  .why h3{font-size:1.06rem; margin:8px 0 10px}
+  .why p{font-size:.88rem; color:var(--sub)}
+
+  /* 作品ギャラリー */
+  .works{background:linear-gradient(var(--bg), var(--bg))}
+  .tabs{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:34px}
+  .tab{border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:999px; padding:9px 22px; font-size:.85rem; font-weight:600; cursor:pointer; transition:all .15s}
+  .tab.active{background:var(--teal); border-color:var(--teal); color:#fff}
+  .work-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px}
+  @media(max-width:760px){ .work-grid{grid-template-columns:1fr} }
+  .work{background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 1px 4px rgba(16,32,64,.06); transition:transform .15s, box-shadow .2s}
+  .work:hover{transform:translateY(-3px); box-shadow:0 10px 28px rgba(16,32,64,.12)}
+  .work .head{padding:18px 22px 14px; color:#fff; position:relative}
+  .work .head .cat{font-size:.68rem; letter-spacing:.18em; opacity:.9}
+  .work .head h3{font-size:1.12rem; margin-top:2px}
+  .head-vba{background:linear-gradient(120deg,#1d6f42,#0f4c2a)}
+  .head-gas{background:linear-gradient(120deg,#3f6212,#2a4409)}
+  .head-web{background:linear-gradient(120deg,#1e3a8a,#172554)}
+  .head-py {background:linear-gradient(120deg,#0e7490,#164e63)}
+  .head-go {background:linear-gradient(120deg,#0369a1,#0c4a6e)}
+  .work .body{padding:18px 22px 22px; display:flex; flex-direction:column; gap:12px; flex:1}
+  .work .problem{font-size:.88rem}
+  .work .metric{display:inline-flex; align-items:center; gap:8px; background:rgba(13,148,136,.1); border:1px solid rgba(13,148,136,.3); color:var(--teal2); border-radius:10px; padding:6px 14px; font-size:.82rem; font-weight:700; width:fit-content}
+  .work ul.feat{list-style:none; font-size:.8rem; color:var(--sub)}
+  .work ul.feat li{padding-left:1.2em; position:relative}
+  .work ul.feat li::before{content:"▸"; position:absolute; left:0; color:var(--teal2)}
+  .work .links{margin-top:auto; display:flex; gap:10px; flex-wrap:wrap}
+  .work .links a{font-size:.8rem; font-weight:700; text-decoration:none; border-radius:9px; padding:8px 16px}
+  .work .links .demo{background:var(--teal); color:#fff}
+  .work .links .demo:hover{background:var(--teal2)}
+  .work .links .src{border:1px solid var(--line); color:var(--ink)}
+  .work .links .src:hover{border-color:var(--teal2); color:var(--teal2)}
+
+  /* 制作の流れ */
+  .flow ol{list-style:none; counter-reset:step; display:grid; grid-template-columns:repeat(5,1fr); gap:14px}
+  @media(max-width:860px){ .flow ol{grid-template-columns:1fr} }
+  .flow li{counter-increment:step; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 16px; text-align:center; position:relative}
+  .flow li::before{content:counter(step); display:block; width:34px; height:34px; margin:0 auto 10px; border-radius:50%; background:var(--teal); color:#fff; font-weight:800; line-height:34px}
+  .flow h3{font-size:.92rem; margin-bottom:4px}
+  .flow p{font-size:.76rem; color:var(--sub); line-height:1.7}
+
+  /* 料金 */
+  .price table{width:100%; max-width:760px; margin:0 auto; border-collapse:collapse; background:var(--card); border-radius:14px; overflow:hidden; box-shadow:0 1px 4px rgba(16,32,64,.06)}
+  .price th,.price td{padding:15px 18px; font-size:.9rem; border-bottom:1px solid var(--line); text-align:left}
+  .price thead th{background:var(--teal); color:#fff; font-size:.82rem}
+  .price td.p{font-weight:800; color:var(--teal2); white-space:nowrap}
+  .price .note{text-align:center; font-size:.78rem; color:var(--sub); margin-top:14px}
+
+  /* お問い合わせ */
+  .contact{background:var(--navy); color:#fff; text-align:center}
+  .contact h2{color:#fff}
+  .contact p{opacity:.85; font-size:.92rem; max-width:560px; margin:0 auto 30px}
+
+  footer{background:#0a101e; color:#7688a3; font-size:.75rem; text-align:center; padding:30px 20px; line-height:2}
+</style>
+</head>
+<body>
+
+<!-- ヒーロー -->
+<header class="hero">
+  <div class="wrap">
+    <h1>業務がわかる。<br>コードが書ける。<span>AIを使いこなす。</span></h1>
+    <p class="sub">Excel VBAの現場改善 6年。その業務知識を土台に、最新のAI開発環境で 業務自動化・Web制作・システム開発を「速く・壊れない品質で」提供します。</p>
+    <div class="tags">
+      <span>Excel VBA / GAS</span><span>LP・ホームページ制作</span><span>Python</span><span>Go</span><span>最短2日納品</span>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn-main" href="#works">作品を見る(8作品)</a>
+      <a class="btn btn-ghost" href="#contact">相談する(無料)</a>
+    </div>
+  </div>
+</header>
+
+<!-- 選ばれる理由 -->
+<section class="why">
+  <div class="wrap">
+    <h2>選ばれる理由</h2>
+    <p class="lead">「AIで作れます」だけの制作者と、何が違うのか</p>
+    <div class="grid">
+      <div class="card">
+        <div class="num">REASON 01</div>
+        <h3>業務の現場を6年見てきた</h3>
+        <p>新卒から6年以上、事業会社の現場でExcel業務改善を担当。「例外データで壊れるマクロ」「引き継げないツール」がなぜ生まれるかを、作る側と使う側の両方から知っています。</p>
+      </div>
+      <div class="card">
+        <div class="num">REASON 02</div>
+        <h3>AIで従来の数倍速く作る</h3>
+        <p>最新のAI開発環境を本格導入し、実装を高速化。浮いた時間を要件のヒアリングとテストに使うので、「速いのに壊れない」が成立します。納期は最短2日から。</p>
+      </div>
+      <div class="card">
+        <div class="num">REASON 03</div>
+        <h3>実務者の目で検収して納品</h3>
+        <p>AIの出力をそのまま納品しません。境界値・例外系のテストを書き、実務の運用(締め日・共有・引き継ぎ)に耐えるかを人間の目で確認してからお渡しします。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 作品 -->
+<section class="works" id="works">
+  <div class="wrap">
+    <h2>作品(8作品・すべて動くサンプル)</h2>
+    <p class="lead">それぞれ「誰のどんな困りごとを解決するか」から設計しています。数字はサンプルシナリオでの効果です</p>
+    <div class="tabs">
+      <button class="tab active" data-f="all">すべて</button>
+      <button class="tab" data-f="auto">業務自動化</button>
+      <button class="tab" data-f="web">Web制作</button>
+      <button class="tab" data-f="dev">システム開発</button>
+    </div>
+    <div class="work-grid" id="grid">
+
+      <div class="work" data-cat="auto">
+        <div class="head head-vba"><div class="cat">EXCEL VBA</div><h3>請求書自動発行システム</h3></div>
+        <div class="body">
+          <p class="problem">顧客リストから請求書を1枚ずつ手作業で作りPDF保存…「請求書の日」が半日仕事になっている方へ。</p>
+          <span class="metric">⏱ 月4時間 → 3分(20社一括)</span>
+          <ul class="feat">
+            <li>インボイス対応(税率別集計・登録番号)・源泉徴収</li>
+            <li>顧客別フォルダへPDF一括出力・自動採番・発行履歴</li>
+            <li>実行前データ検査 — 問題ゼロになるまで発行しない</li>
+          </ul>
+          <div class="links">
+            <a class="demo" target="_blank" rel="noopener" href="works/a1-invoice-vba/demo/index.html">▶ ブラウザで体験</a>
+            <a class="src" target="_blank" rel="noopener" href="works/a1-invoice-vba/index.html">ソース+導入手順</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work" data-cat="auto">
+        <div class="head head-vba"><div class="cat">EXCEL VBA</div><h3>複数ブック自動集計ダッシュボード</h3></div>
+        <div class="body">
+          <p class="problem">支店ごとの月次報告Excelが毎月20ファイル。列の並びも様式もバラバラのまま、コピペで合算している方へ。</p>
+          <span class="metric">⏱ 月8時間 → 5分(20ブック統合)</span>
+          <ul class="feat">
+            <li>様式ゆらぎを自動吸収(列順・ヘッダー位置・別名)</li>
+            <li>月次推移・前年比・担当者ランキングを自動構築</li>
+            <li>取込結果を成功/警告/失敗で色分け報告</li>
+          </ul>
+          <div class="links">
+            <a class="demo" target="_blank" rel="noopener" href="works/a2-report-vba/demo/index.html">▶ 体験する</a>
+            <a class="src" target="_blank" rel="noopener" href="works/a2-report-vba/index.html">ソース+サンプル20ブック</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work" data-cat="auto">
+        <div class="head head-gas"><div class="cat">GOOGLE APPS SCRIPT</div><h3>フォーム受付の完全自動化</h3></div>
+        <div class="body">
+          <p class="problem">申込みが来るたびに確認メールを手で送り、台帳へ転記し、定員を数えているイベント・教室の主催者へ。</p>
+          <span class="metric">✉ 確認メール・台帳・定員管理を24時間自動化</span>
+          <ul class="feat">
+            <li>自動返信・重複検知・Slack通知・日次サマリ</li>
+            <li>定員到達でフォームを自動クローズ</li>
+            <li>多重発火ロック・エラー即時通知(黙って止まらない)</li>
+          </ul>
+          <div class="links">
+            <a class="demo" target="_blank" rel="noopener" href="works/a3-form-gas/demo/index.html">▶ 体験する</a>
+            <a class="src" target="_blank" rel="noopener" href="works/a3-form-gas/index.html">ソース+導入手順</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work" data-cat="web">
+        <div class="head head-web"><div class="cat">WEB制作</div><h3>高コンバージョン縦長LP</h3></div>
+        <div class="body">
+          <p class="problem">広告の受け皿になる「売れる1ページ」が欲しい方へ。きれいなだけでなく、構成の理由を説明できるLPを。</p>
+          <span class="metric">💡 全11セクションに「制作解説モード」つき</span>
+          <ul class="feat">
+            <li>問題提起→共感→解決→証明→保証→価格の売れる型</li>
+            <li>?ボタンで各セクションの心理的役割を表示</li>
+            <li>画像ゼロ・1ファイルで高速表示(Lighthouse対策済み)</li>
+          </ul>
+          <div class="links">
+            <a class="demo" target="_blank" rel="noopener" href="works/w1-course-lp/index.html">▶ LPを見る(解説モードON推奨)</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work" data-cat="web">
+        <div class="head head-web"><div class="cat">WEB制作</div><h3>店舗ホームページ(4ページ)</h3></div>
+        <div class="body">
+          <p class="problem">「店名で検索されたとき、ちゃんとした顔がない」小規模店舗の方へ。必要十分で美しい4ページ構成。</p>
+          <span class="metric">🏪 営業時間・メニュー・地図まで情報設計込み</span>
+          <ul class="feat">
+            <li>ローカルSEO(構造化データ)・OGP設定済み</li>
+            <li>画像ゼロでも成立する配色設計(写真に差し替えるだけ)</li>
+            <li>スマホ最優先のレスポンシブ</li>
+          </ul>
+          <div class="links">
+            <a class="demo" target="_blank" rel="noopener" href="works/w2-cafe-site/index.html">▶ サイトを見る</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work" data-cat="dev">
+        <div class="head head-py"><div class="cat">PYTHON / STREAMLIT</div><h3>売上データ分析ダッシュボード</h3></div>
+        <div class="body">
+          <p class="problem">売上データがExcelで開くのがつらいサイズになり、毎月同じピボット集計を繰り返している方へ。</p>
+          <span class="metric">📊 10万行の分析3秒以内(テストで保証)</span>
+          <ul class="feat">
+            <li>CSV/Excelを放り込むだけ。列名ゆらぎ自動吸収</li>
+            <li>前年比・異常日検知(±3σ)・Excelレポート出力</li>
+            <li>テスト11件つき(正常系・異常系・性能)</li>
+          </ul>
+          <div class="links">
+            <a class="demo" target="_blank" rel="noopener" href="works/p1-sales-dashboard/demo/index.html">▶ 体験する</a>
+            <a class="src" target="_blank" rel="noopener" href="works/p1-sales-dashboard/index.html">ソース+テスト</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work" data-cat="dev">
+        <div class="head head-py"><div class="cat">PYTHON</div><h3>Web情報の定点観測 → Excelレポート</h3></div>
+        <div class="body">
+          <p class="problem">毎朝、複数サイトの公開情報を目視チェックして表に転記している方へ。「何が変わったか」だけ知りたいはず。</p>
+          <span class="metric">🔎 毎朝30分の巡回 → コマンド1発+差分検知</span>
+          <ul class="feat">
+            <li>robots.txt尊重・間隔制御をコードで強制(行儀の良い収集)</li>
+            <li>新規=緑・消滅=赤の色分きExcel自動生成</li>
+            <li>テスト12件つき・構造化ログで定時実行と好相性</li>
+          </ul>
+          <div class="links">
+            <a class="demo" target="_blank" rel="noopener" href="works/p2-webwatch-excel/demo/index.html">▶ 体験する</a>
+            <a class="src" target="_blank" rel="noopener" href="works/p2-webwatch-excel/index.html">ソース+テスト</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work" data-cat="dev">
+        <div class="head head-go"><div class="cat">GO</div><h3>大量ファイル高速処理CLI</h3></div>
+        <div class="body">
+          <p class="problem">日々溜まる数千のCSV/ログがExcelでは開けない規模に。レガシーシステム移行のデータ統合・検証にも。</p>
+          <span class="metric">⚡ 2,000ファイル(10万行)の結合 0.024秒(実測)</span>
+          <ul class="feat">
+            <li>並行処理(goroutine)・列名で自動整列・形式変換</li>
+            <li>依存ゼロの単一バイナリ(置くだけで動く)</li>
+            <li>テーブル駆動テスト14ケース+再現可能なベンチマーク</li>
+          </ul>
+          <div class="links">
+            <a class="demo" target="_blank" rel="noopener" href="works/g1-gocrunch/demo/index.html">▶ 体験する</a>
+            <a class="src" target="_blank" rel="noopener" href="works/g1-gocrunch/index.html">ソース+ベンチマーク</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 制作の流れ -->
+<section class="flow">
+  <div class="wrap">
+    <h2>制作の流れ</h2>
+    <p class="lead">専門用語を使わず、業務の言葉でやり取りします</p>
+    <ol>
+      <li><h3>ヒアリング</h3><p>現状のやり方と困りごとを伺います(ファイル拝見・10分の質問シート)</p></li>
+      <li><h3>ご提案・見積り</h3><p>実現方法・納期・金額を1ページで。ここまで無料です</p></li>
+      <li><h3>制作</h3><p>AI開発環境で高速実装。進捗は途中経過の画面つきでご報告</p></li>
+      <li><h3>検収・修正</h3><p>実際に触っていただき、納得いくまで修正します</p></li>
+      <li><h3>納品・その後</h3><p>説明書つきで納品。動かなくなったらご相談ください</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 料金 -->
+<section class="price">
+  <div class="wrap">
+    <h2>料金の目安</h2>
+    <p class="lead">オープン記念価格です。正式なお見積りはヒアリング後に確定します</p>
+    <table>
+      <thead><tr><th>メニュー</th><th>内容</th><th>価格(税込)</th></tr></thead>
+      <tbody>
+        <tr><td>Excelマクロ開発(小)</td><td>1機能の自動化・既存マクロの修正/高速化</td><td class="p">10,000円〜</td></tr>
+        <tr><td>Excelツール開発(中)</td><td>請求書発行・集計ダッシュボード級の一式</td><td class="p">30,000円〜</td></tr>
+        <tr><td>GAS自動化</td><td>フォーム受付・スプレッドシート連携・通知</td><td class="p">15,000円〜</td></tr>
+        <tr><td>LP制作</td><td>構成提案込み・スマホ完璧・最短2日</td><td class="p">15,000円〜</td></tr>
+        <tr><td>ホームページ制作</td><td>5ページ構成・構造化データ・OGP込み</td><td class="p">30,000円〜</td></tr>
+        <tr><td>Python/Goツール開発</td><td>データ処理・定点観測・高速CLI等</td><td class="p">30,000円〜</td></tr>
+      </tbody>
+    </table>
+    <p class="note">修正対応: 納品まで無制限・納品後1週間まで無償。お急ぎ(24〜48時間)は+50%で承ります。</p>
+  </div>
+</section>
+
+<!-- 問い合わせ -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2>まずは「こんなことできる?」だけでも</h2>
+    <p>各プラットフォームのメッセージから、お気軽にご相談ください。当日中に必ず返信します。</p>
+    <div class="cta-row" style="justify-content:center; display:flex; gap:14px; flex-wrap:wrap">
+      <a class="btn btn-main" href="https://coconala.com/users/6171856" target="_blank" rel="noopener">ココナラで相談する</a>
+      <a class="btn btn-ghost" href="https://crowdworks.jp/public/employees/7084138" target="_blank" rel="noopener">クラウドワークスで相談する</a>
+    </div>
+    <p style="font-size:.78rem; opacity:.65; margin-top:18px">※ 当日中に必ず返信します。</p>
+  </div>
+</section>
+
+<footer>
+  各作品のデモデータ・社名・店舗はすべて架空です。<br>
+  © 2026 業務自動化×Web制作ポートフォリオ
+</footer>
+
+<script>
+"use strict";
+// タブフィルタ
+const tabs = document.querySelectorAll(".tab");
+const cards = document.querySelectorAll(".work");
+tabs.forEach(tab => tab.addEventListener("click", () => {
+  tabs.forEach(t => t.classList.remove("active"));
+  tab.classList.add("active");
+  const f = tab.dataset.f;
+  cards.forEach(c => { c.style.display = (f === "all" || c.dataset.cat === f) ? "" : "none"; });
+}));
+// ふわっと表示(既に画面内にある要素・reduced-motion環境では動かさない)
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ e.target.style.opacity = 1; e.target.style.transform = "none"; io.unobserve(e.target); }
+  }), {threshold:.1});
+  document.querySelectorAll(".work, .why .card, .flow li").forEach(el => {
+    if (el.getBoundingClientRect().top > innerHeight) {
+      el.style.opacity = 0; el.style.transform = "translateY(16px)";
+      el.style.transition = "opacity .6s ease, transform .6s ease";
+      io.observe(el);
+    }
+  });
+}
+</script>
+</body>
+</html>

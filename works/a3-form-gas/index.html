@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FormFlow — Googleフォーム受付自動化(GAS) | 業務自動化×Web制作 ポートフォリオ</title>
+<meta name="description" content="FormFlow — Googleフォーム受付自動化(GAS) — 作品詳細・ソースコード">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--navy:#12203c}
+  @media (prefers-color-scheme: dark){:root{--bg:#0d1420;--card:#161f2e;--ink:#e9eef6;--sub:#94a4ba;--line:#273349;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+  .top{background:var(--navy);color:#fff;padding:20px 0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  .top a{color:#5eead4;text-decoration:none;font-size:.85rem;font-weight:700}
+  .top h1{font-size:1.3rem;margin-top:6px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 8px}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:10px;padding:11px 24px;font-size:.9rem}
+  .btn-main{background:var(--teal);color:#fff}
+  .btn-main:hover{background:var(--teal2)}
+  .btn-sub{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+  .btn-sub:hover{border-color:var(--teal2);color:var(--teal2)}
+  article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 36px;margin:18px 0 60px}
+  article h1{font-size:1.45rem;margin-bottom:18px}
+  article h2{font-size:1.12rem;margin:30px 0 12px;padding-left:12px;border-left:4px solid var(--teal)}
+  article p{margin:10px 0;font-size:.93rem}
+  article ul,article ol{margin:10px 0 10px 1.5em;font-size:.93rem}
+  article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.87rem}
+  article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  article th{background:rgba(13,148,136,.1)}
+  article code{background:rgba(13,148,136,.12);border-radius:4px;padding:1px 6px;font-size:.85em}
+  article pre{background:#0b1220;color:#c9f0dd;border-radius:10px;padding:16px;overflow-x:auto;margin:14px 0}
+  article pre code{background:none;padding:0;color:inherit}
+  article a{color:var(--teal2)}
+  article hr{border:none;border-top:1px dashed var(--line);margin:24px 0}
+  article em{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a href="../../index.html">← ポートフォリオへ戻る</a><h1>FormFlow — Googleフォーム受付自動化(GAS)</h1></div></div>
+<div class="wrap">
+  <div class="actions"><a class="btn btn-main" href="demo/index.html">▶ ブラウザで体験デモ</a><a class="btn btn-main" href="a3-form-gas.zip" download>📥 ソース一式をダウンロード</a><a class="btn btn-sub" href="setup.html">📖 導入手順を見る</a></div>
+  <article><h1>FormFlow — Googleフォーム受付自動化(GAS)</h1>
+<h2>誰の・どんな困りごとを解決するか</h2>
+<p>イベント・教室・予約の申込みをGoogleフォームで受けている主催者。<strong>申込みが来るたびに、確認メールを手で送り、台帳へ転記し、定員を数えている</strong>。夜中の申込みは翌朝まで放置になり、二重申込みにも気づけない。</p>
+<h2>Before / After</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Before(手作業)</th>
+<th>After(FormFlow)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>確認メール</td>
+<td>気づいたら手動送信(深夜は翌朝)</td>
+<td><strong>送信と同時に自動返信(24時間)</strong></td>
+</tr>
+<tr>
+<td>台帳転記</td>
+<td>フォーム回答からコピペ</td>
+<td>自動転記+重複申込を色付き検知</td>
+</tr>
+<tr>
+<td>定員管理</td>
+<td>都度数える。超過受付の事故</td>
+<td>定員到達で<strong>フォーム自動クローズ</strong></td>
+</tr>
+<tr>
+<td>状況把握</td>
+<td>シートを開いて確認</td>
+<td>毎日18時に申込サマリが届く</td>
+</tr>
+</tbody>
+</table>
+<h2>機能一覧</h2>
+<ul>
+<li>フォーム送信トリガーで確認メール自動返信(テンプレートに <code>{{名前}}</code> 等を差し込み)</li>
+<li>台帳シートへの整形転記・同一メールアドレスの重複検知(行を黄色でマーク)</li>
+<li>管理者への即時通知(メール+Slack等のWebhook対応)</li>
+<li>定員到達でフォームを自動で受付終了(締切メッセージも自動設定)</li>
+<li>日次サマリの自動送信(本日n件/累計n件/定員残り)</li>
+<li><strong>多重発火対策(ロック)・エラー時の管理者即時通知・実行ログシート</strong> — 「動いているつもりで止まっていた」を防ぐ</li>
+<li>設定はすべて「設定」シート(コード変更不要)。テスト用関数つき</li>
+</ul>
+<h2>構成・動作環境</h2>
+<pre><code>src/Code.gs   スクリプト本体(1ファイル・貼り付けるだけ)
+docs/SETUP.md 導入手順(20分・スクリーンショット手順)
+</code></pre>
+<p>Googleアカウントのみで動作。<strong>追加費用ゼロ</strong>(Gmail送信上限: 無料100通/日)。</p>
+<h2>実案件ではこう応用できます</h2>
+<ol>
+<li><strong>抽選制イベント</strong>: 受付→抽選→当選/落選メールの一括送信</li>
+<li><strong>予約枠管理</strong>: 日時ごとの枠数管理と満枠の選択肢自動非表示</li>
+<li><strong>社内申請フロー</strong>: 申請→上長へ承認依頼→承認で本人へ通知(稟議の簡易電子化)</li>
+</ol>
+<hr />
+<p><em>※ サンプルの文面・イベント名は架空です。</em></p></article>
+</div>
+</body>
+</html>

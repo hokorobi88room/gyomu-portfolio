@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InvoiceForge — 請求書一括発行デモ(ブラウザ・シミュレーション)</title>
+<meta name="description" content="Excel VBA製 請求書自動発行システムの動作をブラウザで体験できるデモ">
+<style>
+  :root{
+    --bg:#f4f6f9; --card:#fff; --ink:#1a2433; --sub:#5b6b80; --accent:#0f766e;
+    --accent2:#0d9488; --line:#e3e8ef; --warn:#b45309;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0f1520; --card:#1a2230; --ink:#e8edf4; --sub:#93a3b8; --line:#2a3547; }
+  }
+  *{box-sizing:border-box; margin:0}
+  body{font-family:"Hiragino Sans","Yu Gothic UI","Noto Sans JP",sans-serif; background:var(--bg); color:var(--ink); line-height:1.7}
+  header{background:linear-gradient(135deg,#0f766e,#134e4a); color:#fff; padding:28px 20px}
+  header .wrap{max-width:960px; margin:0 auto}
+  header h1{font-size:1.35rem; letter-spacing:.02em}
+  header p{opacity:.9; font-size:.9rem; margin-top:6px}
+  .badge{display:inline-block; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35); border-radius:999px; padding:2px 12px; font-size:.75rem; margin-bottom:10px}
+  main{max-width:960px; margin:0 auto; padding:24px 20px 80px}
+  .note{background:#fffbeb; border:1px solid #fde68a; color:#92400e; border-radius:10px; padding:10px 14px; font-size:.85rem; margin-bottom:20px}
+  @media (prefers-color-scheme: dark){ .note{background:#332711; border-color:#7c5806; color:#fcd34d} }
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin-bottom:20px; box-shadow:0 1px 3px rgba(15,30,60,.06)}
+  .panel h2{font-size:1.05rem; margin-bottom:12px; display:flex; align-items:center; gap:8px}
+  .step{background:var(--accent); color:#fff; border-radius:50%; width:26px; height:26px; display:inline-flex; align-items:center; justify-content:center; font-size:.85rem; flex:none}
+  table{width:100%; border-collapse:collapse; font-size:.85rem}
+  th,td{border-bottom:1px solid var(--line); padding:7px 8px; text-align:left; white-space:nowrap}
+  th{color:var(--sub); font-weight:600; font-size:.78rem}
+  td.num, th.num{text-align:right}
+  .controls{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:14px}
+  select,button{font:inherit}
+  select{padding:8px 12px; border-radius:8px; border:1px solid var(--line); background:var(--card); color:var(--ink)}
+  .btn{background:var(--accent); color:#fff; border:none; padding:11px 26px; border-radius:10px; font-weight:700; cursor:pointer; font-size:1rem; transition:transform .1s, box-shadow .2s}
+  .btn:hover{background:var(--accent2); box-shadow:0 4px 14px rgba(13,148,136,.35); transform:translateY(-1px)}
+  .btn:disabled{opacity:.5; cursor:wait}
+  .log{font-family:ui-monospace,Menlo,monospace; font-size:.78rem; background:#0b1220; color:#7dd3a8; border-radius:10px; padding:14px; margin-top:14px; min-height:88px; white-space:pre-wrap; display:none}
+  .stats{display:flex; gap:14px; margin-top:14px; flex-wrap:wrap}
+  .stat{flex:1; min-width:140px; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:12px 16px}
+  .stat b{font-size:1.5rem; color:var(--accent2)}
+  .stat span{display:block; font-size:.75rem; color:var(--sub)}
+  /* 請求書プレビュー */
+  #invoices{display:grid; gap:26px; margin-top:8px}
+  .invoice{background:#fff; color:#1a2433; border:1px solid #d5dce6; border-radius:6px; padding:34px 38px; max-width:720px; margin:0 auto; width:100%; box-shadow:0 6px 24px rgba(15,30,60,.12); position:relative; animation:pop .35s ease}
+  @keyframes pop{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+  .invoice h3{text-align:center; font-size:1.5rem; letter-spacing:.5em; text-indent:.5em; border-bottom:3px double #1a2433; padding-bottom:10px; margin-bottom:22px}
+  .inv-head{display:flex; justify-content:space-between; gap:20px; font-size:.85rem; margin-bottom:18px}
+  .inv-to{font-size:1.05rem; font-weight:700; border-bottom:1px solid #1a2433; padding-bottom:4px; margin-bottom:6px}
+  .inv-meta{text-align:right; color:#444; font-size:.8rem}
+  .inv-total{background:#f0fdfa; border:2px solid #0f766e; border-radius:8px; padding:10px 18px; margin:14px 0; display:flex; justify-content:space-between; align-items:center}
+  .inv-total b{font-size:1.45rem; color:#0f766e}
+  .invoice table{font-size:.8rem}
+  .invoice th{background:#f4f6f9; color:#333; border:1px solid #d5dce6}
+  .invoice td{border:1px solid #d5dce6}
+  .inv-foot{margin-top:16px; font-size:.78rem; color:#333; display:flex; justify-content:space-between; gap:18px}
+  .print-hint{text-align:center; margin-top:18px}
+  .ghost{background:none; border:1px solid var(--accent); color:var(--accent2); padding:9px 22px; border-radius:10px; cursor:pointer; font-weight:600}
+  @media print{
+    header,.panel,.note,.print-hint{display:none !important}
+    body{background:#fff}
+    .invoice{box-shadow:none; border:none; page-break-after:always; max-width:none}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="badge">ブラウザ・シミュレーション</span>
+    <h1>InvoiceForge — Excel請求書一括発行システム</h1>
+    <p>本体はExcel VBA製です。このページは同じロジック(税率別集計・端数処理・源泉徴収・採番)をブラウザで再現した体験デモです。</p>
+  </div>
+</header>
+<main>
+  <div class="note">実案件では、お客様のExcel(顧客マスタ・売上明細)にボタンを1つ置き、ワンクリックで顧客別フォルダへPDFが並びます。<strong>手作業で半日 → 3分</strong>の世界を、まずここで体験してください。</div>
+
+  <section class="panel">
+    <h2><span class="step">1</span>売上明細(2026年6月・12行のサンプル)</h2>
+    <div style="overflow-x:auto"><table id="salesTable"><thead>
+      <tr><th>日付</th><th>顧客</th><th>品目・作業内容</th><th class="num">数量</th><th class="num">単価</th><th class="num">税率</th></tr>
+    </thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="panel">
+    <h2><span class="step">2</span>設定を選んで一括発行</h2>
+    <div class="controls">
+      <label>端数処理:
+        <select id="rounding">
+          <option value="floor" selected>切り捨て(既定)</option>
+          <option value="round">四捨五入</option>
+          <option value="ceil">切り上げ</option>
+        </select>
+      </label>
+      <label>源泉徴収欄:
+        <select id="withholding"><option value="on" selected>する</option><option value="off">しない</option></select>
+      </label>
+      <button class="btn" id="run">▶ 請求書を一括発行する</button>
+    </div>
+    <div class="log" id="log"></div>
+    <div class="stats" id="stats" style="display:none">
+      <div class="stat"><b id="stCount">0</b><span>発行件数</span></div>
+      <div class="stat"><b id="stTime">0.0秒</b><span>処理時間(手作業なら約4時間)</span></div>
+      <div class="stat"><b id="stTotal">¥0</b><span>請求合計</span></div>
+    </div>
+  </section>
+
+  <section id="invoiceSec" style="display:none">
+    <div class="panel"><h2><span class="step">3</span>発行された請求書(実物はPDFで顧客別フォルダへ保存)</h2>
+      <div class="print-hint"><button class="ghost" onclick="window.print()">🖨 印刷プレビューで確認(PDF保存も可)</button></div>
+    </div>
+    <div id="invoices"></div>
+  </section>
+</main>
+<script>
+"use strict";
+const CUSTOMERS = {
+  C001:{name:"株式会社グリーンリーフ", hono:"御中", zip:"150-0001", addr:"東京都渋谷区神宮前1-2-3 GLビル4F", wh:false},
+  C002:{name:"カフェ・ソレイユ", hono:"様", zip:"530-0001", addr:"大阪府大阪市北区梅田2-3-4", wh:false},
+  C003:{name:"山田写真事務所", hono:"様", zip:"460-0002", addr:"愛知県名古屋市中区丸の内3-4-5", wh:true},
+  C004:{name:"合同会社ブルーポート", hono:"御中", zip:"810-0001", addr:"福岡県福岡市中央区天神4-5-6", wh:false},
+  C005:{name:"ひまわり整骨院", hono:"様", zip:"980-0811", addr:"宮城県仙台市青葉区一番町5-6-7", wh:false},
+};
+const SALES = [
+  ["2026/06/02","C001","ホームページ保守(6月分)",1,30000,10],
+  ["2026/06/05","C001","バナー制作",3,8000,10],
+  ["2026/06/06","C002","メニュー表デザイン",1,25000,10],
+  ["2026/06/09","C002","テイクアウト用チラシ印刷手配",500,48,8],
+  ["2026/06/10","C003","商品撮影(スタジオ半日)",1,45000,10],
+  ["2026/06/12","C003","写真レタッチ",20,1500,10],
+  ["2026/06/15","C004","業務システム改修",1,120000,10],
+  ["2026/06/18","C004","操作マニュアル作成",1,35000,10],
+  ["2026/06/20","C005","予約システム月額利用料(6月分)",1,15000,10],
+  ["2026/06/24","C001","SNS投稿画像テンプレート",5,6000,10],
+  ["2026/06/26","C005","院内掲示ポスターデザイン",2,12000,10],
+  ["2026/06/30","C002","ロゴリニューアル(着手金)",1,50000,10],
+];
+const yen = n => "¥" + n.toLocaleString("ja-JP");
+
+// 明細テーブル描画
+const tbody = document.querySelector("#salesTable tbody");
+for (const [d,c,desc,qty,price,rate] of SALES){
+  const tr = document.createElement("tr");
+  tr.innerHTML = `<td>${d}</td><td>${CUSTOMERS[c].name}</td><td>${desc}</td>
+    <td class="num">${qty.toLocaleString()}</td><td class="num">${yen(price)}</td><td class="num">${rate}%</td>`;
+  tbody.appendChild(tr);
+}
+
+function roundTax(v, mode){
+  if (mode === "round") return Math.round(v);
+  if (mode === "ceil") return Math.ceil(v);
+  return Math.floor(v);
+}
+
+document.getElementById("run").addEventListener("click", async () => {
+  const btn = document.getElementById("run");
+  const log = document.getElementById("log");
+  btn.disabled = true;
+  log.style.display = "block";
+  log.textContent = "";
+  const t0 = performance.now();
+  const say = async (m, wait=170) => { log.textContent += m + "\n"; await new Promise(r=>setTimeout(r,wait)); };
+
+  await say("▶ 入力データ検査中 … 顧客マスタ 5件 / 売上明細 12行");
+  await say("  ✓ 問題なし(コード重複0・日付不正0・税率不正0)");
+
+  // 顧客別に集計
+  const byCode = {};
+  for (const [d,c,desc,qty,price,rate] of SALES){
+    (byCode[c] ??= []).push({d,desc,qty,price,rate});
+  }
+  const mode = document.getElementById("rounding").value;
+  const whOn = document.getElementById("withholding").value === "on";
+  const wrap = document.getElementById("invoices");
+  wrap.innerHTML = "";
+  let seq = 1, grand = 0;
+
+  for (const code of Object.keys(byCode).sort()){
+    const cust = CUSTOMERS[code];
+    const lines = byCode[code];
+    const no = `202606-${String(seq).padStart(3,"0")}`;
+    let sub10=0, sub8=0;
+    const rows = lines.map(l=>{
+      const amt = l.qty * l.price;
+      if (l.rate===8) sub8 += amt; else sub10 += amt;
+      return `<tr><td>${l.d.slice(5)}</td><td>${l.desc}</td><td class="num">${l.qty.toLocaleString()}</td><td class="num">${yen(l.price)}</td><td class="num">${yen(amt)}</td></tr>`;
+    }).join("");
+    const tax10 = roundTax(sub10*0.10, mode), tax8 = roundTax(sub8*0.08, mode);
+    const wh = (whOn && cust.wh) ? Math.floor((sub10+sub8)*0.1021) : 0;
+    const total = sub10+tax10+sub8+tax8-wh;
+    grand += total;
+    await say(`▶ ${no} ${cust.name} … 明細${lines.length}行 → PDF出力 ✓  ${yen(total)}`);
+
+    const div = document.createElement("div");
+    div.className = "invoice";
+    div.innerHTML = `
+      <h3>請求書</h3>
+      <div class="inv-head">
+        <div style="flex:1">
+          <div class="inv-to">${cust.name} ${cust.hono}</div>
+          <div>〒${cust.zip}<br>${cust.addr}</div>
+        </div>
+        <div class="inv-meta">
+          請求番号: ${no}<br>発行日: 2026/07/03<br>支払期限: 2026/07/31<br><br>
+          <b>スタジオFB デザイン事務所</b><br>東京都〇〇区〇〇 1-2-3<br>登録番号: T0123456789012
+        </div>
+      </div>
+      <div class="inv-total"><span>ご請求金額(税込)</span><b>${yen(total)}</b></div>
+      <table><thead><tr><th>日付</th><th>品目・作業内容</th><th class="num">数量</th><th class="num">単価</th><th class="num">金額</th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot>
+        <tr><td colspan="4" class="num">小計(10%対象)</td><td class="num">${yen(sub10)}</td></tr>
+        <tr><td colspan="4" class="num">消費税(10%)</td><td class="num">${yen(tax10)}</td></tr>
+        ${sub8? `<tr><td colspan="4" class="num">小計(8%対象)</td><td class="num">${yen(sub8)}</td></tr>
+        <tr><td colspan="4" class="num">消費税(8%)</td><td class="num">${yen(tax8)}</td></tr>`:""}
+        ${wh? `<tr><td colspan="4" class="num">源泉徴収(10.21%)</td><td class="num">-${yen(wh).slice(1)}</td></tr>`:""}
+        <tr><td colspan="4" class="num" style="font-weight:700">合計</td><td class="num" style="font-weight:700">${yen(total)}</td></tr>
+      </tfoot></table>
+      <div class="inv-foot">
+        <div>お振込先: 〇〇銀行 〇〇支店 普通 0000000<br>※恐れ入りますが振込手数料はご負担ください</div>
+        <div style="text-align:right">出力先: C:\\Invoices\\2026-06\\${code}_${cust.name}\\</div>
+      </div>`;
+    wrap.appendChild(div);
+    seq++;
+  }
+
+  const dt = ((performance.now()-t0)/1000).toFixed(1);
+  await say(`✅ 完了: ${seq-1}件発行 / スキップ0件 / 発行履歴へ記録済み`);
+  document.getElementById("stCount").textContent = seq-1;
+  document.getElementById("stTime").textContent = dt + "秒";
+  document.getElementById("stTotal").textContent = yen(grand);
+  document.getElementById("stats").style.display = "flex";
+  document.getElementById("invoiceSec").style.display = "block";
+  btn.disabled = false;
+  btn.textContent = "↺ 設定を変えてもう一度発行";
+});
+</script>
+</body>
+</html>

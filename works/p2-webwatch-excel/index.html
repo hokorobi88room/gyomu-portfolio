@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebWatch — 定型Web情報収集 → 差分検知 → Excelレポート(Python) | 業務自動化×Web制作 ポートフォリオ</title>
+<meta name="description" content="WebWatch — 定型Web情報収集 → 差分検知 → Excelレポート(Python) — 作品詳細・ソースコード">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--navy:#12203c}
+  @media (prefers-color-scheme: dark){:root{--bg:#0d1420;--card:#161f2e;--ink:#e9eef6;--sub:#94a4ba;--line:#273349;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+  .top{background:var(--navy);color:#fff;padding:20px 0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  .top a{color:#5eead4;text-decoration:none;font-size:.85rem;font-weight:700}
+  .top h1{font-size:1.3rem;margin-top:6px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 8px}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:10px;padding:11px 24px;font-size:.9rem}
+  .btn-main{background:var(--teal);color:#fff}
+  .btn-main:hover{background:var(--teal2)}
+  .btn-sub{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+  .btn-sub:hover{border-color:var(--teal2);color:var(--teal2)}
+  article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 36px;margin:18px 0 60px}
+  article h1{font-size:1.45rem;margin-bottom:18px}
+  article h2{font-size:1.12rem;margin:30px 0 12px;padding-left:12px;border-left:4px solid var(--teal)}
+  article p{margin:10px 0;font-size:.93rem}
+  article ul,article ol{margin:10px 0 10px 1.5em;font-size:.93rem}
+  article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.87rem}
+  article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  article th{background:rgba(13,148,136,.1)}
+  article code{background:rgba(13,148,136,.12);border-radius:4px;padding:1px 6px;font-size:.85em}
+  article pre{background:#0b1220;color:#c9f0dd;border-radius:10px;padding:16px;overflow-x:auto;margin:14px 0}
+  article pre code{background:none;padding:0;color:inherit}
+  article a{color:var(--teal2)}
+  article hr{border:none;border-top:1px dashed var(--line);margin:24px 0}
+  article em{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a href="../../index.html">← ポートフォリオへ戻る</a><h1>WebWatch — 定型Web情報収集 → 差分検知 → Excelレポート(Python)</h1></div></div>
+<div class="wrap">
+  <div class="actions"><a class="btn btn-main" href="demo/index.html">▶ ブラウザで体験デモ</a><a class="btn btn-main" href="p2-webwatch-excel.zip" download>📥 ソース一式をダウンロード</a></div>
+  <article><h1>WebWatch — 定型Web情報収集 → 差分検知 → Excelレポート(Python)</h1>
+<h2>誰の・どんな困りごとを解決するか</h2>
+<p>毎朝、複数サイトの公開情報(公的統計の新着・自社取扱商品の公開価格・入札公告・新着一覧)を<strong>目視でチェックして表に転記している</strong>担当者。「昨日から何が変わったか」だけが知りたいのに、全ページを見て回っている。</p>
+<h2>Before / After</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Before(手作業)</th>
+<th>After(WebWatch)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>毎朝の巡回</td>
+<td>30分×毎日</td>
+<td><strong>コマンド1発(タスクスケジューラで全自動化も可)</strong></td>
+</tr>
+<tr>
+<td>変化の見落とし</td>
+<td>目視のため頻発</td>
+<td>前回スナップショットとの差分を自動検知</td>
+</tr>
+<tr>
+<td>記録</td>
+<td>手でExcelに転記</td>
+<td><strong>色分き整形済みExcel</strong>が自動生成(新規=緑・消滅=赤・オートフィルタつき)</td>
+</tr>
+</tbody>
+</table>
+<h2>設計方針: 「行儀の良い収集」を実装レベルで強制</h2>
+<ul>
+<li><strong>robots.txt を確認し、拒否されたURLは取得しない</strong>(コードが拒否する)</li>
+<li>同一ドメインへのアクセス間隔制御(設定で1秒未満にはできない)</li>
+<li>User-Agent と連絡先を明示</li>
+<li><strong>規約・法令に反する収集(ログイン突破・大量アクセス・禁止サイト)は請け負いません</strong> — この方針自体が、依頼者を守る品質です</li>
+</ul>
+<h2>機能一覧</h2>
+<ul>
+<li>YAML設定だけで対象追加(URL・1件分のCSSセレクタ・列名→相対セレクタ)。コード変更不要</li>
+<li>文字コード自動判定・タイムアウト/接続失敗時も<strong>1対象の失敗で全体を止めない</strong>(失敗は構造化ログに記録し終了コードで通知)</li>
+<li>差分検知: 新規行(NEW・緑)/消滅行(赤・末尾に記録=黙って消さない)</li>
+<li>差分サマリシート(対象×件数×変化の一覧)+対象別シート(ヘッダー固定・オートフィルタ)</li>
+<li>構造化ログ(JSON 1行)— 定時実行の監視と相性が良い</li>
+</ul>
+<h2>動かし方</h2>
+<p><strong>▶ かんたん起動(コマンド不要)</strong>: 解凍したフォルダの中の
+- <strong>Mac</strong>: <code>run_mac.command</code> をダブルクリック
+- <strong>Windows</strong>: <code>run_windows.bat</code> をダブルクリック</p>
+<p>初回のみ環境構築を自動で行い、<code>config.yaml</code> を用意して収集→Excel出力まで実行します(初回は雛形を作って一旦停止するので、対象サイトを記入して再実行)。Python未導入なら案内だけを表示します。</p>
+<p><strong>実案件では定期実行まで自動化</strong>: 「毎朝9時に自動収集して結果だけメール」など、クライアントが何も操作しない形(スケジューラ登録・こちらでのホスト運用)でお渡しできます(<a href="../../../DeliveryStandards.md">DeliveryStandards.md</a> 参照)。</p>
+<p>開発者向け(手動):</p>
+<pre><code class="language-bash">pip install -r requirements.txt
+cp config.example.yaml config.yaml
+python -m webwatch config.yaml
+pytest tests/                        # テスト12件(抽出・差分・Excel・設定検証・失敗系)
+</code></pre>
+<h2>実案件ではこう応用できます</h2>
+<ol>
+<li><strong>競合価格・在庫の定点観測</strong>(規約確認のうえ)→ 変化があった朝だけメール通知</li>
+<li><strong>入札公告・助成金の新着監視</strong> → キーワード一致のみ抽出してSlackへ</li>
+<li><strong>自社サイトの掲載チェック</strong>(全店舗ページの電話番号・営業時間の一括検証)</li>
+</ol>
+<hr />
+<p><em>※ 同梱の設定例はダミーURLです。実対象は利用規約の確認後に設定します。</em></p></article>
+</div>
+</body>
+</html>

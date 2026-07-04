@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>フォーム受付の完全自動化(GAS) — 体験デモ</title>
+<style>
+  :root{--bg:#f4f7f9;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--gold:#d9a441;--navy:#12203c}
+  @media(prefers-color-scheme:dark){:root{--bg:#0e1520;--card:#18212f;--ink:#e9eef6;--sub:#93a3b8;--line:#283446;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Hiragino Sans","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  header{background:radial-gradient(ellipse at 80% -20%,rgba(63,98,18,.5),transparent 60%),var(--navy);color:#fff;padding:26px 20px}
+  header .wrap{max-width:920px;margin:0 auto}
+  header .badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 14px;font-size:.75rem;margin-bottom:10px}
+  header h1{font-size:clamp(1.3rem,3.4vw,1.8rem);font-weight:800}
+  header p{opacity:.9;margin-top:6px;font-size:.9rem}
+  main{max-width:920px;margin:0 auto;padding:22px 20px 70px}
+  .note{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:10px 14px;font-size:.85rem;margin-bottom:18px}
+  @media(prefers-color-scheme:dark){.note{background:#332711;border-color:#7c5806;color:#fcd34d}}
+  .cols{display:grid;grid-template-columns:1fr 1.15fr;gap:18px}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .panel h2{font-size:.98rem;margin-bottom:12px}
+  label{display:block;font-size:.82rem;color:var(--sub);margin:10px 0 4px}
+  input{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;font-size:.9rem}
+  .btn{background:linear-gradient(135deg,#3f6212,#2a4409);color:#fff;border:none;border-radius:10px;padding:11px 26px;font-weight:700;cursor:pointer;font-size:.95rem;margin-top:14px;width:100%}
+  .flow{display:flex;flex-direction:column;gap:10px;min-height:320px}
+  .step{border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:.86rem;opacity:.35;transition:opacity .3s,border-color .3s}
+  .step.on{opacity:1;border-color:var(--teal2);background:rgba(13,148,136,.06)}
+  .step b{color:var(--teal2)}
+  .step small{color:var(--sub);display:block;margin-top:2px}
+  .ledger{margin-top:10px;font-size:.8rem;width:100%;border-collapse:collapse}
+  .ledger th,.ledger td{border:1px solid var(--line);padding:5px 7px;text-align:left}
+  .ledger th{background:rgba(13,148,136,.1);color:var(--sub)}
+  footer{background:#0a101e;color:#7688a3;font-size:.75rem;text-align:center;padding:24px;line-height:2}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <span class="badge">Google Apps Script・体験デモ</span>
+  <h1>フォーム受付の完全自動化</h1>
+  <p>申込フォームを送信すると、確認メール・台帳転記・通知・定員管理まで全自動。深夜の申込みも待たせません。</p>
+</div></header>
+<main>
+  <div class="note">これは体験デモです。実物はGoogleフォーム＋GASで動きます。左のフォームを送信すると、右で"自動で起きること"が順に流れます。何回か送ると重複検知や定員クローズも体験できます。</div>
+  <div class="cols">
+    <div class="panel">
+      <h2>📝 申込フォーム(体験用)</h2>
+      <label>お名前</label><input id="name" value="山田 花子">
+      <label>メールアドレス</label><input id="mail" value="hanako@example.com">
+      <label>参加希望日</label><input id="date" value="2026/07/20">
+      <button class="btn" id="send">この内容で申し込む(送信)</button>
+    </div>
+    <div class="panel">
+      <h2>⚡ 送信後に自動で起きること</h2>
+      <div class="flow" id="flow">
+        <div class="step" id="s1"><b>① 確認メールを自動返信</b><small>申込者へ即座に受付完了メール</small></div>
+        <div class="step" id="s2"><b>② 台帳へ自動転記</b><small>スプレッドシートに記録・重複もチェック</small></div>
+        <div class="step" id="s3"><b>③ 管理者へ通知</b><small>メール／Slack等へ新規申込を通知</small></div>
+        <div class="step" id="s4"><b>④ 定員をチェック</b><small>上限に達したらフォームを自動クローズ</small></div>
+      </div>
+      <table class="ledger" id="ledger" style="display:none"><thead><tr><th>受付日時</th><th>お名前</th><th>メール</th><th>状態</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+</main>
+<footer>※ ポートフォリオ用のデモです。実際のメール送信は行いません。</footer>
+<script>
+"use strict";
+let count=0;
+const $=id=>document.getElementById(id);
+$("send").onclick=()=>{
+  count++;
+  ["s1","s2","s3","s4"].forEach(id=>$(id).classList.remove("on"));
+  ["s1","s2","s3","s4"].forEach((id,i)=>setTimeout(()=>{
+    $(id).classList.add("on");
+    if(id==="s1"){$("s1").querySelector("small").textContent="「"+$("name").value+" 様、お申込みを受け付けました」を "+$("mail").value+" へ送信 ✓";}
+    if(id==="s2"){
+      $("ledger").style.display="table";
+      const now=new Date().toLocaleString("ja-JP",{hour12:false}).slice(5,16);
+      const dup=count>1;
+      document.querySelector("#ledger tbody").insertAdjacentHTML("beforeend","<tr><td>"+now+"</td><td>"+$("name").value+"</td><td>"+$("mail").value+"</td><td>"+(dup?'<span style=\"color:#b45309\">重複</span>':'新規')+"</td></tr>");
+    }
+    if(id==="s4"){$("s4").querySelector("small").textContent=count>=3?"定員(3名)に達したため受付を自動クローズしました 🚫":"現在 "+count+"名 / 定員3名（残り"+(3-count)+"）";}
+  },i*650));
+};
+</script>
+</body>
+</html>

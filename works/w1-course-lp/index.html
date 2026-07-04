@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大人のための「伝わる資料」講座 — 30日で資料づくりが変わる</title>
+<meta name="description" content="パワポ資料に自信がない社会人のための30日オンライン講座。構成→図解→デザインの順で、伝わる資料を体系的に学ぶ。">
+<meta property="og:title" content="大人のための「伝わる資料」講座">
+<meta property="og:description" content="30日で「資料が分かりにくい」と言われなくなる。社会人のためのオンライン講座。">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --navy:#132043; --navy2:#1f2f5c; --gold:#d9a441; --gold2:#c08a25;
+    --ink:#232a36; --sub:#5f6b7d; --bg:#fff; --soft:#f5f7fb; --line:#e4e9f1;
+    --maxw:820px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Hiragino Sans","Yu Gothic UI","Noto Sans JP",sans-serif; color:var(--ink); line-height:1.9; background:var(--bg)}
+  img{max-width:100%}
+  section{position:relative; padding:72px 24px}
+  .inner{max-width:var(--maxw); margin:0 auto}
+  h2{font-size:clamp(1.4rem,3.6vw,1.9rem); text-align:center; margin-bottom:36px; line-height:1.5}
+  h2 small{display:block; color:var(--gold2); font-size:.8rem; letter-spacing:.25em; margin-bottom:8px}
+  .cta{display:block; width:min(480px,100%); margin:0 auto; text-align:center; background:linear-gradient(180deg,#e6b34f,#c98f1e); color:#fff; font-size:1.15rem; font-weight:700; padding:18px 20px; border-radius:999px; text-decoration:none; box-shadow:0 8px 24px rgba(201,143,30,.4); transition:transform .15s, box-shadow .15s}
+  .cta:hover{transform:translateY(-2px); box-shadow:0 12px 30px rgba(201,143,30,.5)}
+  .cta small{display:block; font-size:.75rem; font-weight:500; opacity:.95}
+  .micro{ text-align:center; font-size:.78rem; color:var(--sub); margin-top:10px}
+
+  /* ヒーロー */
+  .hero{background:radial-gradient(ellipse at 20% 10%, #24407e 0%, var(--navy) 55%); color:#fff; padding:84px 24px 72px; overflow:hidden}
+  .hero .inner{max-width:900px; text-align:center}
+  .hero .eyebrow{display:inline-block; border:1px solid rgba(255,255,255,.45); border-radius:999px; padding:4px 18px; font-size:.8rem; letter-spacing:.12em; margin-bottom:22px}
+  .hero h1{font-size:clamp(1.7rem,5.4vw,2.7rem); line-height:1.6; margin-bottom:18px}
+  .hero h1 em{font-style:normal; color:var(--gold); border-bottom:4px solid var(--gold)}
+  .hero p{opacity:.92; margin-bottom:34px; font-size:clamp(.95rem,2.6vw,1.05rem)}
+  .hero .cta{background:linear-gradient(180deg,#f0c260,#d9a441)}
+  .hero-badges{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:26px; font-size:.78rem}
+  .hero-badges span{background:rgba(255,255,255,.12); border-radius:8px; padding:6px 14px}
+
+  /* 問題提起 */
+  .problems{background:var(--soft)}
+  .prob-list{display:grid; gap:14px}
+  .prob{background:#fff; border:1px solid var(--line); border-left:5px solid var(--navy2); border-radius:10px; padding:16px 20px; font-weight:600}
+  .prob span{color:var(--gold2); margin-right:10px}
+  .prob-close{text-align:center; margin-top:30px; font-size:1.06rem; font-weight:700}
+
+  /* 共感 */
+  .empathy .inner{max-width:720px}
+  .empathy p{margin-bottom:1.2em}
+  .empathy .turn{background:var(--soft); border-radius:12px; padding:22px 26px; font-weight:700; text-align:center; font-size:1.08rem; margin-top:28px}
+  .empathy .turn b{color:var(--gold2)}
+
+  /* 解決策 */
+  .solution{background:var(--navy); color:#fff}
+  .sol-steps{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:8px}
+  .sol{background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.16); border-radius:14px; padding:24px 20px; text-align:center}
+  .sol .num{font-size:.75rem; letter-spacing:.2em; color:var(--gold)}
+  .sol h3{margin:8px 0 10px; font-size:1.1rem}
+  .sol p{font-size:.86rem; opacity:.9}
+  @media(max-width:680px){ .sol-steps{grid-template-columns:1fr} }
+
+  /* カリキュラム */
+  .curriculum .week{display:flex; gap:18px; padding:20px 0; border-bottom:1px solid var(--line); align-items:flex-start}
+  .curriculum .wk{flex:none; background:var(--navy); color:#fff; border-radius:10px; padding:8px 14px; font-weight:700; font-size:.85rem; min-width:86px; text-align:center}
+  .curriculum h3{font-size:1.02rem; margin-bottom:4px}
+  .curriculum p{font-size:.88rem; color:var(--sub)}
+
+  /* 受講者の声 */
+  .voices{background:var(--soft)}
+  .voice{background:#fff; border:1px solid var(--line); border-radius:14px; padding:22px 24px; margin-bottom:16px}
+  .voice .who{font-size:.8rem; color:var(--sub); margin-top:10px}
+  .voice .stars{color:var(--gold2); letter-spacing:2px; margin-bottom:6px}
+
+  /* 講師 */
+  .teacher .card{display:flex; gap:26px; align-items:center; background:var(--soft); border-radius:16px; padding:28px}
+  .teacher .avatar{flex:none; width:110px; height:110px; border-radius:50%; background:linear-gradient(135deg,var(--navy2),var(--navy)); display:flex; align-items:center; justify-content:center; color:#fff; font-size:2rem; font-weight:700}
+  .teacher h3{margin-bottom:8px}
+  .teacher p{font-size:.9rem}
+  @media(max-width:600px){ .teacher .card{flex-direction:column; text-align:center} }
+
+  /* 特典・保証 */
+  .bonus .grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+  .bonus .b{border:2px dashed var(--gold2); border-radius:14px; padding:20px; background:#fffdf5}
+  .bonus .b h3{font-size:1rem; color:var(--gold2); margin-bottom:6px}
+  .bonus .b p{font-size:.86rem}
+  @media(max-width:600px){ .bonus .grid{grid-template-columns:1fr} }
+
+  /* 料金 */
+  .pricing{background:var(--navy); color:#fff; text-align:center}
+  .price-card{background:#fff; color:var(--ink); border-radius:18px; max-width:520px; margin:0 auto; padding:38px 30px; box-shadow:0 18px 50px rgba(0,0,0,.35)}
+  .price-card .plan{font-weight:700; letter-spacing:.15em; color:var(--gold2); font-size:.85rem}
+  .price-card .was{color:var(--sub); text-decoration:line-through; margin-top:14px}
+  .price-card .now{font-size:2.6rem; font-weight:800; color:var(--navy); line-height:1.2}
+  .price-card .now small{font-size:1rem; font-weight:600}
+  .price-card ul{list-style:none; text-align:left; margin:20px 0 26px; font-size:.9rem}
+  .price-card li{padding:7px 0 7px 30px; position:relative; border-bottom:1px dashed var(--line)}
+  .price-card li::before{content:"✓"; position:absolute; left:4px; color:var(--gold2); font-weight:800}
+  .deadline{margin-top:20px; font-size:.9rem}
+  .deadline b{font-size:1.25rem; color:var(--gold)}
+
+  /* FAQ */
+  .faq details{border:1px solid var(--line); border-radius:12px; margin-bottom:12px; overflow:hidden}
+  .faq summary{cursor:pointer; padding:16px 20px; font-weight:700; background:var(--soft); list-style:none; position:relative}
+  .faq summary::after{content:"+"; position:absolute; right:20px; color:var(--gold2); font-size:1.3rem}
+  .faq details[open] summary::after{content:"−"}
+  .faq .a{padding:16px 20px; font-size:.92rem}
+
+  /* 最終CTA */
+  .last{background:linear-gradient(160deg,var(--navy2),var(--navy)); color:#fff; text-align:center}
+  .last h2{color:#fff}
+
+  footer{background:#0d1530; color:#8b96ad; text-align:center; font-size:.75rem; padding:28px 20px}
+
+  /* ============ 解説モード(このLPの制作意図を注記) ============ */
+  #explainToggle{position:fixed; right:18px; bottom:18px; z-index:90; background:var(--navy); color:#fff; border:2px solid var(--gold); border-radius:999px; padding:12px 20px; font-weight:700; cursor:pointer; font-size:.85rem; box-shadow:0 6px 20px rgba(0,0,0,.3)}
+  .explain{display:none; position:absolute; top:10px; left:10px; right:10px; z-index:60; pointer-events:none}
+  .explain .tag{pointer-events:auto; display:inline-block; background:#0d9488; color:#fff; font-size:.78rem; line-height:1.6; padding:10px 14px; border-radius:0 12px 12px 12px; max-width:420px; box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  .explain .tag b{display:block; font-size:.7rem; letter-spacing:.15em; opacity:.85}
+  body.explain-on .explain{display:block}
+  body.explain-on section{outline:2px dashed #0d9488; outline-offset:-6px}
+</style>
+</head>
+<body class="explain-on">
+
+<div style="position:sticky;top:0;z-index:100;background:#d9a441;color:#12203c;font-weight:700;text-align:center;padding:9px 14px;font-size:.85rem;line-height:1.5">🖊 これは「サンプル」です（実在の講座ではありません）｜「こんな“売れるLP”が作れます」という制作例です</div>
+
+<button id="explainToggle" aria-pressed="true">✕ 解説を閉じる</button>
+
+<!-- ①ファーストビュー -->
+<header class="hero">
+  <div class="explain"><span class="tag"><b>① ファーストビュー</b>3秒で「誰向け・何が変わる・次に何をするか」を伝える。ベネフィット(状態の変化)を主語に、CTAを最初の画面内に必ず置く。</span></div>
+  <div class="inner">
+    <span class="eyebrow">パワポ資料に自信がない社会人へ</span>
+    <h1>その資料、<em>30日で</em>「分かりやすい」と<br>言われる側になる。</h1>
+    <p>デザインセンスは要りません。構成 → 図解 → 見た目 の正しい順番で学べば、資料は技術で良くなります。</p>
+    <a class="cta" href="#pricing">30日講座の詳細を見る<small>7月期は残り12席</small></a>
+    <div class="hero-badges"><span>受講満足度 96.2%</span><span>累計受講 1,800名</span><span>動画+添削つき</span></div>
+  </div>
+</header>
+
+<!-- ②問題提起 -->
+<section class="problems">
+  <div class="explain"><span class="tag"><b>② 問題提起</b>読者の「あるある」を具体語で列挙し、自分ごと化させる。抽象論ではなく、会議室で実際に言われるセリフを使うのがコツ。</span></div>
+  <div class="inner">
+    <h2><small>PROBLEM</small>こんな経験、ありませんか?</h2>
+    <div class="prob-list">
+      <div class="prob"><span>✔</span>「で、結局何が言いたいの?」と会議で言われた</div>
+      <div class="prob"><span>✔</span>資料づくりに毎回3時間。それでも刺さらない</div>
+      <div class="prob"><span>✔</span>文字だらけのスライドを、読み上げるだけのプレゼンになる</div>
+      <div class="prob"><span>✔</span>デザイン本を買ったが、明日の資料には活かせなかった</div>
+    </div>
+    <p class="prob-close">それ、センスの問題ではありません。<br>「順番」を教わっていないだけです。</p>
+  </div>
+</section>
+
+<!-- ③共感 -->
+<section class="empathy">
+  <div class="explain"><span class="tag"><b>③ 共感</b>売り込む前に「あなたのせいではない」と伝えて心理的な壁を下げる。失敗の原因を本人の外(教わっていない事実)へ移すのがポイント。</span></div>
+  <div class="inner">
+    <h2><small>EMPATHY</small>資料づくりは、教わる機会がないまま<br>「できて当然」とされるスキルです</h2>
+    <p>学校でも新人研修でも、資料の作り方を体系的に教わった人はほとんどいません。それなのに、社会人になった途端「分かりにくい」と評価だけされる — 理不尽だと思いませんか。</p>
+    <p>私たちは1,800名の資料を添削してきて、はっきり分かったことがあります。伝わらない資料の原因は、デザイン以前の「構成」で9割決まっている、ということです。</p>
+    <div class="turn">だからこの講座は、<b>見た目ではなく「構成」から</b>教えます。</div>
+  </div>
+</section>
+
+<!-- ④解決策 -->
+<section class="solution">
+  <div class="explain"><span class="tag"><b>④ 解決策の提示</b>解決のメカニズムを3ステップで単純化して見せる。「なぜそれで解決するのか」の因果を1行ずつ添えると納得感が出る。</span></div>
+  <div class="inner">
+    <h2><small>SOLUTION</small>「伝わる資料」は、この順番で作る</h2>
+    <div class="sol-steps">
+      <div class="sol"><div class="num">STEP 1</div><h3>構成</h3><p>結論→根拠→行動の型に当てはめる。ここで伝わるかどうかの9割が決まる。</p></div>
+      <div class="sol"><div class="num">STEP 2</div><h3>図解</h3><p>文章を「構造」に変換する7つのパターン。箇条書きから卒業する。</p></div>
+      <div class="sol"><div class="num">STEP 3</div><h3>デザイン</h3><p>最後に整える。フォント・余白・色は「ルール化」して迷わない。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤カリキュラム -->
+<section class="curriculum">
+  <div class="explain"><span class="tag"><b>⑤ カリキュラム</b>中身を具体的に開示して「買った後の自分」を想像させる。週単位で成果物ベース(〜が作れる)で書くと価値が伝わる。</span></div>
+  <div class="inner">
+    <h2><small>CURRICULUM</small>30日でここまで変わる</h2>
+    <div class="week"><div class="wk">WEEK 1</div><div><h3>構成の型を身につける</h3><p>結論ファースト・ピラミッド構造・1スライド1メッセージ。手持ちの資料を型に流し込む課題つき。</p></div></div>
+    <div class="week"><div class="wk">WEEK 2</div><div><h3>図解の7パターン</h3><p>対比・フロー・マトリクス・ピラミッド…。文章を図に変換するトレーニング。</p></div></div>
+    <div class="week"><div class="wk">WEEK 3</div><div><h3>デザインのルール化</h3><p>フォント2種・色3色・余白8の倍数。センス不要の「決めごと」で見た目を安定させる。</p></div></div>
+    <div class="week"><div class="wk">WEEK 4</div><div><h3>実案件で総仕上げ</h3><p>あなたの実際の資料を講師が添削。ビフォー/アフターを比べて技術の定着を確認する。</p></div></div>
+  </div>
+</section>
+
+<!-- ⑥受講者の声 -->
+<section class="voices">
+  <div class="explain"><span class="tag"><b>⑥ 受講者の声(社会的証明)</b>属性(年齢・職種)を添えて「自分と同じ人」の変化を見せる。ビフォー→アフターの具体的な変化量で語らせるのがコツ。</span></div>
+  <div class="inner">
+    <h2><small>VOICE</small>受講者の変化</h2>
+    <div class="voice"><div class="stars">★★★★★</div>「会議の資料づくりが3時間→50分になりました。しかも部長から『分かりやすくなったね』と。構成の型のおかげです」<div class="who">メーカー営業・30代男性</div></div>
+    <div class="voice"><div class="stars">★★★★★</div>「デザイン本を何冊も挫折した私でも、『順番』で教わると腹落ちしました。WEEK2の図解パターンは一生モノです」<div class="who">人事・20代女性</div></div>
+    <div class="voice"><div class="stars">★★★★☆</div>「課題は正直きつい週もありました。でも自分の実資料を添削してもらえる講座は他になかった。転職の職務経歴書にも活きています」<div class="who">ITコンサル・40代男性</div></div>
+  </div>
+</section>
+
+<!-- ⑦講師紹介 -->
+<section class="teacher">
+  <div class="explain"><span class="tag"><b>⑦ 講師紹介(権威性)</b>実績は数字で。ここでの役割は「この人から買って大丈夫」という安心の担保なので、経歴よりも受講者への姿勢で締める。</span></div>
+  <div class="inner">
+    <h2><small>TEACHER</small>講師</h2>
+    <div class="card">
+      <div class="avatar">青山</div>
+      <div>
+        <h3>青山 慎(あおやま しん)/ 資料設計士</h3>
+        <p>外資系コンサルで10年間、経営会議資料を作り続けたのち独立。企業研修・添削実績1,800名。「センスではなく技術で、誰でも伝わる資料は作れる」が信条。あなたの資料も、必ず良くなります。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧特典・保証 -->
+<section class="bonus">
+  <div class="explain"><span class="tag"><b>⑧ 特典と保証(リスク反転)</b>「迷う理由」を1つずつ潰す。返金保証は購入の最後の壁を外す装置。特典は本編を補完するもの(テンプレ等の即効性)を選ぶ。</span></div>
+  <div class="inner">
+    <h2><small>BONUS</small>7月期の受講特典</h2>
+    <div class="grid">
+      <div class="b"><h3>特典1: 資料テンプレート30種</h3><p>提案書・報告書・会議資料。開いて差し替えるだけのPowerPoint/Googleスライド両対応。</p></div>
+      <div class="b"><h3>特典2: 図解パターン早見表</h3><p>印刷してデスクに貼れるA4一枚。「この内容はどの図?」が3秒で引ける。</p></div>
+      <div class="b"><h3>特典3: 添削1回追加権</h3><p>講座終了後3ヶ月以内の実案件資料を1本添削。学びを現場に接続する。</p></div>
+      <div class="b"><h3>14日間 全額返金保証</h3><p>WEEK2まで受けて合わないと感じたら、理由を問わず全額返金します。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑨料金 -->
+<section class="pricing" id="pricing">
+  <div class="explain"><span class="tag"><b>⑨ 料金(アンカリング)</b>価格は「比較対象」とセットで見せる(研修1日分・書籍20冊分など)。金額の直前に得られる価値の一覧を再掲して、価格→価値の順で読ませない。</span></div>
+  <div class="inner">
+    <h2><small>PRICE</small>受講料</h2>
+    <div class="price-card">
+      <div class="plan">30日完走プラン</div>
+      <ul>
+        <li>動画講義 全28本(1本10分・スマホ可)</li>
+        <li>週次課題と講師添削 4回</li>
+        <li>実案件資料の個別添削(WEEK4)</li>
+        <li>特典4点(テンプレ30種・早見表・追加添削・返金保証)</li>
+      </ul>
+      <div class="was">通常価格 49,800円</div>
+      <div class="now">29,800<small>円(税込)</small></div>
+      <p style="font-size:.8rem; color:var(--sub)">企業研修1日分(約10万円)の1/3以下・分割払い可</p>
+      <div style="margin-top:22px"><a class="cta" href="#" onclick="alert('デモページのためお申込みはできません'); return false;">7月期に申し込む<small>残り12席・7/15 23:59まで</small></a></div>
+    </div>
+    <p class="deadline">7月期の募集締切まで <b id="countdown">--:--:--</b></p>
+  </div>
+</section>
+
+<!-- ⑩FAQ -->
+<section class="faq">
+  <div class="explain"><span class="tag"><b>⑩ FAQ(最後の不安の除去)</b>買わない理由を先回りして潰す。「時間がない」「初心者でも」「返金条件」は必須の3点。営業で実際に聞かれた質問から作るのが正解。</span></div>
+  <div class="inner">
+    <h2><small>FAQ</small>よくあるご質問</h2>
+    <details><summary>仕事が忙しくても完走できますか?</summary><div class="a">1日の学習時間は30分想定です。動画は10分単位・スマホ対応なので通勤時間でも進められます。課題の提出期限には3日間の猶予枠があります。</div></details>
+    <details><summary>PowerPointが苦手な初心者でも大丈夫?</summary><div class="a">はい。本講座は操作テクニックではなく「考え方の順番」を教えるため、ツールの熟練度は問いません。GoogleスライドやKeynoteでも受講できます。</div></details>
+    <details><summary>返金保証の条件は?</summary><div class="a">受講開始から14日以内であれば、理由を問わず全額返金します。メール1通でお手続きできます(課題提出の有無も問いません)。</div></details>
+    <details><summary>領収書は発行できますか?</summary><div class="a">できます。会社の研修費・経費での受講も多く、宛名指定の領収書をマイページから発行できます。</div></details>
+  </div>
+</section>
+
+<!-- ⑪最終CTA -->
+<section class="last">
+  <div class="explain"><span class="tag"><b>⑪ 最終CTA(クロージング)</b>ページを読み切った人に、変化後の姿をもう一度見せて背中を押す。CTAの文言はヒーローと同一にして迷いを作らない。</span></div>
+  <div class="inner">
+    <h2>30日後、あなたの資料は<br>「分かりやすいね」と言われている。</h2>
+    <a class="cta" href="#pricing">30日講座の詳細を見る<small>14日間の全額返金保証つき</small></a>
+    <p class="micro">※ 本ページはポートフォリオ用のデザインサンプルです(架空の講座)</p>
+  </div>
+</section>
+
+<footer>
+  大人のための「伝わる資料」講座(デザインサンプル)<br>
+  ※ 本ページはWeb制作ポートフォリオとして作成した架空のLPです。実在の講座・人物・実績とは関係ありません。
+</footer>
+
+<script>
+"use strict";
+// 解説モード切替
+const btn = document.getElementById("explainToggle");
+btn.addEventListener("click", () => {
+  const on = document.body.classList.toggle("explain-on");
+  btn.textContent = on ? "✕ 解説を閉じる" : "💡 制作解説を表示";
+  btn.setAttribute("aria-pressed", String(on));
+});
+
+// カウントダウン(締切: 常に「今から3日後」のデモ動作)
+const deadline = Date.now() + 3*24*60*60*1000;
+const pad = n => String(n).padStart(2,"0");
+setInterval(() => {
+  let s = Math.max(0, Math.floor((deadline - Date.now())/1000));
+  const d = Math.floor(s/86400); s %= 86400;
+  const h = Math.floor(s/3600);  s %= 3600;
+  const m = Math.floor(s/60);
+  document.getElementById("countdown").textContent = `${d}日 ${pad(h)}:${pad(m)}:${pad(s%60)}`;
+}, 1000);
+
+// スクロール連動のフェードイン(軽量: IntersectionObserver)
+// 既に画面内にある要素・アンカー直行時・reduced-motion環境では動かさない
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ e.target.style.opacity = 1; e.target.style.transform = "none"; io.unobserve(e.target); }
+  }), {threshold:.12});
+  document.querySelectorAll("section .inner").forEach(el => {
+    if (el.getBoundingClientRect().top > innerHeight) {
+      el.style.opacity = 0; el.style.transform = "translateY(22px)";
+      el.style.transition = "opacity .7s ease, transform .7s ease";
+      io.observe(el);
+    }
+  });
+}
+</script>
+</body>
+</html>

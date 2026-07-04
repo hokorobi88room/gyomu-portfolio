@@ -1,0 +1,84 @@
+/* カフェ・コモレビ 共通スタイル */
+:root{
+  --brown:#4a352a; --brown2:#6b4f3f; --cream:#faf6ef; --cream2:#f3ead9;
+  --accent:#b9814d; --accent2:#9c6535; --ink:#3a2e26; --sub:#8a7767; --line:#e6dccb;
+}
+*{box-sizing:border-box; margin:0; padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif; color:var(--ink); background:var(--cream); line-height:2}
+a{color:inherit}
+
+/* ヘッダー */
+.site-header{position:sticky; top:0; z-index:50; background:rgba(250,246,239,.93); backdrop-filter:blur(6px); border-bottom:1px solid var(--line)}
+.site-header .bar{max-width:1000px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; padding:14px 20px}
+.logo{font-size:1.25rem; letter-spacing:.35em; font-weight:600; text-decoration:none}
+.logo small{display:block; font-size:.6rem; letter-spacing:.2em; color:var(--sub); font-family:sans-serif}
+nav.global{display:flex; gap:26px; font-size:.85rem; letter-spacing:.1em}
+nav.global a{text-decoration:none; padding:6px 2px; border-bottom:2px solid transparent}
+nav.global a:hover, nav.global a[aria-current="page"]{border-bottom-color:var(--accent); color:var(--accent2)}
+@media(max-width:640px){
+  .site-header .bar{flex-direction:column; gap:8px}
+  nav.global{gap:16px; font-size:.8rem}
+}
+
+/* ヒーロー(トップ) */
+.hero{position:relative; min-height:74vh; display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; overflow:hidden;
+  background:
+    radial-gradient(ellipse at 65% 20%, rgba(255,220,160,.25), transparent 55%),
+    linear-gradient(rgba(38,26,18,.55), rgba(38,26,18,.62)),
+    repeating-linear-gradient(115deg, #5a4131 0 26px, #4a352a 26px 52px, #52392c 52px 78px);
+}
+.hero .in{padding:60px 24px}
+.hero h1{font-size:clamp(1.8rem,5.5vw,3rem); letter-spacing:.3em; font-weight:600; margin-bottom:16px; text-indent:.3em}
+.hero p{font-size:clamp(.9rem,2.5vw,1.05rem); letter-spacing:.15em; opacity:.95}
+.hero .hours{margin-top:26px; font-size:.85rem; font-family:sans-serif; letter-spacing:.05em; opacity:.9}
+
+/* 共通パーツ */
+.page-title{background:var(--cream2); text-align:center; padding:56px 20px 44px}
+.page-title h1{font-size:1.7rem; letter-spacing:.4em; text-indent:.4em; font-weight:600}
+.page-title p{color:var(--sub); font-size:.8rem; font-family:sans-serif; letter-spacing:.25em; margin-top:6px}
+main .wrap{max-width:900px; margin:0 auto; padding:56px 24px}
+.sec-title{text-align:center; font-size:1.35rem; letter-spacing:.3em; text-indent:.3em; margin-bottom:36px; font-weight:600}
+.sec-title::after{content:""; display:block; width:44px; height:2px; background:var(--accent); margin:14px auto 0}
+.btn{display:inline-block; background:var(--brown); color:#fff; text-decoration:none; padding:13px 40px; border-radius:3px; letter-spacing:.2em; font-size:.9rem; transition:background .2s}
+.btn:hover{background:var(--accent2)}
+
+/* カード(こだわり・メニュー) */
+.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
+@media(max-width:700px){ .cards{grid-template-columns:1fr} }
+.card{background:#fff; border:1px solid var(--line); border-radius:6px; overflow:hidden}
+.card .ph{height:150px; display:flex; align-items:center; justify-content:center; font-size:2.6rem; color:#fff}
+.card .body{padding:18px 20px}
+.card h3{font-size:1.02rem; letter-spacing:.12em; margin-bottom:6px}
+.card p{font-size:.85rem; color:var(--sub); line-height:1.9}
+.ph-coffee{background:linear-gradient(135deg,#6b4f3f,#4a352a)}
+.ph-bread {background:linear-gradient(135deg,#c99a5e,#a5763b)}
+.ph-room  {background:linear-gradient(135deg,#8b9c7a,#66795a)}
+
+/* メニュー表 */
+.menu-cat{margin-bottom:44px}
+.menu-item{display:flex; justify-content:space-between; align-items:baseline; padding:13px 4px; border-bottom:1px dashed var(--line); gap:14px}
+.menu-item .nm{letter-spacing:.08em}
+.menu-item .nm small{display:block; font-size:.72rem; color:var(--sub); font-family:sans-serif; letter-spacing:.03em}
+.menu-item .pr{font-family:sans-serif; font-size:.95rem; white-space:nowrap}
+.menu-note{font-size:.78rem; color:var(--sub); font-family:sans-serif; margin-top:18px}
+
+/* 店舗案内 */
+.info-table{width:100%; border-collapse:collapse; font-size:.92rem}
+.info-table th{width:9em; text-align:left; padding:14px 10px; border-bottom:1px solid var(--line); letter-spacing:.15em; color:var(--accent2); font-weight:600; vertical-align:top}
+.info-table td{padding:14px 10px; border-bottom:1px solid var(--line)}
+.map-frame{width:100%; height:340px; border:1px solid var(--line); border-radius:6px; background:var(--cream2); display:flex; align-items:center; justify-content:center; color:var(--sub); font-family:sans-serif; font-size:.85rem; text-align:center}
+
+/* お知らせ */
+.news-list{list-style:none}
+.news-list li{display:flex; gap:22px; padding:16px 4px; border-bottom:1px dashed var(--line); font-size:.92rem; flex-wrap:wrap}
+.news-list time{color:var(--accent2); font-family:sans-serif; font-size:.82rem; flex:none; padding-top:3px}
+.news-list .tag{flex:none; background:var(--cream2); border:1px solid var(--line); border-radius:999px; font-size:.7rem; font-family:sans-serif; padding:2px 12px; height:fit-content; margin-top:4px}
+
+/* フッター */
+.site-footer{background:var(--brown); color:#e8ddcf; margin-top:70px}
+.site-footer .wrap{max-width:1000px; margin:0 auto; padding:40px 24px; text-align:center}
+.site-footer .fnav{display:flex; gap:22px; justify-content:center; font-size:.8rem; font-family:sans-serif; margin-bottom:16px; flex-wrap:wrap}
+.site-footer a{color:#e8ddcf; text-decoration:none}
+.site-footer a:hover{color:#fff}
+.site-footer .copy{font-size:.7rem; opacity:.75; font-family:sans-serif; letter-spacing:.08em}

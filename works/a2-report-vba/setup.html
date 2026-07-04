@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReportHub 導入手順(所要 約10分) | 業務自動化×Web制作 ポートフォリオ</title>
+<meta name="description" content="ReportHub 導入手順(所要 約10分) — 作品詳細・ソースコード">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--navy:#12203c}
+  @media (prefers-color-scheme: dark){:root{--bg:#0d1420;--card:#161f2e;--ink:#e9eef6;--sub:#94a4ba;--line:#273349;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+  .top{background:var(--navy);color:#fff;padding:20px 0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  .top a{color:#5eead4;text-decoration:none;font-size:.85rem;font-weight:700}
+  .top h1{font-size:1.3rem;margin-top:6px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 8px}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:10px;padding:11px 24px;font-size:.9rem}
+  .btn-main{background:var(--teal);color:#fff}
+  .btn-main:hover{background:var(--teal2)}
+  .btn-sub{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+  .btn-sub:hover{border-color:var(--teal2);color:var(--teal2)}
+  article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 36px;margin:18px 0 60px}
+  article h1{font-size:1.45rem;margin-bottom:18px}
+  article h2{font-size:1.12rem;margin:30px 0 12px;padding-left:12px;border-left:4px solid var(--teal)}
+  article p{margin:10px 0;font-size:.93rem}
+  article ul,article ol{margin:10px 0 10px 1.5em;font-size:.93rem}
+  article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.87rem}
+  article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  article th{background:rgba(13,148,136,.1)}
+  article code{background:rgba(13,148,136,.12);border-radius:4px;padding:1px 6px;font-size:.85em}
+  article pre{background:#0b1220;color:#c9f0dd;border-radius:10px;padding:16px;overflow-x:auto;margin:14px 0}
+  article pre code{background:none;padding:0;color:inherit}
+  article a{color:var(--teal2)}
+  article hr{border:none;border-top:1px dashed var(--line);margin:24px 0}
+  article em{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a href="../../index.html">← ポートフォリオへ戻る</a><h1>ReportHub 導入手順(所要 約10分)</h1></div></div>
+<div class="wrap">
+  <div class="actions"><a class="btn btn-sub" href="index.html">← 作品詳細へ戻る</a></div>
+  <article><h1>ReportHub 導入手順(所要 約10分)</h1>
+<p>対象: Windows版 Excel 2016以降(32bit/64bit両対応)</p>
+<h2>1. ブックの準備</h2>
+<ol>
+<li>新規マクロ有効ブック(.xlsm)を作成する(このブックが集計側。報告ブックには一切手を入れない)</li>
+<li><code>設定</code> シートを作成し、A列にキー・B列に値:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>A列</th>
+<th>B列(例)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>報告書フォルダ</td>
+<td>C:\Reports\2026-06(または <code>sample-data\reports</code> の絶対パス)</td>
+</tr>
+</tbody>
+</table>
+<p>残りのシート(統合データ・ダッシュボード・取込結果・エラーログ)は初回実行時に自動作成される。</p>
+<h2>2. マクロの取り込み</h2>
+<p>Alt+F11 → ファイル→インポートで <code>dist/cp932/</code> の4つの <code>.bas</code> を取り込む(src/はUTF-8正本。日本語Windowsでは dist/cp932/ を使う)。</p>
+<h2>3. 実行</h2>
+<p>Alt+F8 → <code>RefreshDashboard</code>。完了ダイアログに取込ファイル数・統合行数・処理時間が表示される。</p>
+<ul>
+<li><code>ダッシュボード</code> シート: 月次推移(前年比)・担当者ランキング・商品TOP5</li>
+<li><code>取込結果</code> シート: ファイルごとの成功/警告/失敗(色分き)。サンプルには警告1冊が意図的に含まれている</li>
+</ul>
+<h2>4. 報告ブック側の前提(ゆるい)</h2>
+<ul>
+<li>1シート目に明細表があること</li>
+<li>1〜10行目のどこかに「日付/担当者/商品/売上」系のヘッダーがあること(別名・列順・前置行は自動吸収)</li>
+<li>これに合わない様式はカスタマイズで対応(ヘッダー別名の追加は modScan の1箇所)</li>
+</ul>
+<h2>5. トラブルシューティング</h2>
+<table>
+<thead>
+<tr>
+<th>症状</th>
+<th>対処</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「報告書フォルダが見つかりません」</td>
+<td>設定のパスが実在するか。ネットワークドライブは接続状態を確認</td>
+</tr>
+<tr>
+<td>特定ファイルが「警告」になる</td>
+<td>ヘッダー名が対応表にない → modScan.FindHeader の Select Case に別名を1行追加</td>
+</tr>
+<tr>
+<td>数字が合わない</td>
+<td>取込結果の「除外行」を確認(小計行は自動除外される仕様)</td>
+</tr>
+</tbody>
+</table></article>
+</div>
+</body>
+</html>

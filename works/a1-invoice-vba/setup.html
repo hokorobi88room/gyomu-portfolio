@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InvoiceForge 導入手順(所要 約15分) | 業務自動化×Web制作 ポートフォリオ</title>
+<meta name="description" content="InvoiceForge 導入手順(所要 約15分) — 作品詳細・ソースコード">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--navy:#12203c}
+  @media (prefers-color-scheme: dark){:root{--bg:#0d1420;--card:#161f2e;--ink:#e9eef6;--sub:#94a4ba;--line:#273349;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+  .top{background:var(--navy);color:#fff;padding:20px 0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  .top a{color:#5eead4;text-decoration:none;font-size:.85rem;font-weight:700}
+  .top h1{font-size:1.3rem;margin-top:6px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 8px}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:10px;padding:11px 24px;font-size:.9rem}
+  .btn-main{background:var(--teal);color:#fff}
+  .btn-main:hover{background:var(--teal2)}
+  .btn-sub{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+  .btn-sub:hover{border-color:var(--teal2);color:var(--teal2)}
+  article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 36px;margin:18px 0 60px}
+  article h1{font-size:1.45rem;margin-bottom:18px}
+  article h2{font-size:1.12rem;margin:30px 0 12px;padding-left:12px;border-left:4px solid var(--teal)}
+  article p{margin:10px 0;font-size:.93rem}
+  article ul,article ol{margin:10px 0 10px 1.5em;font-size:.93rem}
+  article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.87rem}
+  article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  article th{background:rgba(13,148,136,.1)}
+  article code{background:rgba(13,148,136,.12);border-radius:4px;padding:1px 6px;font-size:.85em}
+  article pre{background:#0b1220;color:#c9f0dd;border-radius:10px;padding:16px;overflow-x:auto;margin:14px 0}
+  article pre code{background:none;padding:0;color:inherit}
+  article a{color:var(--teal2)}
+  article hr{border:none;border-top:1px dashed var(--line);margin:24px 0}
+  article em{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a href="../../index.html">← ポートフォリオへ戻る</a><h1>InvoiceForge 導入手順(所要 約15分)</h1></div></div>
+<div class="wrap">
+  <div class="actions"><a class="btn btn-sub" href="index.html">← 作品詳細へ戻る</a></div>
+  <article><h1>InvoiceForge 導入手順(所要 約15分)</h1>
+<p>対象: Windows版 Excel 2016以降(32bit/64bit両対応。Microsoft 365推奨)</p>
+<h2>1. ブックの準備</h2>
+<ol>
+<li>新規マクロ有効ブック(.xlsm)を作成し、次の7シートを用意する</li>
+<li><code>設定</code> / <code>顧客マスタ</code> / <code>売上明細</code> / <code>請求書ひな形</code>(残り3シート=<code>発行履歴</code>・<code>エラーログ</code>・<code>検査結果</code>は初回実行時に自動作成)</li>
+<li><code>顧客マスタ</code> と <code>売上明細</code> に <code>sample-data/</code> のCSVを貼り付ける(1行目=ヘッダー)</li>
+<li><code>設定</code> シートのA列にキー・B列に値を入力する:</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>A列(キー)</th>
+<th>B列(値の例)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自社名</td>
+<td>〇〇デザイン事務所</td>
+</tr>
+<tr>
+<td>自社住所</td>
+<td>東京都〇〇区…</td>
+</tr>
+<tr>
+<td>自社TEL</td>
+<td>03-0000-0000</td>
+</tr>
+<tr>
+<td>振込先</td>
+<td>〇〇銀行 〇〇支店 普通 0000000</td>
+</tr>
+<tr>
+<td>登録番号</td>
+<td>T0000000000000(適格請求書。なければ空欄)</td>
+</tr>
+<tr>
+<td>対象月</td>
+<td>2026/06/01</td>
+</tr>
+<tr>
+<td>出力先フォルダ</td>
+<td>C:\Invoices</td>
+</tr>
+<tr>
+<td>支払期限ルール</td>
+<td>1(翌月末) or 2(翌々月10日)</td>
+</tr>
+<tr>
+<td>端数処理</td>
+<td>0(切り捨て)/1(四捨五入)/2(切り上げ)</td>
+</tr>
+<tr>
+<td>源泉徴収欄</td>
+<td>する / しない</td>
+</tr>
+</tbody>
+</table>
+<h2>2. 請求書ひな形シート</h2>
+<p><code>請求書ひな形</code> に請求書のレイアウトを作り、以下の「名前付きセル」を定義する(数式タブ→名前の管理):</p>
+<p><code>宛先</code> <code>宛先住所</code> <code>請求番号</code> <code>発行日</code> <code>支払期限</code> <code>自社情報</code> <code>登録番号</code> <code>振込先</code> <code>明細開始</code>(明細表の1行目左端。右へ 日付/内容/数量/単価/金額 の5列×20行) <code>小計10</code> <code>消費税10</code> <code>小計8</code> <code>消費税8</code> <code>源泉徴収</code> <code>合計</code></p>
+<p>印刷範囲をA4縦1枚に設定しておく(PDF出力にそのまま使われる)。</p>
+<h2>3. マクロの取り込み</h2>
+<ol>
+<li>Alt+F11 でVBEを開く → ファイル→ファイルのインポート</li>
+<li><code>dist/cp932/</code> 内の6つの <code>.bas</code> を順にインポートする
+   (<strong>注</strong>: <code>src/</code> はUTF-8の正本。日本語Windowsには文字化け防止済みの <code>dist/cp932/</code> を使う)</li>
+<li>マクロのセキュリティ警告が出る場合: ファイルのプロパティ→「許可する」にチェック(zip解凍後のブロック解除)</li>
+</ol>
+<h2>4. 実行</h2>
+<ul>
+<li>一括発行: Alt+F8 → <code>GenerateAllInvoices</code></li>
+<li>1社のみ: 顧客マスタで行を選択 → Alt+F8 → <code>GenerateSelectedInvoice</code></li>
+<li>実行前に自動でデータ検査が走り、問題は <code>検査結果</code> シートに一覧される(問題ゼロまで発行しない設計)</li>
+</ul>
+<h2>5. トラブルシューティング</h2>
+<table>
+<thead>
+<tr>
+<th>症状</th>
+<th>対処</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>「シートが見つかりません」</td>
+<td>シート名が §1 と完全一致しているか(前後の空白に注意)</td>
+</tr>
+<tr>
+<td>「名前付きセルがない」エラー</td>
+<td>§2 の15個の名前がすべて定義されているか</td>
+</tr>
+<tr>
+<td>PDFが出ない</td>
+<td>出力先フォルダのパスが実在するドライブか。OneDrive同期中のフォルダは避ける</td>
+</tr>
+<tr>
+<td>文字化け</td>
+<td><code>src/</code> ではなく <code>dist/cp932/</code> をインポートしたか</td>
+</tr>
+</tbody>
+</table></article>
+</div>
+</body>
+</html>

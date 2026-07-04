@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InvoiceForge — Excel請求書自動発行システム(VBA) | 業務自動化×Web制作 ポートフォリオ</title>
+<meta name="description" content="InvoiceForge — Excel請求書自動発行システム(VBA) — 作品詳細・ソースコード">
+<style>
+  :root{--bg:#f6f8fb;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--navy:#12203c}
+  @media (prefers-color-scheme: dark){:root{--bg:#0d1420;--card:#161f2e;--ink:#e9eef6;--sub:#94a4ba;--line:#273349;--navy:#0a1226}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif;background:var(--bg);color:var(--ink);line-height:1.9}
+  .top{background:var(--navy);color:#fff;padding:20px 0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  .top a{color:#5eead4;text-decoration:none;font-size:.85rem;font-weight:700}
+  .top h1{font-size:1.3rem;margin-top:6px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0 8px}
+  .btn{display:inline-block;text-decoration:none;font-weight:700;border-radius:10px;padding:11px 24px;font-size:.9rem}
+  .btn-main{background:var(--teal);color:#fff}
+  .btn-main:hover{background:var(--teal2)}
+  .btn-sub{border:1px solid var(--line);color:var(--ink);background:var(--card)}
+  .btn-sub:hover{border-color:var(--teal2);color:var(--teal2)}
+  article{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:34px 36px;margin:18px 0 60px}
+  article h1{font-size:1.45rem;margin-bottom:18px}
+  article h2{font-size:1.12rem;margin:30px 0 12px;padding-left:12px;border-left:4px solid var(--teal)}
+  article p{margin:10px 0;font-size:.93rem}
+  article ul,article ol{margin:10px 0 10px 1.5em;font-size:.93rem}
+  article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:.87rem}
+  article th,article td{border:1px solid var(--line);padding:9px 12px;text-align:left}
+  article th{background:rgba(13,148,136,.1)}
+  article code{background:rgba(13,148,136,.12);border-radius:4px;padding:1px 6px;font-size:.85em}
+  article pre{background:#0b1220;color:#c9f0dd;border-radius:10px;padding:16px;overflow-x:auto;margin:14px 0}
+  article pre code{background:none;padding:0;color:inherit}
+  article a{color:var(--teal2)}
+  article hr{border:none;border-top:1px dashed var(--line);margin:24px 0}
+  article em{color:var(--sub)}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap"><a href="../../index.html">← ポートフォリオへ戻る</a><h1>InvoiceForge — Excel請求書自動発行システム(VBA)</h1></div></div>
+<div class="wrap">
+  <div class="actions"><a class="btn btn-main" href="demo/index.html">▶ ブラウザで体験デモ</a><a class="btn btn-main" href="a1-invoice-vba.zip" download>📥 ソース一式をダウンロード</a><a class="btn btn-sub" href="setup.html">📖 導入手順を見る</a></div>
+  <article><h1>InvoiceForge — Excel請求書自動発行システム(VBA)</h1>
+<h2>誰の・どんな困りごとを解決するか</h2>
+<p>毎月、顧客リストと売上を見ながら請求書を1枚ずつ手作業で作成し、PDF保存してフォルダへ振り分けている個人事業主・小規模企業の経理担当。<strong>「請求書の日」が半日仕事になっている</strong>状態を解決する。</p>
+<h2>Before / After</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Before(手作業)</th>
+<th>After(InvoiceForge)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>顧客20社の請求書作成</td>
+<td>約4時間</td>
+<td><strong>約3分(ボタン1回)</strong></td>
+</tr>
+<tr>
+<td>消費税の端数・軽減税率</td>
+<td>電卓で都度計算(ミス源)</td>
+<td>税率別に自動集計・端数処理は設定制</td>
+</tr>
+<tr>
+<td>請求番号</td>
+<td>前月のファイルを見て手で採番</td>
+<td>発行履歴から自動採番(202606-001…)</td>
+</tr>
+<tr>
+<td>ファイル整理</td>
+<td>手動でフォルダ振り分け</td>
+<td>顧客別フォルダへ自動保存</td>
+</tr>
+</tbody>
+</table>
+<h2>デモ</h2>
+<p>▶ <strong><a href="./demo/index.html">ブラウザで動作を体験する</a></strong> — 本体(Excel VBA)と同じロジック(税率別集計・端数処理3方式・源泉徴収10.21%・自動採番)をブラウザで再現したシミュレーション。「一括発行」ボタンを押すと5社分の請求書が数秒で生成される。</p>
+<h2>機能一覧</h2>
+<ul>
+<li>顧客マスタ×売上明細から対象月の請求書を全顧客分一括生成</li>
+<li>適格請求書(インボイス)対応: 登録番号表示・税率別(10%/8%)の区分集計と端数処理</li>
+<li>源泉徴収(10.21%)の控除欄(顧客ごとにON/OFF)</li>
+<li>PDF一括出力: <code>出力先/2026-06/C001_顧客名/202606-001_請求書.pdf</code></li>
+<li>発行履歴シートへの自動記録と月内連番の自動採番</li>
+<li><strong>実行前データ検査</strong>: コード重複・日付不正・税率不正などを「検査結果」シートに一覧化し、問題ゼロになるまで発行しない(黙って壊れない)</li>
+<li>設定シート方式: 自社情報・振込先・端数処理・支払期限ルールをコード変更なしで変更可能</li>
+</ul>
+<h2>構成</h2>
+<pre><code>src/          VBAソース(UTF-8正本・6モジュール)
+dist/cp932/   日本語Windows向けインポート用(文字化け対策済み)
+sample-data/  顧客マスタ・売上明細のサンプルCSV
+docs/SETUP.md 導入手順(15分)
+demo/         ブラウザ体験デモ
+</code></pre>
+<h2>動作環境</h2>
+<p>Windows版 Excel 2016以降(32bit/64bit両対応・外部ライブラリ参照設定不要)。</p>
+<h2>実案件ではこう応用できます</h2>
+<ol>
+<li><strong>見積書・納品書・領収書</strong>への展開(同じ差し込み方式で3帳票セット化)</li>
+<li><strong>販売管理ソフトのCSV</strong>を売上明細として取り込み(弥生・freee等のエクスポートと接続)</li>
+<li><strong>メール下書きまで自動生成</strong>(Outlook連携で「請求書添付・宛先・件名」セット済みの下書きを作成)</li>
+</ol>
+<hr />
+<p><em>※ デモデータの社名・住所はすべて架空です。</em></p></article>
+</div>
+</body>
+</html>

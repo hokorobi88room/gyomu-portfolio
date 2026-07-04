@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Web情報の定点観測ツール — 体験デモ</title>
+<style>
+  :root{--bg:#f4f7f9;--card:#fff;--ink:#16202e;--sub:#5a6a80;--line:#e2e8f1;--teal:#0f766e;--teal2:#0d9488;--navy:#12203c;--green:#d1fae5;--red:#fee2e2}
+  @media(prefers-color-scheme:dark){:root{--bg:#0e1520;--card:#18212f;--ink:#e9eef6;--sub:#93a3b8;--line:#283446;--navy:#0a1226;--green:#0d3b2e;--red:#3b1717}}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Hiragino Sans","Yu Gothic UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  header{background:radial-gradient(ellipse at 80% -20%,rgba(14,116,144,.5),transparent 60%),var(--navy);color:#fff;padding:26px 20px}
+  header .wrap{max-width:900px;margin:0 auto}
+  header .badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px 14px;font-size:.75rem;margin-bottom:10px}
+  header h1{font-size:clamp(1.3rem,3.4vw,1.8rem);font-weight:800}
+  header p{opacity:.9;margin-top:6px;font-size:.9rem}
+  main{max-width:900px;margin:0 auto;padding:22px 20px 70px}
+  .note{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:10px 14px;font-size:.85rem;margin-bottom:18px}
+  @media(prefers-color-scheme:dark){.note{background:#332711;border-color:#7c5806;color:#fcd34d}}
+  .bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .btn{background:linear-gradient(135deg,#0e7490,#155e75);color:#fff;border:none;border-radius:10px;padding:11px 26px;font-weight:700;cursor:pointer;font-size:.95rem}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:16px}
+  .panel h2{font-size:.98rem;margin-bottom:6px}
+  .panel .sub{color:var(--sub);font-size:.8rem;margin-bottom:12px}
+  table{width:100%;border-collapse:collapse;font-size:.84rem}
+  th,td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+  th{background:rgba(13,148,136,.1);color:var(--sub);font-size:.76rem}
+  tr.new td{background:var(--green)} tr.gone td{background:var(--red);text-decoration:line-through;color:var(--sub)}
+  .tag{font-size:.7rem;font-weight:700;padding:1px 8px;border-radius:999px}
+  .tag.n{background:#10b981;color:#fff} .tag.g{background:#ef4444;color:#fff}
+  .thinking{color:var(--sub);text-align:center;padding:24px}
+  .fade{opacity:0;animation:f .5s forwards}@keyframes f{to{opacity:1}}
+  footer{background:#0a101e;color:#7688a3;font-size:.75rem;text-align:center;padding:24px;line-height:2}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <span class="badge">Python・体験デモ</span>
+  <h1>Web情報の定点観測ツール</h1>
+  <p>複数サイトの公開情報を自動収集し「昨日から何が変わったか」だけを色分けExcelに。毎朝30分の巡回をコマンド1回に。</p>
+</div></header>
+<main>
+  <div class="note">これは体験デモです。実物はPythonで動き、robots.txt尊重・アクセス間隔制御を実装レベルで守ります。ボタンを押すと「前回との差分」を検出する様子を再現します。</div>
+  <div class="bar">
+    <button class="btn" id="run">▶ 今朝の巡回を実行</button>
+    <span style="font-size:.82rem;color:var(--sub)">対象例：新商品一覧・価格表（公開情報のみ）</span>
+  </div>
+  <div class="panel" id="pOut" style="display:none">
+    <h2>📊 差分レポート(Excel出力イメージ)</h2>
+    <div class="sub">緑＝新規に増えた行 / 赤＝前回から消えた行。変化した所だけ一目で分かります。</div>
+    <div id="out"></div>
+  </div>
+  <div class="panel" id="pSum" style="display:none"><h2>🧾 サマリ</h2><div id="sum"></div></div>
+</main>
+<footer>※ ポートフォリオ用のデモです。データはすべて架空です。規約・法令に反する収集は行いません。</footer>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const rows=[
+  {n:"2026/07/03",t:"夏の新商品Aを発売",c:"新着",st:"same"},
+  {n:"2026/07/04",t:"数量限定セット販売開始",c:"新着",st:"new"},
+  {n:"2026/06/28",t:"梅雨キャンペーン",c:"終了",st:"gone"},
+  {n:"2026/07/01",t:"送料改定のお知らせ",c:"重要",st:"same"},
+  {n:"2026/07/04",t:"人気商品Bが再入荷",c:"在庫",st:"new"}
+];
+$("run").onclick=()=>{
+  $("run").disabled=true;
+  $("pOut").style.display="block"; $("out").innerHTML='<div class="thinking">対象サイトへアクセス間隔を守って巡回し、前回との差分を照合しています…</div>';
+  setTimeout(render,900);
+};
+function render(){
+  const body=rows.map(r=>{
+    const cls=r.st==="new"?"new":r.st==="gone"?"gone":"";
+    const tag=r.st==="new"?'<span class="tag n">NEW</span>':r.st==="gone"?'<span class="tag g">消滅</span>':"";
+    return '<tr class="'+cls+'"><td>'+r.n+'</td><td>'+r.t+'</td><td>'+r.c+'</td><td>'+tag+'</td></tr>';
+  }).join("");
+  $("out").innerHTML='<div class="fade"><table><thead><tr><th>日付</th><th>タイトル</th><th>区分</th><th>状態</th></tr></thead><tbody>'+body+'</tbody></table></div>';
+  $("pSum").style.display="block";
+  $("sum").innerHTML='<div class="fade" style="font-size:.9rem">・新規に増えた行：<b style="color:#10b981">2件</b>（限定セット販売、商品B再入荷）<br>・前回から消えた行：<b style="color:#ef4444">1件</b>（梅雨キャンペーン終了）<br>・変化なし：2件<br><span style="color:var(--sub);font-size:.82rem">→ 変化があった朝だけ通知する運用にもできます。毎朝サイトを見に行く必要がなくなります。</span></div>';
+}
+</script>
+</body>
+</html>
