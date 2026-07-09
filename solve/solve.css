@@ -7,7 +7,8 @@
 /* 共通の細部 */
 [hidden]{display:none !important}
 .solve-body{min-height:100vh; display:flex; flex-direction:column}
-.solve-main{flex:1}
+.solve-main{flex:1; position:relative; overflow:hidden}
+.solve-main>.dx{position:relative; z-index:1}
 .solve-topbar{
   position:sticky; top:0; z-index:40; background:var(--glass);
   backdrop-filter:saturate(180%) blur(14px); -webkit-backdrop-filter:saturate(180%) blur(14px);

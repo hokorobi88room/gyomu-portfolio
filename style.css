@@ -519,6 +519,20 @@ h1,h2,h3{line-height:1.4; font-weight:700; letter-spacing:.01em}
 .diag__text p{margin-top:.7rem; color:var(--ink-2); font-size:.95rem; line-height:1.85}
 .diag__cta{flex:none}
 
+/* ---------- 19. 背景オーロラ(控えめ・transformのみでGPU軽量) ---------- */
+.aurora{position:absolute; inset:0; overflow:hidden; z-index:0; pointer-events:none}
+.aurora i{
+  position:absolute; border-radius:50%; filter:blur(52px); will-change:transform;
+  background:radial-gradient(circle, var(--hero-glow), transparent 64%);
+}
+.aurora i:nth-child(1){width:52vmax; height:52vmax; top:-26vmax; right:-14vmax; opacity:.85; animation:aur-a 26s ease-in-out infinite alternate}
+.aurora i:nth-child(2){width:36vmax; height:36vmax; bottom:-20vmax; left:-12vmax; opacity:.55; animation:aur-b 34s ease-in-out infinite alternate}
+.aurora i:nth-child(3){width:24vmax; height:24vmax; top:32%; left:56%; opacity:.4; animation:aur-c 42s ease-in-out infinite alternate}
+@keyframes aur-a{from{transform:translate(0,0) scale(1)} to{transform:translate(-6vmax,4vmax) scale(1.16)}}
+@keyframes aur-b{from{transform:translate(0,0) scale(1)} to{transform:translate(5vmax,-3vmax) scale(1.12)}}
+@keyframes aur-c{from{transform:translate(0,0) scale(1)} to{transform:translate(-4vmax,-6vmax) scale(1.28)}}
+@media (prefers-reduced-motion: reduce){ .aurora i{animation:none} }
+
 /* ---------- 8. ユーティリティ ---------- */
 .center{text-align:center}
 .section__foot{margin-top:2.2rem; text-align:center; color:var(--ink-2); font-size:.86rem}
