@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>あなたの診断結果｜綻 流夢</title>
+<meta name="description" content="いま手作業に失っている時間とお金、そして自動化のデモ。あなたの診断結果です。">
+<meta name="theme-color" content="#0F766E">
+<meta name="robots" content="noindex,follow">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="solve.css">
+<script>
+(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
+</head>
+<body class="solve-body">
+
+<header class="solve-topbar">
+  <div class="solve-topbar__inner">
+    <a class="solve-back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      診断をやり直す
+    </a>
+    <span class="spacer"></span>
+    <button class="theme-toggle js-theme-toggle" type="button" aria-label="配色テーマを切り替え">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="solve-main">
+  <article class="rx" id="rxRoot" hidden>
+    <div class="rx__kicker" data-slot="kicker"></div>
+    <h1 data-slot="h1" tabindex="-1"></h1>
+    <p class="rx__sub" data-slot="sub"></p>
+
+    <section class="rx__empathy" data-slot="empathy"></section>
+
+    <section class="rx-loss">
+      <div class="rx-loss__flow" data-slot="lossflow"></div>
+      <p class="rx-loss__yen" data-slot="lossyen"></p>
+      <p class="rx-loss__narr" data-slot="lossnarr"></p>
+      <p class="rx-loss__dignity" data-slot="dignity"></p>
+    </section>
+
+    <section class="rx-sol">
+      <p class="rx-sol__claim" data-slot="claim"></p>
+      <p data-slot="reason"></p>
+      <p data-slot="evidence"></p>
+      <p class="rx-sol__restate" data-slot="restate"></p>
+      <div class="rx-ifs" data-slot="ifs"></div>
+    </section>
+
+    <section data-slot="demowrap"></section>
+
+    <section class="rx-faqsec">
+      <h2 style="font-size:1.2rem;margin-bottom:1rem">よくある「でも…」に、先に答えます</h2>
+      <div class="faq" data-slot="faq"></div>
+    </section>
+
+    <section>
+      <div class="rx-price" data-slot="price"></div>
+    </section>
+
+    <section>
+      <div class="rx-inline-cta" data-slot="inlinecta"></div>
+    </section>
+  </article>
+
+  <div class="rx" id="rxError" hidden>
+    <p style="text-align:center;color:var(--ink-2)">診断結果を読み込めませんでした。<br><a href="index.html">診断をやり直す</a></p>
+  </div>
+</main>
+
+<!-- 依頼ポップアップ(JSが中身を生成) -->
+<div class="popup" id="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+  <div class="popup__ov" data-close></div>
+  <div class="popup__card" role="document">
+    <button class="popup__close" data-close type="button" aria-label="閉じる">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div id="popupContent"></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="solve.js" defer></script>
+</body>
+</html>

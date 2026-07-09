@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30秒診断｜あなたの作業、年間で何日ぶん失っている？ — 綻 流夢</title>
+<meta name="description" content="2問答えるだけで、いま手作業に失っている時間とお金を計算し、その場で自動化のデモをお見せします。登録なし・30秒。">
+<meta name="theme-color" content="#0F766E">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="solve.css">
+<script>
+(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
+</head>
+<body class="solve-body">
+
+<header class="solve-topbar">
+  <div class="solve-topbar__inner">
+    <a class="solve-back" href="../index.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      ポートフォリオへ戻る
+    </a>
+    <span class="spacer"></span>
+    <button class="theme-toggle js-theme-toggle" type="button" aria-label="配色テーマを切り替え">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="solve-main">
+  <div class="dx">
+    <div class="dx-progress" id="dxProgress" hidden>
+      <span id="dot1"></span><span id="dot2"></span>
+    </div>
+
+    <!-- 入口(step0) -->
+    <div class="dx-q active" id="dxHero">
+      <div class="dx__overline">30-SECOND DIAGNOSIS</div>
+      <h1>なんとなく、毎日の作業が<br>重いあなたへ。</h1>
+      <p class="dx__sub">その「重さ」、何時間ぶんか知っていますか？ —— 2つ答えるだけで、いま失っている時間とお金を計算します。所要30秒、読み終える頃には、消し方もわかります。</p>
+      <div class="dx__start">
+        <button class="btn btn--primary" id="dxStart" type="button">診断をはじめる（無料・登録なし）</button>
+      </div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="dx-q" id="dxQ1">
+      <h2 class="dx-q__title">いちばん時間を奪われているのは？</h2>
+      <p class="dx-q__hint">近いものを1つ選んでください。ぴったりでなくて大丈夫です。</p>
+      <div class="dx-cards">
+        <button class="dx-card" data-p="copypaste" type="button">
+          <span class="dx-card__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
+          サイトを開いて、コピーして、貼り付けて…の往復
+        </button>
+        <button class="dx-card" data-p="transcribe" type="button">
+          <span class="dx-card__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4"/></svg></span>
+          会議やインタビューの録音を、聞いては止めて打つ
+        </button>
+        <button class="dx-card" data-p="invoice" type="button">
+          <span class="dx-card__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h4"/></svg></span>
+          毎月の請求書・見積書・集計づくり
+        </button>
+        <button class="dx-card" data-p="reception" type="button">
+          <span class="dx-card__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.4 5.5 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.4-6.5A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.8 1.5z"/></svg></span>
+          申込み対応。返信して、台帳に写して、数えて
+        </button>
+        <button class="dx-card" data-p="design" type="button">
+          <span class="dx-card__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21"/></svg></span>
+          サムネ・名札・バナーを1枚ずつ手作業で
+        </button>
+        <button class="dx-card" data-p="other" type="button">
+          <span class="dx-card__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></span>
+          この中にない／うまく言えない
+        </button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="dx-q" id="dxQ2">
+      <h2 class="dx-q__title">その作業、週にどれくらい？</h2>
+      <p class="dx-q__hint">ざっくりで大丈夫です。あなたの感覚で選んでください。</p>
+      <div class="dx-chips">
+        <button class="dx-chip" data-h="0.5" type="button">1時間未満</button>
+        <button class="dx-chip" data-h="2" type="button">約2時間</button>
+        <button class="dx-chip" data-h="5" type="button">約5時間</button>
+        <button class="dx-chip" data-h="10" type="button">約10時間</button>
+        <button class="dx-chip" data-h="15" type="button">それ以上</button>
+      </div>
+      <div class="dx-restart"><button type="button" id="dxBack">← ひとつ前に戻る</button></div>
+    </div>
+
+  </div>
+</main>
+
+<script src="solve.js" defer></script>
+</body>
+</html>

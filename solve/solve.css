@@ -1,0 +1,226 @@
+/* ============================================================
+   診断型ファネル solve.css
+   ../style.css のデザイントークン(--accent 等)を継承して使う。
+   本体サイトと同一の質感・ライト/ダーク両対応。
+   ============================================================ */
+
+/* 共通の細部 */
+[hidden]{display:none !important}
+.solve-body{min-height:100vh; display:flex; flex-direction:column}
+.solve-main{flex:1}
+.solve-topbar{
+  position:sticky; top:0; z-index:40; background:var(--glass);
+  backdrop-filter:saturate(180%) blur(14px); -webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.solve-topbar__inner{max-width:var(--maxw); margin:0 auto; padding:.65rem var(--pad-x); display:flex; align-items:center; gap:1rem}
+.solve-back{display:inline-flex; align-items:center; gap:.4em; color:var(--ink-2); font-size:.85rem; font-weight:500}
+.solve-back:hover{color:var(--accent-2); text-decoration:none}
+.solve-topbar .spacer{margin-left:auto}
+.theme-toggle{
+  width:36px; height:36px; flex:none; display:inline-grid; place-items:center;
+  border:1px solid var(--line-2); border-radius:9px; background:transparent; color:var(--ink-2); cursor:pointer;
+}
+.theme-toggle:hover{color:var(--accent-2); border-color:var(--accent)}
+
+/* ---------- 診断ページ ---------- */
+.dx{max-width:760px; margin:0 auto; padding:clamp(2.5rem,7vw,5rem) var(--pad-x) 5rem; text-align:center}
+.dx__overline{
+  font-family:var(--font-num); font-size:.72rem; font-weight:600; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--accent-2); display:inline-flex; align-items:center; gap:.6em; margin-bottom:1rem;
+}
+.dx__overline::before{content:""; width:22px; height:1px; background:var(--accent-line)}
+.dx h1{font-size:clamp(1.7rem,4.6vw,2.6rem); font-weight:700; line-height:1.4; text-wrap:balance}
+.dx__sub{margin-top:1.2rem; color:var(--ink-2); font-size:clamp(.95rem,2.3vw,1.05rem); line-height:1.9; max-width:34em; margin-inline:auto}
+.dx__start{margin-top:2rem}
+
+.dx-progress{display:flex; gap:.5rem; justify-content:center; margin-bottom:1.6rem}
+.dx-progress span{width:34px; height:4px; border-radius:2px; background:var(--line-2)}
+.dx-progress span.on{background:var(--accent)}
+
+.dx-q{display:none}
+.dx-q.active{display:block; animation:dxin .35s var(--ease)}
+@keyframes dxin{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:none}}
+.dx-q__title{font-size:clamp(1.2rem,3vw,1.6rem); font-weight:700; margin-bottom:.4rem}
+.dx-q__hint{color:var(--ink-3); font-size:.85rem; margin-bottom:1.8rem}
+
+.dx-cards{display:grid; grid-template-columns:repeat(2,1fr); gap:.8rem; text-align:left}
+@media (max-width:560px){ .dx-cards{grid-template-columns:1fr} }
+.dx-card{
+  display:flex; align-items:center; gap:.9rem; width:100%;
+  background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  padding:1.05rem 1.1rem; cursor:pointer; text-align:left; color:var(--ink);
+  font-size:.92rem; line-height:1.6; transition:border-color .15s var(--ease), transform .12s var(--ease), box-shadow .2s;
+}
+.dx-card:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:var(--shadow-md)}
+.dx-card:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.dx-card__ic{
+  width:42px; height:42px; flex:none; border-radius:11px; display:grid; place-items:center;
+  background:var(--accent-soft); color:var(--accent-2);
+}
+.dx-card__ic svg{width:22px; height:22px}
+
+.dx-chips{display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin-top:.5rem}
+.dx-chip{
+  font-family:var(--font-jp); font-size:.95rem; font-weight:600; color:var(--ink);
+  background:var(--surface); border:1px solid var(--line-2); border-radius:999px;
+  padding:.7rem 1.4rem; cursor:pointer; transition:all .15s var(--ease);
+}
+.dx-chip:hover{background:var(--accent); border-color:var(--accent); color:var(--on-accent); transform:translateY(-1px)}
+.dx-restart{margin-top:2rem}
+.dx-restart button{background:none; border:none; color:var(--ink-3); font-size:.82rem; cursor:pointer; text-decoration:underline; text-underline-offset:3px}
+.dx-restart button:hover{color:var(--accent-2)}
+
+/* ---------- 結果ページ ---------- */
+.rx{max-width:720px; margin:0 auto; padding:clamp(2rem,6vw,3.5rem) var(--pad-x) 5rem}
+.rx__kicker{font-family:var(--font-num); font-size:.72rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--accent-2); margin-bottom:.8rem}
+.rx h1{font-size:clamp(1.6rem,4.4vw,2.4rem); font-weight:700; line-height:1.45; letter-spacing:.005em}
+.rx__sub{margin-top:1rem; color:var(--ink-2); font-size:clamp(.95rem,2.2vw,1.05rem); line-height:1.9}
+.rx section{margin-top:clamp(2.4rem,6vw,3.6rem)}
+.rx p{line-height:1.95}
+.rx__empathy p{color:var(--ink); font-size:1rem; margin-top:1rem}
+.rx__empathy p:first-child{margin-top:0}
+
+/* 損失計算 */
+.rx-loss{
+  background:linear-gradient(135deg, var(--accent-soft), transparent 62%), var(--surface);
+  border:1px solid var(--accent-line); border-radius:var(--radius-lg); padding:clamp(1.6rem,4vw,2.2rem); box-shadow:var(--shadow-sm);
+}
+.rx-loss__flow{display:flex; align-items:center; flex-wrap:wrap; gap:.6rem 1rem}
+.rx-loss__cell{display:flex; flex-direction:column; gap:.2rem}
+.rx-loss__cell .n{font-family:var(--font-num); font-weight:600; font-size:clamp(1.6rem,5vw,2.4rem); line-height:1; color:var(--ink); letter-spacing:-.01em}
+.rx-loss__cell .n .u{font-size:.45em; color:var(--accent-2); margin-left:.15em}
+.rx-loss__cell .k{font-size:.74rem; color:var(--ink-2)}
+.rx-loss__arrow{color:var(--accent-2); font-family:var(--font-num); font-size:1.2rem}
+.rx-loss__yen{margin-top:1.3rem; padding-top:1.2rem; border-top:1px dashed var(--line-2); font-size:1.02rem; color:var(--ink)}
+.rx-loss__yen b{font-family:var(--font-num); color:var(--accent-2); font-size:1.25em}
+.rx-loss__narr{margin-top:1rem; color:var(--ink); font-size:1rem; line-height:1.95}
+.rx-loss__dignity{margin-top:.9rem; color:var(--ink-2); font-size:.9rem; padding-left:.9rem; border-left:2px solid var(--accent-line)}
+
+/* 解決策 */
+.rx-sol__claim{font-size:clamp(1.2rem,3.2vw,1.6rem); font-weight:700; line-height:1.55; color:var(--ink)}
+.rx-sol__claim .hl{color:var(--accent-2)}
+.rx-sol p{margin-top:.9rem; color:var(--ink-2); font-size:.96rem}
+.rx-sol__restate{color:var(--ink)!important; font-weight:500}
+.rx-ifs{margin-top:1.5rem; display:flex; flex-direction:column; gap:.7rem}
+.rx-if{display:flex; gap:.7rem; align-items:flex-start; background:var(--bg-2); border:1px solid var(--line); border-radius:12px; padding:.9rem 1.1rem; font-size:.92rem; color:var(--ink); line-height:1.8}
+.rx-if::before{content:"もし"; flex:none; font-family:var(--font-num); font-weight:600; font-size:.72rem; color:var(--accent-2); background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:6px; padding:.2rem .5rem; margin-top:.15rem}
+
+/* ---------- デモ(未完・共通) ---------- */
+.demo{margin-top:1.6rem; border:1px solid var(--line); border-radius:var(--radius-lg); overflow:hidden; background:var(--surface)}
+.demo__bar{display:flex; align-items:center; gap:.8rem; padding:.9rem 1.1rem; border-bottom:1px solid var(--line); background:var(--bg-2)}
+.demo__dots{display:flex; gap:5px}
+.demo__dots i{width:9px; height:9px; border-radius:50%; background:var(--line-2)}
+.demo__title{font-family:var(--font-num); font-size:.78rem; color:var(--ink-3); letter-spacing:.02em}
+.demo__stage{position:relative; padding:1.1rem; min-height:150px}
+.demo__btnwrap{padding:1.4rem; text-align:center}
+.demo__count{margin-top:.7rem; font-family:var(--font-num); font-size:.82rem; color:var(--ink-2)}
+.demo__count b{color:var(--accent-2)}
+
+.demo__lock{position:relative; margin-top:.4rem}
+.demo__lock-fade{position:absolute; left:0; right:0; top:-64px; height:64px; background:linear-gradient(to bottom, transparent, var(--surface)); pointer-events:none}
+.demo__lock-box{
+  border:1px dashed var(--accent-line); background:var(--accent-soft); border-radius:12px;
+  padding:1.1rem 1.2rem; text-align:center;
+}
+.demo__lock-title{font-weight:700; color:var(--ink); font-size:1rem}
+.demo__lock-reason{margin-top:.5rem; color:var(--ink-2); font-size:.85rem; line-height:1.85}
+
+/* table demo */
+.demo-table{width:100%; border-collapse:collapse; font-size:.84rem}
+.demo-table th,.demo-table td{padding:.5rem .7rem; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap}
+.demo-table th{color:var(--ink-3); font-size:.72rem; font-weight:600; font-family:var(--font-num)}
+.demo-table td:first-child{font-family:var(--font-num); color:var(--ink-3)}
+.demo-row-in{animation:rowin .3s var(--ease)}
+@keyframes rowin{from{opacity:0; transform:translateY(-4px)} to{opacity:1; transform:none}}
+.demo-blur td{filter:blur(3.5px); opacity:.5; user-select:none}
+
+/* invoice demo */
+.demo-invoices{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem}
+@media (max-width:560px){ .demo-invoices{grid-template-columns:1fr} }
+.demo-inv{border:1px solid var(--line-2); border-radius:10px; padding:.9rem; background:var(--bg-2)}
+.demo-inv__no{font-family:var(--font-num); font-size:.68rem; color:var(--ink-3)}
+.demo-inv__to{font-size:.86rem; font-weight:600; margin:.3rem 0; color:var(--ink)}
+.demo-inv__amt{font-family:var(--font-num); font-weight:600; color:var(--accent-2); font-size:1.05rem}
+
+/* reception demo */
+.demo-recep{display:flex; flex-direction:column; gap:.6rem}
+.demo-rec{border:1px solid var(--line-2); border-radius:10px; padding:.7rem .9rem; background:var(--bg-2)}
+.demo-rec__head{display:flex; justify-content:space-between; font-size:.86rem; color:var(--ink)}
+.demo-rec__head b{font-weight:600}
+.demo-rec__head .t{font-family:var(--font-num); color:var(--ink-3); font-size:.78rem}
+.demo-rec__steps{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.5rem}
+.demo-rec__steps span{font-size:.72rem; color:var(--accent-2); background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:6px; padding:.15rem .5rem}
+.demo-rec__steps span.stop{color:#d1685e; background:rgba(209,104,94,.1); border-color:rgba(209,104,94,.35)}
+
+/* grid demo (images) */
+.demo-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem}
+@media (max-width:480px){ .demo-grid{grid-template-columns:repeat(2,1fr)} }
+.demo-tile{border:1px solid var(--line-2); border-radius:10px; overflow:hidden; background:var(--bg-2); animation:rowin .3s var(--ease)}
+.demo-tile__badge{height:64px; display:grid; place-items:center; background:linear-gradient(135deg, var(--accent), var(--accent-2)); color:#fff}
+.demo-tile__badge svg{width:26px; height:26px; opacity:.9}
+.demo-tile__body{padding:.5rem .6rem}
+.demo-tile__name{font-size:.8rem; font-weight:600; color:var(--ink)}
+.demo-tile__role{font-size:.68rem; color:var(--ink-3)}
+
+/* transcribe demo */
+.demo-trans{display:flex; flex-direction:column; gap:.7rem; font-size:.88rem}
+.demo-tline{display:grid; grid-template-columns:auto 1fr; gap:.7rem; align-items:baseline}
+.demo-tline .meta{font-family:var(--font-num); font-size:.72rem; color:var(--ink-3); white-space:nowrap}
+.demo-tline .who{font-weight:600; color:var(--accent-2); margin-right:.4em}
+.demo-tline .txt{color:var(--ink); line-height:1.8}
+.demo-caret{display:inline-block; width:2px; height:1em; background:var(--accent); vertical-align:-2px; animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* 価格 */
+.rx-price{display:flex; align-items:baseline; gap:.8rem; flex-wrap:wrap; background:var(--bg-2); border:1px solid var(--line); border-radius:12px; padding:1.1rem 1.3rem}
+.rx-price__label{font-size:.82rem; color:var(--ink-2)}
+.rx-price__val{font-family:var(--font-num); font-weight:600; font-size:1.4rem; color:var(--accent-2)}
+.rx-price__note{width:100%; font-size:.78rem; color:var(--ink-3)}
+
+/* インラインCTA(ポップアップを閉じても残る) */
+.rx-inline-cta{margin-top:1.4rem; display:flex; gap:.7rem; flex-wrap:wrap; align-items:center}
+.rx-inline-cta .hint{font-size:.82rem; color:var(--ink-3)}
+
+/* other専用 */
+.rx-works-link{margin-top:1.2rem; font-size:.9rem}
+
+/* ---------- ポップアップ ---------- */
+.popup{position:fixed; inset:0; z-index:100; display:none; align-items:center; justify-content:center; padding:1.2rem}
+.popup.open{display:flex}
+.popup__ov{position:absolute; inset:0; background:rgba(8,12,16,.55); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px)}
+.popup__card{
+  position:relative; width:100%; max-width:460px; background:var(--surface);
+  border:1px solid var(--accent-line); border-radius:18px; box-shadow:var(--shadow-md);
+  padding:clamp(1.6rem,4vw,2.2rem); animation:popin .35s var(--ease);
+}
+@keyframes popin{from{opacity:0; transform:translateY(16px) scale(.98)} to{opacity:1; transform:none}}
+.popup__close{position:absolute; top:.7rem; right:.7rem; width:34px; height:34px; border:1px solid var(--line-2); border-radius:9px; background:transparent; color:var(--ink-2); cursor:pointer; display:grid; place-items:center}
+.popup__close:hover{color:var(--ink); border-color:var(--accent)}
+.popup__kicker{font-family:var(--font-num); font-size:.68rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--accent-2); margin-bottom:.9rem}
+.popup__body p{font-size:.95rem; line-height:1.95; color:var(--ink); margin-top:.8rem}
+.popup__body p:first-child{margin-top:0}
+.popup__body .lead{font-size:1.05rem; font-weight:600}
+.popup__buttons{margin-top:1.5rem; display:flex; flex-direction:column; gap:.6rem}
+.popup__buttons .btn{width:100%}
+.popup__sub{margin-top:.9rem; text-align:center; font-size:.82rem}
+.popup__sub a{color:var(--ink-2)}
+.popup__sub a:hover{color:var(--accent-2)}
+.popup__thanks{text-align:center}
+.popup__thanks h3{font-size:1.15rem; margin-bottom:.7rem}
+.popup__thanks p{color:var(--ink-2); font-size:.92rem; line-height:1.9}
+
+/* トースト */
+.toast{
+  position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px);
+  background:var(--ink); color:var(--bg); font-size:.85rem; padding:.8rem 1.2rem; border-radius:10px;
+  box-shadow:var(--shadow-md); opacity:0; transition:opacity .25s, transform .25s; z-index:110; max-width:90vw; text-align:center;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+/* reduced-motion */
+@media (prefers-reduced-motion: reduce){
+  .dx-q.active,.demo-row-in,.demo-tile,.popup__card{animation:none}
+  .demo-caret{animation:none}
+  .toast{transition:opacity .01s}
+}
