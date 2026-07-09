@@ -3,396 +3,752 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>業務がわかる。コードが書ける。AIを使いこなす。| 業務自動化×Web制作 ポートフォリオ</title>
-<meta name="description" content="Excel VBA実務6年×最新AI開発環境。業務自動化(VBA/GAS)・Web制作(LP/HP)・システム開発(Python/Go)のポートフォリオ。">
-<meta property="og:title" content="業務自動化×Web制作 ポートフォリオ">
-<meta property="og:description" content="業務がわかる。コードが書ける。AIを使いこなす。— VBA/GAS・LP/HP・Python/Go の実装サンプル8作品">
+<title>綻 流夢｜業務自動化 × Web制作 — その手作業、来月から消せます</title>
+<meta name="description" content="Excel VBAの現場改善6年 × 最新のAI開発環境。請求書発行・集計・フォーム受付などの業務自動化(VBA/GAS)、LP・ホームページ制作、Python/Goのツール開発を、壊れず引き継げる品質で。">
+<link rel="canonical" href="https://hokorobi88room.github.io/gyomu-portfolio/">
+<meta name="theme-color" content="#0F766E">
+
+<!-- OGP -->
 <meta property="og:type" content="website">
+<meta property="og:title" content="綻 流夢｜業務自動化 × Web制作">
+<meta property="og:description" content="その手作業、来月から消せます。Excel・GAS・Webの業務自動化を、壊れない作りで。実際に動くサンプル9作品を公開中。">
+<meta property="og:url" content="https://hokorobi88room.github.io/gyomu-portfolio/">
+<meta property="og:image" content="https://hokorobi88room.github.io/gyomu-portfolio/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- favicon -->
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<!-- fonts: 2ファミリー・計4ウェイト(Zen Kaku 400/500/700 + Inter 600) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#f6f8fb; --card:#ffffff; --ink:#16202e; --sub:#5a6a80; --line:#e2e8f1;
-    --teal:#0f766e; --teal2:#0d9488; --amber:#d97706; --navy:#12203c;
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+<!-- テーマ初期化(描画前・チラつき防止) -->
+<script>
+(function(){try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t);}catch(e){}})();
+</script>
+
+<!-- 構造化データ -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ProfessionalService",
+  "name":"綻 流夢 — 業務自動化 × Web制作",
+  "description":"Excel VBA・GAS・Python・Goによる業務自動化と、LP・ホームページ制作を副業で受託。",
+  "url":"https://hokorobi88room.github.io/gyomu-portfolio/",
+  "areaServed":"JP",
+  "availableLanguage":"ja",
+  "priceRange":"¥10,000〜",
+  "serviceType":["業務自動化","Excel VBA開発","Google Apps Script開発","LP制作","ホームページ制作","Python・Goツール開発"],
+  "provider":{
+    "@type":"Person",
+    "name":"綻 流夢",
+    "jobTitle":"業務自動化エンジニア／Web制作",
+    "sameAs":[
+      "https://coconala.com/users/6171856",
+      "https://crowdworks.jp/public/employees/7084138"
+    ]
   }
-  @media (prefers-color-scheme: dark){
-    :root{ --bg:#0d1420; --card:#161f2e; --ink:#e9eef6; --sub:#94a4ba; --line:#273349; --navy:#0a1226; }
-  }
-  *{box-sizing:border-box; margin:0; padding:0}
-  html{scroll-behavior:smooth}
-  body{font-family:"Noto Sans JP","Hiragino Sans",sans-serif; background:var(--bg); color:var(--ink); line-height:1.85}
-  .wrap{max-width:1080px; margin:0 auto; padding:0 22px}
-  section{padding:72px 0}
-  h2{font-size:clamp(1.3rem,3.4vw,1.7rem); text-align:center; margin-bottom:10px}
-  .lead{text-align:center; color:var(--sub); font-size:.92rem; margin-bottom:40px}
-
-  /* ヒーロー */
-  .hero{background:
-      radial-gradient(ellipse at 80% -10%, rgba(13,148,136,.35), transparent 55%),
-      radial-gradient(ellipse at 10% 110%, rgba(217,119,6,.18), transparent 50%),
-      var(--navy);
-    color:#fff; padding:92px 0 84px; position:relative; overflow:hidden}
-  .hero h1{font-size:clamp(1.6rem,5vw,2.6rem); font-weight:900; line-height:1.55; letter-spacing:.01em}
-  .hero h1 span{color:#5eead4}
-  .hero p.sub{margin-top:18px; max-width:640px; opacity:.9; font-size:clamp(.9rem,2.4vw,1rem)}
-  .hero .tags{display:flex; gap:10px; flex-wrap:wrap; margin-top:26px; font-size:.78rem}
-  .hero .tags span{border:1px solid rgba(255,255,255,.35); background:rgba(255,255,255,.08); border-radius:999px; padding:5px 16px}
-  .hero .cta-row{margin-top:34px; display:flex; gap:14px; flex-wrap:wrap}
-  .btn{display:inline-block; text-decoration:none; font-weight:700; border-radius:12px; padding:13px 30px; font-size:.95rem; transition:transform .12s, box-shadow .2s}
-  .btn-main{background:linear-gradient(135deg,#14b8a6,#0f766e); color:#fff; box-shadow:0 8px 22px rgba(13,148,136,.4)}
-  .btn-main:hover{transform:translateY(-2px)}
-  .btn-ghost{border:1px solid rgba(255,255,255,.5); color:#fff}
-  .btn-ghost:hover{background:rgba(255,255,255,.1)}
-
-  /* 選ばれる理由 */
-  .why .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
-  @media(max-width:760px){ .why .grid{grid-template-columns:1fr} }
-  .why .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:28px 26px; box-shadow:0 1px 3px rgba(16,32,64,.05)}
-  .why .num{font-size:.72rem; font-weight:700; letter-spacing:.2em; color:var(--teal2)}
-  .why h3{font-size:1.06rem; margin:8px 0 10px}
-  .why p{font-size:.88rem; color:var(--sub)}
-
-  /* 作品ギャラリー */
-  .works{background:linear-gradient(var(--bg), var(--bg))}
-  .tabs{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:34px}
-  .tab{border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:999px; padding:9px 22px; font-size:.85rem; font-weight:600; cursor:pointer; transition:all .15s}
-  .tab.active{background:var(--teal); border-color:var(--teal); color:#fff}
-  .work-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:22px}
-  @media(max-width:760px){ .work-grid{grid-template-columns:1fr} }
-  .work{background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 1px 4px rgba(16,32,64,.06); transition:transform .15s, box-shadow .2s}
-  .work:hover{transform:translateY(-3px); box-shadow:0 10px 28px rgba(16,32,64,.12)}
-  .work .head{padding:18px 22px 14px; color:#fff; position:relative}
-  .work .head .cat{font-size:.68rem; letter-spacing:.18em; opacity:.9}
-  .work .head h3{font-size:1.12rem; margin-top:2px}
-  .head-vba{background:linear-gradient(120deg,#1d6f42,#0f4c2a)}
-  .head-gas{background:linear-gradient(120deg,#3f6212,#2a4409)}
-  .head-web{background:linear-gradient(120deg,#1e3a8a,#172554)}
-  .head-py {background:linear-gradient(120deg,#0e7490,#164e63)}
-  .head-go {background:linear-gradient(120deg,#0369a1,#0c4a6e)}
-  .work .body{padding:18px 22px 22px; display:flex; flex-direction:column; gap:12px; flex:1}
-  .work .problem{font-size:.88rem}
-  .work .metric{display:inline-flex; align-items:center; gap:8px; background:rgba(13,148,136,.1); border:1px solid rgba(13,148,136,.3); color:var(--teal2); border-radius:10px; padding:6px 14px; font-size:.82rem; font-weight:700; width:fit-content}
-  .work ul.feat{list-style:none; font-size:.8rem; color:var(--sub)}
-  .work ul.feat li{padding-left:1.2em; position:relative}
-  .work ul.feat li::before{content:"▸"; position:absolute; left:0; color:var(--teal2)}
-  .work .links{margin-top:auto; display:flex; gap:10px; flex-wrap:wrap}
-  .work .links a{font-size:.8rem; font-weight:700; text-decoration:none; border-radius:9px; padding:8px 16px}
-  .work .links .demo{background:var(--teal); color:#fff}
-  .work .links .demo:hover{background:var(--teal2)}
-  .work .links .src{border:1px solid var(--line); color:var(--ink)}
-  .work .links .src:hover{border-color:var(--teal2); color:var(--teal2)}
-
-  /* 制作の流れ */
-  .flow ol{list-style:none; counter-reset:step; display:grid; grid-template-columns:repeat(5,1fr); gap:14px}
-  @media(max-width:860px){ .flow ol{grid-template-columns:1fr} }
-  .flow li{counter-increment:step; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 16px; text-align:center; position:relative}
-  .flow li::before{content:counter(step); display:block; width:34px; height:34px; margin:0 auto 10px; border-radius:50%; background:var(--teal); color:#fff; font-weight:800; line-height:34px}
-  .flow h3{font-size:.92rem; margin-bottom:4px}
-  .flow p{font-size:.76rem; color:var(--sub); line-height:1.7}
-
-  /* 料金 */
-  .price table{width:100%; max-width:760px; margin:0 auto; border-collapse:collapse; background:var(--card); border-radius:14px; overflow:hidden; box-shadow:0 1px 4px rgba(16,32,64,.06)}
-  .price th,.price td{padding:15px 18px; font-size:.9rem; border-bottom:1px solid var(--line); text-align:left}
-  .price thead th{background:var(--teal); color:#fff; font-size:.82rem}
-  .price td.p{font-weight:800; color:var(--teal2); white-space:nowrap}
-  .price .note{text-align:center; font-size:.78rem; color:var(--sub); margin-top:14px}
-
-  /* お問い合わせ */
-  .contact{background:var(--navy); color:#fff; text-align:center}
-  .contact h2{color:#fff}
-  .contact p{opacity:.85; font-size:.92rem; max-width:560px; margin:0 auto 30px}
-
-  footer{background:#0a101e; color:#7688a3; font-size:.75rem; text-align:center; padding:30px 20px; line-height:2}
-</style>
+}
+</script>
 </head>
 <body>
 
-<!-- ヒーロー -->
-<header class="hero">
-  <div class="wrap">
-    <p style="font-size:clamp(1rem,2.6vw,1.25rem);font-weight:700;color:#5eead4;margin-bottom:14px;letter-spacing:.06em">綻 流夢 <span style="color:#c9d3e2;font-weight:500;font-size:.82em">（ほころび るうむ）</span></p>
-    <h1>業務がわかる。<br>コードが書ける。<span>AIを使いこなす。</span></h1>
-    <p class="sub">Excel VBAの現場改善 6年。その業務知識を土台に、最新のAI開発環境で 業務自動化・Web制作・システム開発を「速く・壊れない品質で」提供します。</p>
-    <div class="tags">
-      <span>Excel VBA / GAS</span><span>LP・ホームページ制作</span><span>Python</span><span>Go</span><span>スピード対応</span>
-    </div>
-    <div class="cta-row">
-      <a class="btn btn-main" href="#works">作品を見る(8作品)</a>
-      <a class="btn btn-ghost" href="#contact">相談する(無料)</a>
-    </div>
+<!-- ============ グローバルヘッダー ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="site-header__inner">
+    <a class="brand" href="#top" aria-label="綻 流夢 ホーム">
+      <svg class="brand__mark" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="15" fill="#0F766E"/>
+        <g fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round">
+          <path d="M20 44 C24 34, 40 34, 44 24" opacity=".55" stroke-dasharray="0.1 8.4"/>
+          <path d="M32 34 C26 28, 26 20, 32 15"/>
+          <path d="M32 34 C38 28, 38 20, 32 15"/>
+          <path d="M32 34 C32 27, 32 21, 32 15" opacity=".7"/>
+        </g>
+        <circle cx="32" cy="35" r="2.6" fill="#fff"/>
+      </svg>
+      <span class="brand__name">綻 流夢<small>ほころび るうむ</small></span>
+    </a>
+    <nav class="site-nav" aria-label="セクション">
+      <a class="nav-link" href="#works">実績</a>
+      <a class="nav-link" href="#stack">技術</a>
+      <a class="nav-link" href="#flow">流れ</a>
+      <a class="nav-link" href="#price">料金</a>
+      <a class="nav-link" href="#faq">FAQ</a>
+      <a class="btn btn--primary btn--sm header-cta" href="#contact">相談する</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色テーマを切り替え">
+        <svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </nav>
   </div>
 </header>
 
-<!-- 選ばれる理由 -->
-<section class="why">
-  <div class="wrap">
-    <h2>選ばれる理由</h2>
-    <p class="lead">「AIで作れます」だけの制作者と、何が違うのか</p>
-    <div class="grid">
-      <div class="card">
-        <div class="num">REASON 01</div>
-        <h3>業務の現場を6年見てきた</h3>
-        <p>新卒から6年以上、事業会社の現場でExcel業務改善を担当。「例外データで壊れるマクロ」「引き継げないツール」がなぜ生まれるかを、作る側と使う側の両方から知っています。</p>
+<main id="top">
+
+<!-- ============ ヒーロー ============ -->
+<section class="hero">
+  <div class="hero__inner">
+    <p class="hero__name reveal">PORTFOLIO&nbsp;／&nbsp;<b>綻 流夢</b></p>
+    <h1 class="reveal">その手作業、<br class="h1-br"><span class="hl">来月から消せます。</span></h1>
+    <p class="hero__sub reveal">Excel・GAS・Webの業務自動化を、<b>壊れない作り</b>で。<br>現場のExcel改善6年を土台に、最新のAI開発環境で「速く・引き継げる品質」に仕上げます。</p>
+    <div class="hero__cta reveal">
+      <a class="btn btn--primary" href="#contact">ココナラで相談する</a>
+      <a class="btn btn--ghost" href="#works">実績を見る</a>
+    </div>
+
+    <div class="stat-bar reveal" id="statBar" aria-label="実績サマリー">
+      <div class="stat">
+        <div class="stat__num"><span class="num-font" data-count="9">0</span></div>
+        <div class="stat__label">動くサンプル実績</div>
       </div>
-      <div class="card">
-        <div class="num">REASON 02</div>
-        <h3>AIで従来の大幅なスピードアップく作る</h3>
-        <p>最新のAI開発環境を本格導入し、実装を高速化。浮いた時間を要件のヒアリングとテストに使うので、「速いのに壊れない」が成立します。納期はお急ぎもご相談くださいから。</p>
+      <div class="stat">
+        <div class="stat__num"><span class="num-font" data-count="6">0</span><span class="u">年</span></div>
+        <div class="stat__label">Excel VBA 実務経験</div>
       </div>
-      <div class="card">
-        <div class="num">REASON 03</div>
-        <h3>実務者の目で検収して納品</h3>
-        <p>AIの出力をそのまま納品しません。境界値・例外系のテストを書き、実務の運用(締め日・共有・引き継ぎ)に耐えるかを人間の目で確認してからお渡しします。</p>
+      <div class="stat">
+        <div class="stat__num"><span class="num-font" data-count="0.024" data-decimals="3">0</span><span class="u">秒</span></div>
+        <div class="stat__label">最速処理（実測・2千ファイル）</div>
+      </div>
+      <div class="stat">
+        <div class="stat__num"><span class="num-font" data-count="7">0</span><span class="u">日</span></div>
+        <div class="stat__label">納品後の無償修正</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 作品 -->
-<section class="works" id="works">
+<!-- ============ 選ばれる理由 ============ -->
+<section class="section" id="why">
   <div class="wrap">
-    <h2>作品(8作品・すべて動くサンプル)</h2>
-    <p class="lead">それぞれ「誰のどんな困りごとを解決するか」から設計しています。数字はサンプルシナリオでの効果です</p>
-    <div class="tabs">
-      <button class="tab active" data-f="all">すべて</button>
-      <button class="tab" data-f="auto">業務自動化</button>
-      <button class="tab" data-f="web">Web制作</button>
-      <button class="tab" data-f="dev">システム開発</button>
+    <div class="section__head reveal">
+      <span class="overline">WHY ME</span>
+      <h2>「AIで作れます」の先にある、3つの違い</h2>
+      <p class="lead">発注者が本当に困るのは、納品の“あと”。そこを実務の目で埋めます。</p>
     </div>
-    <div class="work-grid" id="grid">
+    <div class="why__grid">
 
-      <div class="work" data-cat="auto">
-        <div class="head head-vba"><div class="cat">EXCEL VBA</div><h3>請求書自動発行システム</h3></div>
-        <div class="body">
-          <p class="problem">顧客リストから請求書を1枚ずつ手作業で作りPDF保存…「請求書の日」が半日仕事になっている方へ。</p>
-          <span class="metric">⏱ 月4時間 → 3分(20社一括)</span>
-          <ul class="feat">
-            <li>インボイス対応(税率別集計・登録番号)・源泉徴収</li>
-            <li>顧客別フォルダへPDF一括出力・自動採番・発行履歴</li>
-            <li>実行前データ検査 — 問題ゼロになるまで発行しない</li>
-          </ul>
-          <div class="links">
-            <a class="demo" target="_blank" rel="noopener" href="works/a1-invoice-vba/demo/index.html">▶ ブラウザで体験</a>
-            <a class="src" target="_blank" rel="noopener" href="works/a1-invoice-vba/index.html">ソース+導入手順</a>
-          </div>
+      <div class="why-card reveal">
+        <div class="why-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
         </div>
+        <div class="why-card__no">REASON 01</div>
+        <h3>業務の“現場”を6年見てきた</h3>
+        <p>事業会社の現場でExcel業務改善を6年担当。作る側と使う側、両方の立場を知っています。</p>
+        <p class="eg"><b>だから</b><span>「例外データで止まるマクロ」「引き継げないツール」が生まれる理由を、先回りして潰せます。</span></p>
       </div>
 
-      <div class="work" data-cat="auto">
-        <div class="head head-vba"><div class="cat">EXCEL VBA</div><h3>複数ブック自動集計ダッシュボード</h3></div>
-        <div class="body">
-          <p class="problem">支店ごとの月次報告Excelが毎月20ファイル。列の並びも様式もバラバラのまま、コピペで合算している方へ。</p>
-          <span class="metric">⏱ 月8時間 → 5分(20ブック統合)</span>
-          <ul class="feat">
-            <li>様式ゆらぎを自動吸収(列順・ヘッダー位置・別名)</li>
-            <li>月次推移・前年比・担当者ランキングを自動構築</li>
-            <li>取込結果を成功/警告/失敗で色分け報告</li>
-          </ul>
-          <div class="links">
+      <div class="why-card reveal">
+        <div class="why-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+        </div>
+        <div class="why-card__no">REASON 02</div>
+        <h3>速く、でも壊れない</h3>
+        <p>最新のAI開発環境で実装を高速化。浮いた時間を、要件のヒアリングとテストに回します。</p>
+        <p class="eg"><b>だから</b><span>「速いのに雑」になりません。スピードは、品質を削るためではなく積むために使います。</span></p>
+      </div>
+
+      <div class="why-card reveal">
+        <div class="why-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="why-card__no">REASON 03</div>
+        <h3>実務者の目で検収して納品</h3>
+        <p>AIの出力をそのまま渡しません。境界値・例外系のテストを書いて確認します。</p>
+        <p class="eg"><b>だから</b><span>締め日・共有・引き継ぎといった“実務の運用”に耐える状態で、はじめてお渡しします。</span></p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ 署名帯(AIとの違い) ============ -->
+<section class="signature">
+  <div class="signature__inner reveal">
+    <p class="mark">The Difference</p>
+    <p class="signature__lead"><q>「AIで作れます」は、もう<span class="hl">珍しくありません。</span><br>差がつくのは、その<span class="hl">あと</span>です。</q></p>
+    <p class="signature__body">
+      <span class="kw">例外データで止まらないか。半年後に、自分で直せるか。担当が代わっても引き継げるか。</span><br>
+      その“地味だけど効くところ”を、実務の目で詰めるのが私の役割です。
+    </p>
+  </div>
+</section>
+
+<!-- ============ 実績(作品) ============ -->
+<section class="section section--alt" id="works">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <span class="overline">Works</span>
+      <h2>実績 — 9作品、すべて動くサンプル</h2>
+      <p class="lead">「誰の・どんな困りごとを解決するか」から設計しています。数字はサンプルシナリオでの効果です。</p>
+    </div>
+
+    <div class="filter-bar reveal" role="tablist" aria-label="作品の絞り込み">
+      <button class="chip is-active" data-filter="all" role="tab" aria-selected="true">すべて</button>
+      <button class="chip" data-filter="vba" role="tab" aria-selected="false"><span class="t">#</span>VBA</button>
+      <button class="chip" data-filter="gas" role="tab" aria-selected="false"><span class="t">#</span>GAS</button>
+      <button class="chip" data-filter="python" role="tab" aria-selected="false"><span class="t">#</span>Python</button>
+      <button class="chip" data-filter="go" role="tab" aria-selected="false"><span class="t">#</span>Go</button>
+      <button class="chip" data-filter="lp" role="tab" aria-selected="false"><span class="t">#</span>LP</button>
+      <button class="chip" data-filter="hp" role="tab" aria-selected="false"><span class="t">#</span>HP</button>
+    </div>
+
+    <div class="work-grid">
+
+      <!-- a1 請求書 VBA -->
+      <article class="work-card reveal" data-tags="vba">
+        <div class="work-card__visual">
+          <span class="work-card__badge">Excel VBA</span>
+          <svg class="mock" viewBox="0 0 240 135" aria-hidden="true">
+            <rect class="fl2" x="52" y="22" width="120" height="100" rx="6"/>
+            <rect class="fl2" x="60" y="17" width="120" height="100" rx="6"/>
+            <rect class="pane" x="68" y="12" width="120" height="100" rx="6"/>
+            <rect class="fl" x="80" y="24" width="42" height="7" rx="2"/>
+            <rect class="fl2" x="80" y="40" width="96" height="4" rx="2"/>
+            <rect class="fl2" x="80" y="50" width="96" height="4" rx="2"/>
+            <rect class="fl2" x="80" y="60" width="72" height="4" rx="2"/>
+            <rect class="ac" x="126" y="86" width="50" height="16" rx="3"/>
+          </svg>
+          <span class="work-card__imgnote">イメージ図</span>
+        </div>
+        <div class="work-card__body">
+          <div class="work-card__tags"><span>業務自動化</span><span>Excel VBA</span></div>
+          <h3>請求書 自動発行システム</h3>
+          <div class="cs">
+            <div class="cs__row cs__row--p"><span class="cs__k">課題</span><span class="cs__v">顧客ごとに請求書を1枚ずつ手作業でPDF化。「請求書の日」が半日仕事に。</span></div>
+            <div class="cs__row"><span class="cs__k">解決</span><span class="cs__v">顧客マスタ×売上から全社分を一括生成。インボイス(税率別)・源泉・自動採番・履歴まで。</span></div>
+          </div>
+          <div class="work-card__metric"><span class="big num-font">月4h → 3分</span><span class="lbl">20社ぶんを<br>ボタン1回で一括発行</span></div>
+          <div class="work-card__links">
+            <a class="demo" target="_blank" rel="noopener" href="works/a1-invoice-vba/demo/index.html">▶ 体験する</a>
+            <a class="src" target="_blank" rel="noopener" href="works/a1-invoice-vba/index.html">ソース＋導入手順</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- a2 集計 VBA -->
+      <article class="work-card reveal" data-tags="vba">
+        <div class="work-card__visual">
+          <span class="work-card__badge">Excel VBA</span>
+          <svg class="mock" viewBox="0 0 240 135" aria-hidden="true">
+            <rect class="pane" x="40" y="18" width="160" height="99" rx="6"/>
+            <rect class="fl2" x="52" y="30" width="40" height="5" rx="2"/>
+            <g>
+              <rect class="fl" x="54" y="92" width="14" height="14" rx="2"/>
+              <rect class="fl" x="76" y="80" width="14" height="26" rx="2"/>
+              <rect class="fl" x="98" y="66" width="14" height="40" rx="2"/>
+              <rect class="ac" x="120" y="52" width="14" height="54" rx="2"/>
+              <rect class="fl" x="142" y="72" width="14" height="34" rx="2"/>
+              <rect class="fl" x="164" y="60" width="14" height="46" rx="2"/>
+            </g>
+            <line class="acs" x1="52" y1="60" x2="182" y2="46"/>
+          </svg>
+          <span class="work-card__imgnote">イメージ図</span>
+        </div>
+        <div class="work-card__body">
+          <div class="work-card__tags"><span>業務自動化</span><span>Excel VBA</span></div>
+          <h3>複数ブック集計ダッシュボード</h3>
+          <div class="cs">
+            <div class="cs__row cs__row--p"><span class="cs__k">課題</span><span class="cs__v">支店ごとの月次Excelが毎月20ファイル。列順も様式もバラバラのままコピペ合算。</span></div>
+            <div class="cs__row"><span class="cs__k">解決</span><span class="cs__v">列順・ヘッダー位置・別名の揺れを自動吸収して統合。前年比・ランキングを自動構築。</span></div>
+          </div>
+          <div class="work-card__metric"><span class="big num-font">月8h → 5分</span><span class="lbl">20ブックを<br>1枚に統合</span></div>
+          <div class="work-card__links">
             <a class="demo" target="_blank" rel="noopener" href="works/a2-report-vba/demo/index.html">▶ 体験する</a>
-            <a class="src" target="_blank" rel="noopener" href="works/a2-report-vba/index.html">ソース+サンプル20ブック</a>
+            <a class="src" target="_blank" rel="noopener" href="works/a2-report-vba/index.html">ソース＋サンプル20ブック</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="work" data-cat="auto">
-        <div class="head head-gas"><div class="cat">GOOGLE APPS SCRIPT</div><h3>フォーム受付の完全自動化</h3></div>
-        <div class="body">
-          <p class="problem">申込みが来るたびに確認メールを手で送り、台帳へ転記し、定員を数えているイベント・教室の主催者へ。</p>
-          <span class="metric">✉ 確認メール・台帳・定員管理を24時間自動化</span>
-          <ul class="feat">
-            <li>自動返信・重複検知・Slack通知・日次サマリ</li>
-            <li>定員到達でフォームを自動クローズ</li>
-            <li>多重発火ロック・エラー即時通知(黙って止まらない)</li>
-          </ul>
-          <div class="links">
+      <!-- a3 GAS -->
+      <article class="work-card reveal" data-tags="gas">
+        <div class="work-card__visual">
+          <span class="work-card__badge">GAS</span>
+          <svg class="mock" viewBox="0 0 240 135" aria-hidden="true">
+            <rect class="pane" x="26" y="34" width="66" height="66" rx="6"/>
+            <rect class="fl2" x="36" y="46" width="46" height="5" rx="2"/>
+            <rect class="fl2" x="36" y="58" width="46" height="5" rx="2"/>
+            <rect class="fl2" x="36" y="70" width="30" height="5" rx="2"/>
+            <path class="acs" d="M96 67 H128" marker-end=""/>
+            <path class="acs" d="M120 60 L130 67 L120 74"/>
+            <g transform="translate(140,34)">
+              <rect class="pane" x="0" y="0" width="74" height="20" rx="4"/>
+              <rect class="pane" x="0" y="24" width="74" height="20" rx="4"/>
+              <rect class="pane" x="0" y="48" width="74" height="20" rx="4"/>
+              <circle class="ac" cx="12" cy="10" r="5"/><rect class="fl2" x="24" y="7" width="40" height="5" rx="2"/>
+              <circle class="ac" cx="12" cy="34" r="5"/><rect class="fl2" x="24" y="31" width="40" height="5" rx="2"/>
+              <circle class="ac" cx="12" cy="58" r="5"/><rect class="fl2" x="24" y="55" width="40" height="5" rx="2"/>
+            </g>
+          </svg>
+          <span class="work-card__imgnote">イメージ図</span>
+        </div>
+        <div class="work-card__body">
+          <div class="work-card__tags"><span>業務自動化</span><span>Google Apps Script</span></div>
+          <h3>フォーム受付の完全自動化</h3>
+          <div class="cs">
+            <div class="cs__row cs__row--p"><span class="cs__k">課題</span><span class="cs__v">申込みのたびに確認メールを手送り、台帳へ転記、定員を数える…の繰り返し。</span></div>
+            <div class="cs__row"><span class="cs__k">解決</span><span class="cs__v">自動返信・重複検知・通知・日次サマリ。定員到達でフォームを自動クローズ。</span></div>
+          </div>
+          <div class="work-card__metric"><span class="big num-font">24時間 無人</span><span class="lbl">受付〜台帳〜定員管理を<br>自動化</span></div>
+          <div class="work-card__links">
             <a class="demo" target="_blank" rel="noopener" href="works/a3-form-gas/demo/index.html">▶ 体験する</a>
-            <a class="src" target="_blank" rel="noopener" href="works/a3-form-gas/index.html">ソース+導入手順</a>
+            <a class="src" target="_blank" rel="noopener" href="works/a3-form-gas/index.html">ソース＋導入手順</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="work" data-cat="web">
-        <div class="head head-web"><div class="cat">WEB制作</div><h3>高コンバージョン縦長LP</h3></div>
-        <div class="body">
-          <p class="problem">広告の受け皿になる「売れる1ページ」が欲しい方へ。きれいなだけでなく、構成の理由を説明できるLPを。</p>
-          <span class="metric">💡 全11セクションに「制作解説モード」つき</span>
-          <ul class="feat">
-            <li>問題提起→共感→解決→証明→保証→価格の売れる型</li>
-            <li>?ボタンで各セクションの心理的役割を表示</li>
-            <li>画像ゼロ・1ファイルで高速表示(Lighthouse対策済み)</li>
-          </ul>
-          <div class="links">
-            <a class="demo" target="_blank" rel="noopener" href="works/w1-course-lp/index.html">▶ LPを見る(解説モードON推奨)</a>
+      <!-- w1 LP -->
+      <article class="work-card reveal" data-tags="lp">
+        <div class="work-card__visual">
+          <span class="work-card__badge">LP</span>
+          <svg class="mock" viewBox="0 0 240 135" aria-hidden="true">
+            <rect class="pane" x="86" y="8" width="68" height="150" rx="6"/>
+            <rect class="ac2" x="94" y="16" width="52" height="20" rx="3"/>
+            <rect class="fl2" x="94" y="42" width="52" height="8" rx="2"/>
+            <rect class="fl2" x="94" y="54" width="34" height="6" rx="2"/>
+            <rect class="fl" x="94" y="68" width="24" height="16" rx="2"/><rect class="fl" x="122" y="68" width="24" height="16" rx="2"/>
+            <rect class="fl2" x="94" y="90" width="52" height="6" rx="2"/>
+            <rect class="ac" x="104" y="104" width="32" height="12" rx="3"/>
+          </svg>
+          <span class="work-card__imgnote">イメージ図</span>
+        </div>
+        <div class="work-card__body">
+          <div class="work-card__tags"><span>Web制作</span><span>ランディングページ</span></div>
+          <h3>高コンバージョン 縦長LP</h3>
+          <div class="cs">
+            <div class="cs__row cs__row--p"><span class="cs__k">課題</span><span class="cs__v">広告の受け皿になる「売れる1ページ」がほしい。きれいなだけでは足りない。</span></div>
+            <div class="cs__row"><span class="cs__k">解決</span><span class="cs__v">問題提起→共感→証明→保証→価格の型で構成。各セクションに設計意図を注記。</span></div>
+          </div>
+          <div class="work-card__metric"><span class="big num-font">全11セクション</span><span class="lbl">に「制作解説モード」<br>—なぜ売れるかを可視化</span></div>
+          <div class="work-card__links">
+            <a class="demo" target="_blank" rel="noopener" href="works/w1-course-lp/index.html">▶ LPを見る（解説ON推奨）</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="work" data-cat="web">
-        <div class="head head-web"><div class="cat">WEB制作</div><h3>店舗ホームページ(4ページ)</h3></div>
-        <div class="body">
-          <p class="problem">「店名で検索されたとき、ちゃんとした顔がない」小規模店舗の方へ。必要十分で美しい4ページ構成。</p>
-          <span class="metric">🏪 営業時間・メニュー・地図まで情報設計込み</span>
-          <ul class="feat">
-            <li>ローカルSEO(構造化データ)・OGP設定済み</li>
-            <li>画像ゼロでも成立する配色設計(写真に差し替えるだけ)</li>
-            <li>スマホ最優先のレスポンシブ</li>
-          </ul>
-          <div class="links">
+      <!-- w2 HP -->
+      <article class="work-card reveal" data-tags="hp">
+        <div class="work-card__visual">
+          <span class="work-card__badge">HP</span>
+          <svg class="mock" viewBox="0 0 240 135" aria-hidden="true">
+            <rect class="pane" x="34" y="20" width="172" height="95" rx="6"/>
+            <rect class="fl2" x="34" y="20" width="172" height="16" rx="6"/>
+            <circle class="ac" cx="46" cy="28" r="3"/>
+            <rect class="fl2" x="150" y="25" width="14" height="5" rx="2"/><rect class="fl2" x="170" y="25" width="14" height="5" rx="2"/>
+            <rect class="ac2" x="46" y="46" width="148" height="30" rx="4"/>
+            <rect class="fl" x="46" y="84" width="44" height="24" rx="3"/>
+            <rect class="fl" x="98" y="84" width="44" height="24" rx="3"/>
+            <rect class="fl" x="150" y="84" width="44" height="24" rx="3"/>
+          </svg>
+          <span class="work-card__imgnote">イメージ図</span>
+        </div>
+        <div class="work-card__body">
+          <div class="work-card__tags"><span>Web制作</span><span>ホームページ</span></div>
+          <h3>店舗ホームページ（4ページ）</h3>
+          <div class="cs">
+            <div class="cs__row cs__row--p"><span class="cs__k">課題</span><span class="cs__v">店名で検索されても「ちゃんとした顔」がない小規模店舗。</span></div>
+            <div class="cs__row"><span class="cs__k">解決</span><span class="cs__v">営業時間・メニュー・地図まで情報設計。ローカルSEO(構造化データ)・OGP込み。</span></div>
+          </div>
+          <div class="work-card__metric"><span class="big num-font">4ページ</span><span class="lbl">必要十分で美しい<br>スマホ最優先の構成</span></div>
+          <div class="work-card__links">
             <a class="demo" target="_blank" rel="noopener" href="works/w2-cafe-site/index.html">▶ サイトを見る</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="work" data-cat="dev">
-        <div class="head head-py"><div class="cat">PYTHON / STREAMLIT</div><h3>売上データ分析ダッシュボード</h3></div>
-        <div class="body">
-          <p class="problem">売上データがExcelで開くのがつらいサイズになり、毎月同じピボット集計を繰り返している方へ。</p>
-          <span class="metric">📊 10万行の分析3秒以内(テストで保証)</span>
-          <ul class="feat">
-            <li>CSV/Excelを放り込むだけ。列名ゆらぎ自動吸収</li>
-            <li>前年比・異常日検知(±3σ)・Excelレポート出力</li>
-            <li>テスト11件つき(正常系・異常系・性能)</li>
-          </ul>
-          <div class="links">
+      <!-- p1 dashboard Python -->
+      <article class="work-card reveal" data-tags="python">
+        <div class="work-card__visual">
+          <span class="work-card__badge">Python</span>
+          <svg class="mock" viewBox="0 0 240 135" aria-hidden="true">
+            <rect class="pane" x="30" y="16" width="180" height="103" rx="6"/>
+            <rect class="fl2" x="40" y="26" width="40" height="16" rx="3"/>
+            <rect class="fl2" x="86" y="26" width="40" height="16" rx="3"/>
+            <rect class="ac" x="132" y="26" width="40" height="16" rx="3"/>
+            <path class="acs" d="M42 100 L70 84 L92 92 L120 66 L150 76 L182 52" stroke-width="2.2"/>
+            <path class="fl2" d="M42 100 L70 84 L92 92 L120 66 L150 76 L182 52 L182 108 L42 108 Z" opacity=".12"/>
+            <circle class="ac2" cx="120" cy="66" r="3"/><circle class="ac2" cx="182" cy="52" r="3"/>
+          </svg>
+          <span class="work-card__imgnote">イメージ図</span>
+        </div>
+        <div class="work-card__body">
+          <div class="work-card__tags"><span>データ・開発</span><span>Python / Streamlit</span></div>
+          <h3>売上データ分析ダッシュボード</h3>
+          <div class="cs">
+            <div class="cs__row cs__row--p"><span class="cs__k">課題</span><span class="cs__v">売上データがExcelで開くのもつらいサイズに。毎月同じピボットを繰り返す。</span></div>
+            <div class="cs__row"><span class="cs__k">解決</span><span class="cs__v">CSV/Excelを入れるだけ。前年比・異常日検知(±3σ)・Excelレポート出力まで。</span></div>
+          </div>
+          <div class="work-card__metric"><span class="big num-font">3秒以内</span><span class="lbl">10万行の分析<br>テスト11件で保証</span></div>
+          <div class="work-card__links">
             <a class="demo" target="_blank" rel="noopener" href="works/p1-sales-dashboard/demo/index.html">▶ 体験する</a>
-            <a class="src" target="_blank" rel="noopener" href="works/p1-sales-dashboard/index.html">ソース+テスト</a>
+            <a class="src" target="_blank" rel="noopener" href="works/p1-sales-dashboard/index.html">ソース＋テスト</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="work" data-cat="dev">
-        <div class="head head-py"><div class="cat">PYTHON</div><h3>Web情報の定点観測 → Excelレポート</h3></div>
-        <div class="body">
-          <p class="problem">毎朝、複数サイトの公開情報を目視チェックして表に転記している方へ。「何が変わったか」だけ知りたいはず。</p>
-          <span class="metric">🔎 毎朝30分の巡回 → コマンド1発+差分検知</span>
-          <ul class="feat">
-            <li>robots.txt尊重・間隔制御をコードで強制(行儀の良い収集)</li>
-            <li>新規=緑・消滅=赤の色分きExcel自動生成</li>
-            <li>テスト12件つき・構造化ログで定時実行と好相性</li>
-          </ul>
-          <div class="links">
+      <!-- p2 webwatch Python -->
+      <article class="work-card reveal" data-tags="python">
+        <div class="work-card__visual">
+          <span class="work-card__badge">Python</span>
+          <svg class="mock" viewBox="0 0 240 135" aria-hidden="true">
+            <rect class="pane" x="40" y="18" width="160" height="99" rx="6"/>
+            <rect class="fl2" x="40" y="18" width="160" height="16" rx="6"/>
+            <rect class="fl2" x="52" y="45" width="136" height="9" rx="2"/>
+            <rect class="ac" x="52" y="45" width="6" height="9" rx="2"/>
+            <rect class="fl2" x="52" y="60" width="136" height="9" rx="2"/>
+            <rect class="bad" x="52" y="75" width="6" height="9" rx="2"/><rect class="fl2" x="64" y="75" width="124" height="9" rx="2" opacity=".12"/>
+            <rect class="ac" x="52" y="90" width="6" height="9" rx="2"/><rect class="fl2" x="64" y="90" width="124" height="9" rx="2"/>
+          </svg>
+          <span class="work-card__imgnote">イメージ図</span>
+        </div>
+        <div class="work-card__body">
+          <div class="work-card__tags"><span>データ・開発</span><span>Python</span></div>
+          <h3>Web情報の定点観測 → Excel</h3>
+          <div class="cs">
+            <div class="cs__row cs__row--p"><span class="cs__k">課題</span><span class="cs__v">毎朝、複数サイトの公開情報を目視チェックして表に転記している。</span></div>
+            <div class="cs__row"><span class="cs__k">解決</span><span class="cs__v">robots.txt尊重で自動巡回し差分だけ抽出。新規=緑・消滅=赤でExcel化。</span></div>
+          </div>
+          <div class="work-card__metric"><span class="big num-font">毎朝30分 → 1発</span><span class="lbl">巡回＋差分検知を<br>コマンド一つで</span></div>
+          <div class="work-card__links">
             <a class="demo" target="_blank" rel="noopener" href="works/p2-webwatch-excel/demo/index.html">▶ 体験する</a>
-            <a class="src" target="_blank" rel="noopener" href="works/p2-webwatch-excel/index.html">ソース+テスト</a>
+            <a class="src" target="_blank" rel="noopener" href="works/p2-webwatch-excel/index.html">ソース＋テスト</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="work" data-cat="dev">
-        <div class="head head-go"><div class="cat">GO</div><h3>大量ファイル高速処理CLI</h3></div>
-        <div class="body">
-          <p class="problem">日々溜まる数千のCSV/ログがExcelでは開けない規模に。レガシーシステム移行のデータ統合・検証にも。</p>
-          <span class="metric">⚡ 2,000ファイル(10万行)の結合 0.024秒(実測)</span>
-          <ul class="feat">
-            <li>並行処理(goroutine)・列名で自動整列・形式変換</li>
-            <li>依存ゼロの単一バイナリ(置くだけで動く)</li>
-            <li>テーブル駆動テスト14ケース+再現可能なベンチマーク</li>
-          </ul>
-          <div class="links">
+      <!-- g1 Go CLI -->
+      <article class="work-card reveal" data-tags="go">
+        <div class="work-card__visual">
+          <span class="work-card__badge">Go</span>
+          <svg class="mock" viewBox="0 0 240 135" aria-hidden="true">
+            <rect class="fl" x="36" y="20" width="168" height="95" rx="6" opacity=".85"/>
+            <rect class="fl2" x="36" y="20" width="168" height="15" rx="6"/>
+            <circle class="pane" cx="47" cy="27" r="2.6"/><circle class="pane" cx="56" cy="27" r="2.6"/><circle class="pane" cx="65" cy="27" r="2.6"/>
+            <rect class="ac" x="48" y="48" width="8" height="6" rx="1"/><rect class="pane" x="60" y="48" width="70" height="6" rx="2" opacity=".7"/>
+            <rect class="pane" x="48" y="62" width="110" height="6" rx="2" opacity=".45"/>
+            <rect class="pane" x="48" y="76" width="90" height="6" rx="2" opacity=".45"/>
+            <rect class="ac2" x="48" y="94" width="60" height="7" rx="2"/><rect class="ac" x="112" y="94" width="9" height="7" rx="1"/>
+          </svg>
+          <span class="work-card__imgnote">イメージ図</span>
+        </div>
+        <div class="work-card__body">
+          <div class="work-card__tags"><span>データ・開発</span><span>Go</span></div>
+          <h3>大量ファイル 高速処理CLI</h3>
+          <div class="cs">
+            <div class="cs__row cs__row--p"><span class="cs__k">課題</span><span class="cs__v">数千のCSV/ログがExcelで開けない規模に。移行データの統合・検証にも。</span></div>
+            <div class="cs__row"><span class="cs__k">解決</span><span class="cs__v">並行処理で結合・整列・形式変換。依存ゼロの単一バイナリで「置くだけ」。</span></div>
+          </div>
+          <div class="work-card__metric"><span class="big num-font">0.024秒</span><span class="lbl">2,000ファイル(10万行)の<br>結合・実測値</span></div>
+          <div class="work-card__links">
             <a class="demo" target="_blank" rel="noopener" href="works/g1-gocrunch/demo/index.html">▶ 体験する</a>
-            <a class="src" target="_blank" rel="noopener" href="works/g1-gocrunch/index.html">ソース+ベンチマーク</a>
+            <a class="src" target="_blank" rel="noopener" href="works/g1-gocrunch/index.html">ソース＋ベンチマーク</a>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div class="work" data-cat="dev">
-        <div class="head" style="background:linear-gradient(120deg,#b45309,#78350f)"><div class="cat">画像自動生成</div><h3>コードでデザインを量産</h3></div>
-        <div class="body">
-          <p class="problem">サムネ・証明書・名札などを、文字を差し替えるだけで大量に。手作業のデザインを自動化したい方へ。</p>
-          <span class="metric">🖼 CSVから100枚を数秒で一括生成</span>
-          <ul class="feat">
-            <li>SVGで組むので文字が崩れない・ブランド統一</li>
-            <li>サムネ/証明書/名札などテンプレを差し替え</li>
-            <li>ブラウザで作ってPNG保存・量産は自動化</li>
-          </ul>
-          <div class="links">
+      <!-- d1 画像自動生成 -->
+      <article class="work-card reveal" data-tags="python">
+        <div class="work-card__visual">
+          <span class="work-card__badge">画像生成</span>
+          <svg class="mock" viewBox="0 0 240 135" aria-hidden="true">
+            <g>
+              <rect class="pane" x="52" y="26" width="40" height="34" rx="4"/><rect class="ac" x="58" y="32" width="18" height="18" rx="2"/><rect class="fl2" x="58" y="52" width="28" height="4" rx="2"/>
+              <rect class="pane" x="100" y="26" width="40" height="34" rx="4"/><circle class="ac2" cx="120" cy="41" r="9"/><rect class="fl2" x="106" y="52" width="28" height="4" rx="2"/>
+              <rect class="pane" x="148" y="26" width="40" height="34" rx="4"/><rect class="ac" x="154" y="32" width="28" height="12" rx="2"/><rect class="fl2" x="154" y="52" width="20" height="4" rx="2"/>
+              <rect class="pane" x="52" y="70" width="40" height="34" rx="4"/><circle class="ac" cx="72" cy="85" r="9"/><rect class="fl2" x="58" y="96" width="28" height="4" rx="2"/>
+              <rect class="pane" x="100" y="70" width="40" height="34" rx="4"/><rect class="ac2" x="106" y="76" width="28" height="12" rx="2"/><rect class="fl2" x="106" y="96" width="20" height="4" rx="2"/>
+              <rect class="pane" x="148" y="70" width="40" height="34" rx="4"/><rect class="ac" x="154" y="76" width="18" height="18" rx="2"/><rect class="fl2" x="154" y="96" width="28" height="4" rx="2"/>
+            </g>
+          </svg>
+          <span class="work-card__imgnote">イメージ図</span>
+        </div>
+        <div class="work-card__body">
+          <div class="work-card__tags"><span>データ・開発</span><span>画像自動生成</span></div>
+          <h3>コードでデザインを量産</h3>
+          <div class="cs">
+            <div class="cs__row cs__row--p"><span class="cs__k">課題</span><span class="cs__v">サムネ・証明書・名札などを、文字を差し替えるだけで大量に作りたい。</span></div>
+            <div class="cs__row"><span class="cs__k">解決</span><span class="cs__v">SVGをコードで組むので文字が崩れずブランド統一。テンプレ差し替えで量産。</span></div>
+          </div>
+          <div class="work-card__metric"><span class="big num-font">100枚 / 数秒</span><span class="lbl">CSVから<br>一括生成</span></div>
+          <div class="work-card__links">
             <a class="demo" target="_blank" rel="noopener" href="works/d1-image-factory/index.html">▶ 体験する</a>
           </div>
         </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ 技術スタック ============ -->
+<section class="section" id="stack">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <span class="overline">Stack</span>
+      <h2>対応できる技術</h2>
+      <p class="lead">「何ができるか」を、専門用語ではなく“できること”で。</p>
+    </div>
+
+    <div class="stack__group reveal">
+      <div class="stack__label"><span class="dot"></span>主力 <span class="sub">Core</span></div>
+      <div class="tech-grid">
+        <div class="tech">
+          <div class="tech__name">Excel VBA</div>
+          <div class="tech__desc">Excelの繰り返し作業を、ボタン1つで自動化。請求書・集計・帳票づくり。</div>
+        </div>
+        <div class="tech">
+          <div class="tech__name">Google Apps Script</div>
+          <div class="tech__desc">スプレッドシート・フォーム・Gmailを自動でつなぐ。受付や通知の無人化。</div>
+        </div>
+        <div class="tech">
+          <div class="tech__name">Python</div>
+          <div class="tech__desc">大量データの集計・分析・レポート化。手作業では重い処理を任せる。</div>
+        </div>
+        <div class="tech">
+          <div class="tech__name">HTML / CSS / JS</div>
+          <div class="tech__desc">軽くて速い、静的なLP・ホームページ。ライブラリに頼らず自作。</div>
+        </div>
       </div>
+    </div>
 
+    <div class="stack__group reveal">
+      <div class="stack__label"><span class="dot" style="background:var(--ink-3)"></span>対応可 <span class="sub">Available</span></div>
+      <div class="tech-grid">
+        <div class="tech tech--sub">
+          <div class="tech__name">Go</div>
+          <div class="tech__desc">大量ファイルを高速処理する、置くだけの単一ツール。</div>
+        </div>
+        <div class="tech tech--sub">
+          <div class="tech__name">Streamlit</div>
+          <div class="tech__desc">ブラウザで動く、社内向けのかんたんダッシュボード。</div>
+        </div>
+        <div class="tech tech--sub">
+          <div class="tech__name">スクレイピング</div>
+          <div class="tech__desc">公開情報を自動収集（robots.txt尊重・行儀よく）。</div>
+        </div>
+        <div class="tech tech--sub">
+          <div class="tech__name">Power Query / 関数</div>
+          <div class="tech__desc">マクロなしでできる自動集計のご提案も。</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="stack__note reveal">ご要望の技術がここに無くても、<b>まずはご相談ください</b>。近い手段で実現方法をご提案します。</p>
+  </div>
+</section>
+
+<!-- ============ 制作の流れ ============ -->
+<section class="section section--alt" id="flow">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <span class="overline">Flow</span>
+      <h2>ご相談から納品までの流れ</h2>
+      <p class="lead">専門用語ではなく、業務の言葉でやり取りします。ご提案・お見積りまでは無料です。</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-step reveal">
+        <div class="tl-step__head"><span class="tl-step__no num-font">1</span><span class="tl-step__line"></span></div>
+        <h3>ヒアリング</h3>
+        <p>いまのやり方と困りごとを伺います。実ファイルの拝見や、10分の質問シートで十分です。</p>
+        <span class="tl-step__day">目安：即日〜</span>
+      </div>
+      <div class="tl-step reveal">
+        <div class="tl-step__head"><span class="tl-step__no num-font">2</span><span class="tl-step__line"></span></div>
+        <h3>ご提案・お見積り</h3>
+        <p>実現方法・納期・金額を1ページにまとめてご提示。ここまでは無料です。</p>
+        <span class="tl-step__day">目安：1〜2日</span>
+      </div>
+      <div class="tl-step reveal">
+        <div class="tl-step__head"><span class="tl-step__no num-font">3</span><span class="tl-step__line"></span></div>
+        <h3>制作</h3>
+        <p>合意後に実装。動く途中経過の画面つきで進捗をご報告します。</p>
+        <span class="tl-step__day">目安：3〜10日</span>
+      </div>
+      <div class="tl-step reveal">
+        <div class="tl-step__head"><span class="tl-step__no num-font">4</span><span class="tl-step__line"></span></div>
+        <h3>検収・修正</h3>
+        <p>実際に触っていただき、ご納得いくまで修正します（納品まで回数無制限）。</p>
+        <span class="tl-step__day">目安：2〜3日</span>
+      </div>
+      <div class="tl-step reveal">
+        <div class="tl-step__head"><span class="tl-step__no num-font">5</span><span class="tl-step__line"></span></div>
+        <h3>納品・その後</h3>
+        <p>説明書つきで納品。納品後1週間は無償で修正対応します。</p>
+        <span class="tl-step__day">保証：1週間 無償</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 制作の流れ -->
-<section class="flow">
+<!-- ============ 料金 ============ -->
+<section class="section" id="price">
   <div class="wrap">
-    <h2>制作の流れ</h2>
-    <p class="lead">専門用語を使わず、業務の言葉でやり取りします</p>
-    <ol>
-      <li><h3>ヒアリング</h3><p>現状のやり方と困りごとを伺います(ファイル拝見・10分の質問シート)</p></li>
-      <li><h3>ご提案・見積り</h3><p>実現方法・納期・金額を1ページで。ここまで無料です</p></li>
-      <li><h3>制作</h3><p>AI開発環境で高速実装。進捗は途中経過の画面つきでご報告</p></li>
-      <li><h3>検収・修正</h3><p>実際に触っていただき、納得いくまで修正します</p></li>
-      <li><h3>納品・その後</h3><p>説明書つきで納品。動かなくなったらご相談ください</p></li>
-    </ol>
-  </div>
-</section>
-
-<!-- 料金 -->
-<section class="price">
-  <div class="wrap">
-    <h2>料金の目安</h2>
-    <p class="lead">オープン記念価格です。正式なお見積りはヒアリング後に確定します</p>
-    <table>
-      <thead><tr><th>メニュー</th><th>内容</th><th>価格(税込)</th></tr></thead>
-      <tbody>
-        <tr><td>Excelマクロ開発(小)</td><td>1機能の自動化・既存マクロの修正/高速化</td><td class="p">10,000円〜</td></tr>
-        <tr><td>Excelツール開発(中)</td><td>請求書発行・集計ダッシュボード級の一式</td><td class="p">30,000円〜</td></tr>
-        <tr><td>GAS自動化</td><td>フォーム受付・スプレッドシート連携・通知</td><td class="p">15,000円〜</td></tr>
-        <tr><td>LP制作</td><td>構成提案込み・スマホ完璧・お急ぎもご相談ください</td><td class="p">15,000円〜</td></tr>
-        <tr><td>ホームページ制作</td><td>5ページ構成・構造化データ・OGP込み</td><td class="p">30,000円〜</td></tr>
-        <tr><td>Python/Goツール開発</td><td>データ処理・定点観測・高速CLI等</td><td class="p">30,000円〜</td></tr>
-      </tbody>
-    </table>
-    <p class="note">修正対応: 納品まで無制限・納品後1週間まで無償。お急ぎ(24〜48時間)は+50%で承ります。</p>
-  </div>
-</section>
-
-<!-- 問い合わせ -->
-<section class="contact" id="contact">
-  <div class="wrap">
-    <h2>まずは「こんなことできる?」だけでも</h2>
-    <p>各プラットフォームのメッセージから、お気軽にご相談ください。</p>
-    <div class="cta-row" style="justify-content:center; display:flex; gap:14px; flex-wrap:wrap">
-      <a class="btn btn-main" href="https://coconala.com/users/6171856" target="_blank" rel="noopener">ココナラで相談する</a>
-      <a class="btn btn-ghost" href="https://crowdworks.jp/public/employees/7084138" target="_blank" rel="noopener">クラウドワークスで相談する</a>
+    <div class="section__head reveal">
+      <span class="overline">Pricing</span>
+      <h2>料金の目安</h2>
+      <p class="lead">予算感がつかめるよう、代表的な3タイプを先に。正式なお見積りはヒアリング後に確定します。</p>
     </div>
-    <p style="font-size:.78rem; opacity:.65; margin-top:18px">※ お返事は24時間以内を心がけています。</p>
+
+    <div class="plans">
+      <div class="plan reveal">
+        <div class="plan__name">Excelマクロ（小）</div>
+        <div class="plan__price num-font">10,000円<small>〜</small></div>
+        <p class="plan__desc">1機能の自動化や、既存マクロの修正・高速化。「この作業だけ楽にしたい」に。</p>
+      </div>
+      <div class="plan plan--featured reveal">
+        <span class="plan__tag">よく選ばれます</span>
+        <div class="plan__name">自動化ツール一式</div>
+        <div class="plan__price num-font">30,000円<small>〜</small></div>
+        <p class="plan__desc">請求書発行・集計ダッシュボード・GAS連携など、一連の業務をまるごと自動化。</p>
+      </div>
+      <div class="plan reveal">
+        <div class="plan__name">Web制作</div>
+        <div class="plan__price num-font">15,000円<small>〜</small></div>
+        <p class="plan__desc">LP（15,000円〜）／ ホームページ（30,000円〜）。構成提案・スマホ最適化込み。</p>
+      </div>
+    </div>
+
+    <details class="price-detail reveal">
+      <summary>すべての料金メニューを見る</summary>
+      <table class="price-table">
+        <thead><tr><th>メニュー</th><th>内容</th><th style="text-align:right">価格（税込）</th></tr></thead>
+        <tbody>
+          <tr><td>Excelマクロ開発（小）</td><td>1機能の自動化・既存マクロの修正/高速化</td><td class="p">10,000円〜</td></tr>
+          <tr><td>Excelツール開発（中）</td><td>請求書発行・集計ダッシュボード級の一式</td><td class="p">30,000円〜</td></tr>
+          <tr><td>GAS自動化</td><td>フォーム受付・スプレッドシート連携・通知</td><td class="p">15,000円〜</td></tr>
+          <tr><td>LP制作</td><td>構成提案込み・スマホ最適化</td><td class="p">15,000円〜</td></tr>
+          <tr><td>ホームページ制作</td><td>5ページ構成・構造化データ・OGP込み</td><td class="p">30,000円〜</td></tr>
+          <tr><td>Python/Goツール開発</td><td>データ処理・定点観測・高速CLI 等</td><td class="p">30,000円〜</td></tr>
+        </tbody>
+      </table>
+    </details>
+    <p class="plan__note reveal">修正対応：納品まで回数無制限・納品後1週間まで無償。お急ぎ（24〜48時間）は+50%で承ります。</p>
+
+    <div class="examples">
+      <div class="eg-card reveal">
+        <div class="eg-card__ttl">毎月の請求書発行を自動化したい</div>
+        <div class="eg-card__row"><span>概算 30,000円〜</span><span>約5営業日</span></div>
+      </div>
+      <div class="eg-card reveal">
+        <div class="eg-card__ttl">フォーム受付・自動返信をまるごと自動化（GAS）</div>
+        <div class="eg-card__row"><span>概算 15,000円〜</span><span>約4営業日</span></div>
+      </div>
+      <div class="eg-card reveal">
+        <div class="eg-card__ttl">広告の受け皿になるLPを1ページ</div>
+        <div class="eg-card__row"><span>概算 15,000円〜</span><span>約7営業日</span></div>
+      </div>
+    </div>
+    <p class="eg-card__cap reveal">※ いずれも内容によって前後する概算・目安です。まずは作業内容をお聞かせください。</p>
   </div>
 </section>
 
-<footer>
-  各作品のデモデータ・社名・店舗はすべて架空です。<br>
-  © 2026 業務自動化×Web制作ポートフォリオ
+<!-- ============ FAQ ============ -->
+<section class="section section--alt" id="faq">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <span class="overline">FAQ</span>
+      <h2>よくあるご質問</h2>
+      <p class="lead">はじめての外注でも不安がないように、先にお答えします。</p>
+    </div>
+    <div class="faq">
+      <details class="faq-item reveal">
+        <summary>技術がわからなくても発注できますか？</summary>
+        <div class="faq-item__a">はい。専門用語は使わず、<b>いまの作業内容を伺うところ</b>から始めます。「この作業がしんどい」というレベルのご相談で大丈夫です。実現方法はこちらでご提案します。</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>修正はしてもらえますか？</summary>
+        <div class="faq-item__a"><b>納品まで回数無制限</b>、さらに<b>納品後1週間は無償</b>で対応します。実際に触っていただき、ご納得いくまで整えます。</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>納品物は、私（担当者）でも使えますか？</summary>
+        <div class="faq-item__a">はい。特別なソフトなしで動く形＋<b>説明書つき</b>でお渡しします。担当が代わっても引き継げるよう、<b>あとから直せる作り</b>を前提に設計します。</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>対応時間・連絡のペースは？</summary>
+        <div class="faq-item__a">本業があるため平日日中の即応は難しいことがありますが、<b>平日夜・土日を中心</b>に進めます。メッセージへのお返事は<b>24時間以内</b>を心がけています。</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>お預かりするデータの扱い・セキュリティは？</summary>
+        <div class="faq-item__a">お預かりしたデータは<b>その案件の目的のみ</b>に使用し、納品後はご指示に従って削除します。機密性の高いデータは、外部サービスに渡さず<b>手元での処理を基本</b>とします。</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>AIを使っていると聞きましたが、品質は大丈夫？</summary>
+        <div class="faq-item__a">最新のAI開発環境を活用して<b>速く</b>作ります。ただし出力をそのまま納品することはありません。<b>境界値・例外系のテスト</b>を書き、実務者の目で検収してからお渡しします。</div>
+      </details>
+      <details class="faq-item reveal">
+        <summary>相談・お見積りは無料ですか？</summary>
+        <div class="faq-item__a">はい、<b>ご提案・お見積りまでは無料</b>です。内容を伺ったうえで、実現方法・納期・金額を1ページにまとめてご提示します。</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============ クロージングCTA ============ -->
+<section class="cta section" id="contact">
+  <div class="wrap">
+    <div class="cta__panel reveal">
+      <h2>まずは「こんなこと、できる？」だけでも。</h2>
+      <p>むずかしい準備は要りません。<b>いまの作業内容を送っていただくだけ</b>で大丈夫です。<br>近い実現方法と、概算・納期をお返しします。</p>
+      <div class="cta__buttons">
+        <a class="btn btn--primary" href="https://coconala.com/users/6171856" target="_blank" rel="noopener">ココナラで相談する</a>
+        <a class="btn btn--ghost" href="https://crowdworks.jp/public/employees/7084138" target="_blank" rel="noopener">クラウドワークスで相談する</a>
+      </div>
+      <p class="cta__reassure">ご提案・お見積りは<b>無料</b>。お返事は24時間以内を心がけています。</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <a class="brand" href="#top" aria-label="綻 流夢 ホーム">
+          <svg class="brand__mark" viewBox="0 0 64 64" aria-hidden="true">
+            <rect width="64" height="64" rx="15" fill="#0F766E"/>
+            <g fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round">
+              <path d="M20 44 C24 34, 40 34, 44 24" opacity=".55" stroke-dasharray="0.1 8.4"/>
+              <path d="M32 34 C26 28, 26 20, 32 15"/>
+              <path d="M32 34 C38 28, 38 20, 32 15"/>
+              <path d="M32 34 C32 27, 32 21, 32 15" opacity=".7"/>
+            </g>
+            <circle cx="32" cy="35" r="2.6" fill="#fff"/>
+          </svg>
+          <span class="brand__name">綻 流夢<small>ほころび るうむ</small></span>
+        </a>
+        <p class="footer__profile">
+          事業会社の現場で Excel 業務改善を6年。その業務知識を土台に、最新のAI開発環境で
+          業務自動化・Web制作・ツール開発を承っています。「速く、でも壊れない」を大切に。
+        </p>
+      </div>
+      <div class="footer__side">
+        <nav class="footer__nav" aria-label="フッター">
+          <a href="#works">実績</a>
+          <a href="#stack">技術</a>
+          <a href="#price">料金</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">相談する</a>
+        </nav>
+        <button class="footer__theme js-theme-toggle" type="button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          配色を切り替え
+        </button>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      各作品のデモデータ・社名・店舗・数値はすべて架空のサンプルです。<br>
+      © 2026 綻 流夢（ほころび るうむ）／ 業務自動化 × Web制作
+    </div>
+  </div>
 </footer>
 
-<script>
-"use strict";
-// タブフィルタ
-const tabs = document.querySelectorAll(".tab");
-const cards = document.querySelectorAll(".work");
-tabs.forEach(tab => tab.addEventListener("click", () => {
-  tabs.forEach(t => t.classList.remove("active"));
-  tab.classList.add("active");
-  const f = tab.dataset.f;
-  cards.forEach(c => { c.style.display = (f === "all" || c.dataset.cat === f) ? "" : "none"; });
-}));
-// ふわっと表示(既に画面内にある要素・reduced-motion環境では動かさない)
-if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  const io = new IntersectionObserver(es => es.forEach(e => {
-    if (e.isIntersecting){ e.target.style.opacity = 1; e.target.style.transform = "none"; io.unobserve(e.target); }
-  }), {threshold:.1});
-  document.querySelectorAll(".work, .why .card, .flow li").forEach(el => {
-    if (el.getBoundingClientRect().top > innerHeight) {
-      el.style.opacity = 0; el.style.transform = "translateY(16px)";
-      el.style.transition = "opacity .6s ease, transform .6s ease";
-      io.observe(el);
-    }
-  });
-}
-</script>
+<script src="script.js" defer></script>
 </body>
 </html>
